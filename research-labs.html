@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Research Labs — Cresco Scientiam 5.0</title>
+<meta name="description" content="Twelve research labs. Twelve worlds. Explore every event at Cresco Scientiam 5.0, presented by Delhi Public School Megacity." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="research-labs.css" />
+</head>
+<body>
+
+<!-- ═══════════ HERO : ORBITAL SHELL CONSTELLATION ═══════════ -->
+<section id="hero">
+  <a href="../index/index.html" class="wordmark" aria-label="Cresco Scientiam home">CRESCO<span>·</span>SCIENTIAM</a>
+
+  <canvas id="c"></canvas>
+
+  <div id="core-label">
+    <span class="core-sym">Cr·Es·Co</span>
+    <span class="core-caption">CORE // ALL SHELLS SYNCHRONIZED</span>
+  </div>
+
+  <div id="redefining-row">
+    <div class="side-text" id="left-text">Twelve Labs</div>
+    <div class="side-text" id="right-text">One Station</div>
+  </div>
+
+  <div class="float-panel" id="panel-0">
+    <div class="float-panel-inner">
+      <div class="fp-corner"></div>
+      <div class="fp-tag">When &amp; Where</div>
+      <div class="fp-divider"></div>
+      <div class="fp-title">15–17 October 2026</div>
+      <div class="fp-desc">Delhi Public School Megacity, Main Campus. Three days on station, twelve labs, one standard of excellence.</div>
+      <span class="fp-badge">Edition 05</span>
+    </div>
+  </div>
+
+  <div class="float-panel" id="panel-1">
+    <div class="float-panel-inner">
+      <div class="fp-corner"></div>
+      <div class="fp-tag">Mission Brief</div>
+      <div class="fp-divider"></div>
+      <div class="fp-title">Twelve Worlds, One Frequency</div>
+      <div class="fp-desc">Every lab is a self-contained environment — forensics to quantum debate to evolution simulation. Drag the shells. Hover a node. Find your lab.</div>
+    </div>
+  </div>
+
+  <button id="scroll-btn" aria-label="Scroll down" onclick="document.getElementById('domains-heading-wrap').scrollIntoView({behavior:'smooth'})">
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/></svg>
+  </button>
+</section>
+
+<div id="orbit-hint">
+  <div class="orbit-hint-inner">
+    <span class="orbit-hint-pulse"></span>
+    <span class="orbit-hint-text" id="orbit-hint-text">Hover a node to identify it</span>
+  </div>
+</div>
+
+<div id="event-tooltip" class="tip">
+  <div class="tooltip-inner">
+    <div class="tooltip-tag" id="tt-tag"></div>
+    <div class="tooltip-line"></div>
+    <div class="tooltip-title" id="tt-title"></div>
+    <div class="tooltip-desc" id="tt-desc"></div>
+  </div>
+</div>
+<div id="faq-tooltip" class="tip">
+  <div class="faq-inner">
+    <div class="faq-label">FAQ</div>
+    <div class="faq-line"></div>
+    <div class="faq-q" id="fq-q"></div>
+    <div class="faq-a" id="fq-a"></div>
+  </div>
+</div>
+<div id="drag-hint">Click &amp; drag to rotate the shells<span class="dh-arrow">↻</span></div>
+
+<!-- ═══════════ DOMAINS ═══════════ -->
+<div id="domains-heading-wrap">
+  <p class="section-eyebrow">Classification</p>
+  <h2 id="domains-heading">Three Domains</h2>
+</div>
+
+<section id="domain-cards">
+  <div class="domain-card" data-domain="mind" onclick="openDomain('mind')">
+    <div class="domain-glow"></div>
+    <div class="domain-top-line"></div>
+    <div class="domain-number">01</div>
+    <div class="domain-label">Domain 01</div>
+    <div class="domain-title">Mind &amp;<br><em>Logic</em></div>
+    <div class="domain-desc">Debate chambers, mathematical universes, chess arenas. Events that reward reasoning under pressure.</div>
+    <div class="domain-events-preview">
+      <span class="chip">Quantum Clash</span>
+      <span class="chip">πOrbit</span>
+      <span class="chip">Strategos</span>
+      <span class="chip">Time Trial</span>
+      <span class="chip">MindRift</span>
+    </div>
+    <div class="domain-count-badge">5 Labs</div>
+    <button class="domain-cta">Explore Domain <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></button>
+  </div>
+
+  <div class="domain-card" data-domain="matter" onclick="openDomain('matter')">
+    <div class="domain-glow"></div>
+    <div class="domain-top-line"></div>
+    <div class="domain-number">02</div>
+    <div class="domain-label">Domain 02</div>
+    <div class="domain-title">Matter &amp;<br><em>Machine</em></div>
+    <div class="domain-desc">Crime labs, chemical art, engineering factories. Hands on evidence, reagents, and hardware.</div>
+    <div class="domain-events-preview">
+      <span class="chip">Corpus Vestigium</span>
+      <span class="chip">Chromatica</span>
+      <span class="chip">TechForge</span>
+      <span class="chip">Tesoro Jagen</span>
+    </div>
+    <div class="domain-count-badge">4 Labs</div>
+    <button class="domain-cta">Explore Domain <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></button>
+  </div>
+
+  <div class="domain-card" data-domain="signal" onclick="openDomain('signal')">
+    <div class="domain-glow"></div>
+    <div class="domain-top-line"></div>
+    <div class="domain-number">03</div>
+    <div class="domain-label">Domain 03</div>
+    <div class="domain-title">Signal &amp;<br><em>Spectrum</em></div>
+    <div class="domain-desc">Recording studios, AI newsrooms, evolution simulators. Where science performs.</div>
+    <div class="domain-events-preview">
+      <span class="chip">AstroPulse</span>
+      <span class="chip">Vox Futuri</span>
+      <span class="chip">Genesis Nova</span>
+    </div>
+    <div class="domain-count-badge">3 Labs</div>
+    <button class="domain-cta">Explore Domain <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6 2l4 4-4 4"/></svg></button>
+  </div>
+</section>
+
+<!-- ═══════════ DOMAIN DRILL-DOWN ═══════════ -->
+<section id="domain-detail">
+  <div class="domain-edition-mark">Cresco Scientiam · Edition 05 · Registry §</div>
+  <div class="domain-detail-header">
+    <div>
+      <div class="domain-detail-eyebrow" id="domainEyebrow">Domain</div>
+      <div class="domain-detail-title" id="domainTitle">Loading…</div>
+    </div>
+    <button class="domain-detail-back" onclick="closeDomain()"><span class="back-arrow" aria-hidden="true"></span>Return to Registry</button>
+    <div class="domain-detail-meta" id="domainMeta">Registry · — Labs</div>
+  </div>
+  <div class="specimen-grid" id="specimenGrid"></div>
+</section>
+
+<!-- ═══════════ FULL SHOWCASE / CAROUSEL ═══════════ -->
+<section id="showcase-section">
+  <div class="showcase-bg" id="showcaseBg">
+    <div class="showcase-grid" id="showcaseGrid"></div>
+    <div class="showcase-orb orb-a"></div>
+    <div class="showcase-orb orb-b"></div>
+    <div class="showcase-orb orb-c"></div>
+  </div>
+  <div class="showcase-vignette"></div>
+
+  <div class="showcase-inner">
+    <div class="showcase-text" id="showcaseText">
+      <div class="showcase-eyebrow">All Labs</div>
+      <div class="showcase-tag" id="showcaseTag">Forensics</div>
+      <div class="text-swap-wrap" style="margin-bottom:26px;">
+        <div class="text-swap-inner active" id="showcaseHeading"><h2 class="showcase-heading">Solve it before<br>the trail <em>goes cold</em></h2></div>
+      </div>
+      <div class="text-swap-wrap">
+        <div class="text-swap-inner active" id="showcaseBody"><p class="showcase-body">Twelve labs. One standard. Cresco Scientiam is where school scientists test their limits across forensics, chemistry, mathematics, and beyond.</p></div>
+      </div>
+      <div class="showcase-stats">
+        <div class="stat-item"><span class="stat-num">12</span><span class="stat-label">Labs</span></div>
+        <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Days</span></div>
+        <div class="stat-item"><span class="stat-num">6–12</span><span class="stat-label">Classes</span></div>
+      </div>
+    </div>
+
+    <div class="showcase-carousel" id="showcaseCarousel">
+      <div class="card-stack" id="cardStack"></div>
+    </div>
+  </div>
+</section>
+
+<script src="research-labs.js"></script>
+</body>
+</html>

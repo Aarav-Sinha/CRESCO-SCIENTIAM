@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Mission Database — Cresco Scientiam 5.0 | Delhi Public School Megacity</title>
+<meta name="description" content="History, vision, rules, and downloads for Cresco Scientiam 5.0 — the interschool science festival of Delhi Public School Megacity." />
+<meta name="theme-color" content="#05070A" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2305070A'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='50' fill='%23FF6A2B' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+
+<style>
+/* ============================================================================
+   0. DESIGN TOKENS
+   ============================================================================ */
+:root{
+  --c-void:        #05070A;
+  --c-graphite:    #12151A;
+  --c-gunmetal:    #1E232B;
+  --c-gunmetal-2:  #2A313B;
+  --c-silver:      #C7CDD6;
+  --c-silver-dim:  #7C8794;
+  --c-white:       #F4F6F8;
+  --c-signal:      #FF6A2B;
+  --c-signal-dim:  #B34D1E;
+  --c-signal-glow: rgba(255, 106, 43, 0.35);
+  --c-ok:          #52D68A;
+  --c-warn:        #E8B339;
+  --c-crit:        #E85B3F;
+  --c-info:        #4E9BD8;
+
+  --f-display: 'Space Grotesk', system-ui, sans-serif;
+  --f-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --f-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0:  clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --step-1:  clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --step-2:  clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+  --step-3:  clamp(2rem, 1.6rem + 1.6vw, 2.9rem);
+  --step-4:  clamp(2.7rem, 2rem + 3vw, 4.4rem);
+  --step-5:  clamp(3.4rem, 2.2rem + 5vw, 6.4rem);
+
+  --rail-w: 88px;
+  --hud-pad: 22px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================================
+   1. RESET & BASE
+   ============================================================================ */
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *, *::before, *::after{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+body{
+  margin: 0; background: var(--c-void); color: var(--c-silver);
+  font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+}
+body.touch-device{ cursor: auto; }
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+button{ font-family: inherit; cursor: inherit; background: none; border: none; }
+h1,h2,h3,h4{ font-family: var(--f-display); margin: 0; color: var(--c-white); font-weight: 500; }
+p{ margin: 0; }
+ul,ol{ margin: 0; padding: 0; list-style: none; }
+::selection{ background: var(--c-signal); color: var(--c-void); }
+:focus-visible{ outline: 2px solid var(--c-signal); outline-offset: 3px; }
+.skip-link{ position: absolute; top: -100px; left: 16px; background: var(--c-signal); color: var(--c-void); padding: 10px 18px; z-index: 999; font-family: var(--f-mono); font-size: var(--step--1); transition: top 0.2s var(--ease-out); }
+.skip-link:focus{ top: 16px; }
+.visually-hidden{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ============================================================================
+   2. CUSTOM CURSOR
+   ============================================================================ */
+#cursor-dot, #cursor-ring{ position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; border-radius: 50%; transform: translate(-50%, -50%); will-change: transform; }
+#cursor-dot{ width: 5px; height: 5px; background: var(--c-signal); }
+#cursor-ring{ width: 34px; height: 34px; border: 1px solid var(--c-signal-dim); transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), border-color 0.25s; }
+#cursor-ring.is-active{ width: 56px; height: 56px; border-color: var(--c-signal); }
+body.touch-device #cursor-dot, body.touch-device #cursor-ring{ display: none; }
+
+/* ============================================================================
+   3. AMBIENT FIELD & OVERLAYS
+   ============================================================================ */
+#particle-field{ position: fixed; inset: 0; z-index: 0; background: var(--c-void); }
+.hud-atmosphere{ position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 0%, rgba(255,106,43,0.06), transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.7), transparent 60%); }
+.hud-atmosphere::after{ content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px); mix-blend-mode: overlay; }
+#reaction-overlay{ position: fixed; inset: 0; z-index: 9997; background: var(--c-signal); transform: scaleY(0); transform-origin: bottom; pointer-events: none; }
+#reaction-overlay.is-firing{ animation: reactionWipe 0.75s var(--ease-inout) forwards; }
+@keyframes reactionWipe{ 0%{ transform: scaleY(0); transform-origin: bottom; } 48%{ transform: scaleY(1); transform-origin: bottom; } 52%{ transform: scaleY(1); transform-origin: top; } 100%{ transform: scaleY(0); transform-origin: top; } }
+
+/* ============================================================================
+   4. BOOT SEQUENCE
+   ============================================================================ */
+#boot-sequence{ position: fixed; inset: 0; z-index: 9999; background: var(--c-void); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.7s var(--ease-inout), visibility 0.7s; }
+#boot-sequence.is-hidden{ opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-frame{ width: min(520px, 86vw); }
+.boot-log{ font-family: var(--f-mono); font-size: var(--step--1); color: var(--c-silver-dim); min-height: 110px; line-height: 1.9; }
+.boot-log .line{ opacity: 0; transform: translateY(4px); animation: bootLineIn 0.4s var(--ease-out) forwards; }
+.boot-log .line .tag{ color: var(--c-signal); margin-right: 10px; }
+.boot-log .line .ok{ color: var(--c-ok); }
+@keyframes bootLineIn{ to{ opacity: 1; transform: translateY(0); } }
+.boot-progress-track{ margin-top: 20px; height: 2px; width: 100%; background: var(--c-gunmetal-2); position: relative; overflow: hidden; }
+.boot-progress-fill{ position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--c-signal); box-shadow: 0 0 12px var(--c-signal-glow); transition: width 0.3s linear; }
+.boot-meta{ display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--c-silver-dim); text-transform: uppercase; }
+
+/* ============================================================================
+   5. HUD CHROME
+   ============================================================================ */
+.hud-corner{ position: fixed; width: 26px; height: 26px; border-color: var(--c-signal-dim); z-index: 40; pointer-events: none; opacity: 0.7; }
+.hud-corner.tl{ top: var(--hud-pad); left: var(--hud-pad); border-top: 1px solid; border-left: 1px solid; }
+.hud-corner.tr{ top: var(--hud-pad); right: var(--hud-pad); border-top: 1px solid; border-right: 1px solid; }
+.hud-corner.bl{ bottom: var(--hud-pad); left: var(--hud-pad); border-bottom: 1px solid; border-left: 1px solid; }
+.hud-corner.br{ bottom: var(--hud-pad); right: var(--hud-pad); border-bottom: 1px solid; border-right: 1px solid; }
+.hud-clock{ position: fixed; top: var(--hud-pad); right: calc(var(--hud-pad) + 40px); z-index: 40; font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-silver-dim); letter-spacing: 0.06em; text-align: right; }
+.hud-clock .status-dot{ display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--c-ok); margin-right: 6px; box-shadow: 0 0 6px var(--c-ok); }
+
+/* ============================================================================
+   6. PRIMARY NAVIGATION
+   ============================================================================ */
+.command-nav{ position: fixed; top: 0; left: 0; height: 100vh; width: var(--rail-w); z-index: 50; display: flex; flex-direction: column; align-items: center; padding: 84px 0 24px; background: linear-gradient(180deg, rgba(18,21,26,0.6), rgba(18,21,26,0.2)); border-right: 1px solid var(--c-gunmetal-2); backdrop-filter: blur(6px); }
+.command-nav__brand{ font-family: var(--f-mono); font-size: 0.62rem; color: var(--c-signal); letter-spacing: 0.18em; writing-mode: vertical-rl; margin-bottom: 34px; text-transform: uppercase; }
+.command-nav__tiles{ display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.nav-node{ --node-accent: var(--c-signal); position: relative; width: 52px; height: 52px; border: 1px solid var(--c-gunmetal-2); background: var(--c-graphite); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--c-silver-dim); transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s; }
+.nav-node__icon{ width: 20px; height: 20px; display: block; stroke: currentColor; fill: none; stroke-width: 1.5; transition: stroke 0.25s; }
+.nav-node:hover, .nav-node:focus-visible, .nav-node.is-current{ border-color: var(--node-accent); box-shadow: 0 0 18px -4px var(--node-accent); transform: translateX(3px); color: var(--c-white); }
+.nav-node.is-current::before{ content: ''; position: absolute; left: -13px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: var(--node-accent); border-radius: 50%; box-shadow: 0 0 8px var(--node-accent); }
+.nav-node__tooltip{ position: absolute; left: calc(100% + 14px); top: 50%; transform: translateY(-50%) translateX(-6px); background: var(--c-gunmetal); border: 1px solid var(--c-gunmetal-2); padding: 8px 12px; white-space: nowrap; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 60; }
+.nav-node__tooltip strong{ color: var(--node-accent); display:block; font-size: 0.72rem; letter-spacing: 0.04em;}
+.nav-node:hover .nav-node__tooltip, .nav-node:focus-visible .nav-node__tooltip{ opacity: 1; transform: translateY(-50%) translateX(0); }
+.command-nav__login{ margin-top: auto; width: 52px; height: 52px; border: 1px solid var(--c-signal-dim); background: transparent; color: var(--c-signal); font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.05em; writing-mode: vertical-rl; display: flex; align-items: center; justify-content: center; transition: background 0.25s, color 0.25s; }
+.command-nav__login:hover{ background: var(--c-signal); color: var(--c-void); }
+.command-nav__toggle{ display: none; position: fixed; top: var(--hud-pad); left: var(--hud-pad); z-index: 60; width: 42px; height: 42px; background: var(--c-graphite); border: 1px solid var(--c-gunmetal-2); color: var(--c-signal); align-items: center; justify-content: center; font-family: var(--f-mono); }
+
+/* ============================================================================
+   7. LAYOUT SHELL
+   ============================================================================ */
+main{ position: relative; z-index: 2; margin-left: var(--rail-w); }
+section{ position: relative; padding: 100px clamp(24px,5vw,80px); }
+.section-eyebrow{ font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-signal); display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.section-eyebrow::before{ content: ''; width: 22px; height: 1px; background: var(--c-signal); }
+.reveal{ opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+/* ============================================================================
+   8. HEADER
+   ============================================================================ */
+.db-header{ padding-top: 140px; }
+.db-header h1{ font-size: var(--step-5); max-width: 900px; line-height: 1.05; }
+.db-header p{ margin-top: 22px; max-width: 60ch; color: var(--c-silver-dim); font-size: var(--step-1); font-weight: 300; }
+
+/* ============================================================================
+   9. VISION
+   ============================================================================ */
+.vision-grid{ display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; align-items: start; }
+@media (max-width: 900px){ .vision-grid{ grid-template-columns: 1fr; } }
+.vision-grid h2{ font-size: var(--step-4); }
+.vision-pillars{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--c-gunmetal-2); border: 1px solid var(--c-gunmetal-2); }
+@media (max-width: 560px){ .vision-pillars{ grid-template-columns: 1fr; } }
+.pillar{ background: var(--c-void); padding: 26px; }
+.pillar__num{ font-family: var(--f-mono); font-size: 0.7rem; color: var(--c-signal); }
+.pillar h3{ font-size: var(--step-0); margin-top: 12px; }
+.pillar p{ font-size: 0.85rem; color: var(--c-silver-dim); margin-top: 8px; }
+
+/* ============================================================================
+   10. HISTORY TIMELINE
+   ============================================================================ */
+.timeline{ position: relative; border-left: 1px solid var(--c-gunmetal-2); padding-left: 40px; display: flex; flex-direction: column; gap: 50px; max-width: 760px; }
+.timeline__entry{ position: relative; }
+.timeline__entry::before{ content: ''; position: absolute; left: -45px; top: 4px; width: 10px; height: 10px; background: var(--c-void); border: 2px solid var(--c-signal); border-radius: 50%; }
+.timeline__year{ font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-signal); letter-spacing: 0.08em; text-transform: uppercase; }
+.timeline__entry h3{ font-size: var(--step-2); margin-top: 8px; }
+.timeline__entry p{ margin-top: 10px; color: var(--c-silver-dim); max-width: 56ch; }
+.timeline__stats{ display: flex; gap: 24px; margin-top: 14px; flex-wrap: wrap; }
+.timeline__stats span{ font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-silver); border: 1px solid var(--c-gunmetal-2); padding: 4px 10px; }
+
+/* ============================================================================
+   11. RULES / CODE OF CONDUCT
+   ============================================================================ */
+.rules-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--c-gunmetal-2); border: 1px solid var(--c-gunmetal-2); }
+.rule-card{ background: var(--c-graphite); padding: 28px; }
+.rule-card__num{ font-family: var(--f-mono); font-size: 0.7rem; color: var(--c-signal); }
+.rule-card h3{ font-size: var(--step-0); margin-top: 12px; }
+.rule-card p{ font-size: 0.85rem; color: var(--c-silver-dim); margin-top: 8px; }
+
+/* ============================================================================
+   12. DOWNLOADS
+   ============================================================================ */
+.downloads-list{ display: flex; flex-direction: column; gap: 1px; background: var(--c-gunmetal-2); border: 1px solid var(--c-gunmetal-2); max-width: 720px; }
+.download-row{ background: var(--c-void); display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; gap: 20px; transition: background 0.25s; }
+.download-row:hover{ background: var(--c-graphite); }
+.download-row__meta{ display: flex; align-items: center; gap: 16px; }
+.download-row__icon{ width: 34px; height: 34px; border: 1px solid var(--c-gunmetal-2); display: flex; align-items: center; justify-content: center; color: var(--c-signal); flex-shrink: 0; }
+.download-row__icon svg{ width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+.download-row__name{ font-size: 0.9rem; color: var(--c-white); }
+.download-row__size{ font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver-dim); margin-top: 3px; }
+.download-row__action{ font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-signal); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+.telemetry-empty{ font-family: var(--f-mono); font-size: 0.75rem; color: var(--c-silver-dim); padding: 18px 22px; }
+.telemetry-empty::before{ content: '▸ '; color: var(--c-signal); }
+
+/* ============================================================================
+   13. FOOTER
+   ============================================================================ */
+footer{ padding: 70px clamp(24px,5vw,80px) 50px; border-top: 1px solid var(--c-gunmetal-2); }
+.footer-bottom{ display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver-dim); }
+.footer-bottom a{ color: var(--c-signal); }
+
+/* ============================================================================
+   14. RESPONSIVE NAV
+   ============================================================================ */
+@media (max-width: 860px){
+  .command-nav{ transform: translateX(-100%); transition: transform 0.35s var(--ease-inout); width: 220px; align-items: flex-start; padding: 90px 20px 24px; }
+  .command-nav.is-open{ transform: translateX(0); }
+  .command-nav__toggle{ display: flex; }
+  .command-nav__tiles{ width: 100%; }
+  .nav-node{ width: 100%; height: 46px; flex-direction: row; justify-content: flex-start; gap: 14px; padding: 0 16px; }
+  .nav-node__tooltip{ display: none; }
+  main{ margin-left: 0; }
+  .command-nav__brand{ writing-mode: horizontal-tb; margin-bottom: 20px; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<canvas id="particle-field" aria-hidden="true"></canvas>
+<div class="hud-atmosphere" aria-hidden="true"></div>
+<div id="reaction-overlay" aria-hidden="true"></div>
+
+<div id="boot-sequence" role="status" aria-live="polite">
+  <div class="boot-frame">
+    <div class="boot-log" id="boot-log"></div>
+    <div class="boot-progress-track"><div class="boot-progress-fill" id="boot-progress-fill"></div></div>
+    <div class="boot-meta"><span id="boot-percent">0%</span><span>MISSION-DATABASE // NODE 03</span></div>
+  </div>
+</div>
+
+<div class="hud-corner tl" aria-hidden="true"></div>
+<div class="hud-corner tr" aria-hidden="true"></div>
+<div class="hud-corner bl" aria-hidden="true"></div>
+<div class="hud-corner br" aria-hidden="true"></div>
+<div class="hud-clock" id="hud-clock" aria-hidden="true"><span class="status-dot"></span><span id="hud-clock-text">--:--:--</span></div>
+
+<button class="command-nav__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="command-nav">☰</button>
+
+<nav class="command-nav" id="command-nav" aria-label="Primary">
+  <div class="command-nav__brand">CRESCO&nbsp;SCIENTIAM&nbsp;5.0</div>
+  <ul class="command-nav__tiles">
+    <li><a href="index.html" class="nav-node" style="--node-accent:#FF6A2B"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="nav-node__tooltip"><strong>Command Center</strong>Dashboard Base</span></a></li>
+    <li><a href="events.html" class="nav-node" style="--node-accent:#52D68A"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span class="nav-node__tooltip"><strong>Events Hub</strong>Competitive Disciplines</span></a></li>
+    <li><a href="mission-database.html" class="nav-node is-current" style="--node-accent:#4E9BD8" aria-current="page"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span class="nav-node__tooltip"><strong>Mission Database</strong>Context & Briefs</span></a></li>
+    <li><a href="team.html" class="nav-node" style="--node-accent:#C7CDD6"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="nav-node__tooltip"><strong>Operations Team</strong>Structure Roster</span></a></li>
+    <li><a href="gallery.html" class="nav-node" style="--node-accent:#E85B9A"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span class="nav-node__tooltip"><strong>Visual Gallery</strong>Telemetry Media</span></a></li>
+    <li><a href="sponsors.html" class="nav-node" style="--node-accent:#E8B339"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="nav-node__tooltip"><strong>Sponsors</strong>Logistical Partners</span></a></li>
+    <li><a href="portal/school-registration.html" class="nav-node" style="--node-accent:#9B7EDE"><svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg><span class="nav-node__tooltip"><strong>Enlist Base</strong>School Registration</span></a></li>
+  </ul>
+  <a href="login.html" class="command-nav__login">SIGN&nbsp;IN</a>
+</nav>
+
+<main id="main-content">
+
+  <section class="db-header">
+    <p class="section-eyebrow">Mission Database</p>
+    <h1 class="reveal">Everything you need to know before you enter the labs.</h1>
+    <p class="reveal">History, vision, rules of engagement, and every downloadable document — this is the reference layer beneath the festival's presentation layer.</p>
+  </section>
+
+  <section aria-label="Vision">
+    <p class="section-eyebrow">Vision</p>
+    <div class="vision-grid">
+      <div class="reveal">
+        <h2>Cresco Scientiam means "I grow through knowledge."</h2>
+        <p style="margin-top:20px; color:var(--c-silver); max-width:46ch;">Delhi Public School Megacity built this festival on a simple frustration: most school science fairs reward neat handwriting and confident presentation more than they reward actual scientific thinking. Cresco Scientiam is our answer — twelve events, each one testing a real skill (investigation, synthesis, proof, design, argument) under real time pressure, judged by people who do that skill professionally wherever possible.</p>
+      </div>
+      <div class="vision-pillars reveal">
+        <div class="pillar"><div class="pillar__num">01</div><h3>Rigor over recital</h3><p>Every event is judged on process and reasoning, not just a final answer.</p></div>
+        <div class="pillar"><div class="pillar__num">02</div><h3>Real stakes</h3><p>Time limits, live judging, and public results — no exercises with disappearing consequences.</p></div>
+        <div class="pillar"><div class="pillar__num">03</div><h3>Cross-disciplinary</h3><p>Twelve domains spanning science, mathematics, strategy, music, and media.</p></div>
+        <div class="pillar"><div class="pillar__num">04</div><h3>Open access</h3><p>Any recognized school may register — no invitation list, no legacy slots.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="History">
+    <p class="section-eyebrow">History</p>
+    <h2 class="reveal" style="font-size:var(--step-4); max-width:640px; margin-bottom:50px;">Five deployments. One growing festival.</h2>
+    <div class="timeline reveal">
+      <div class="timeline__entry">
+        <div class="timeline__year">Deployment 01 — 2022</div>
+        <h3>First Ignition</h3>
+        <p>Cresco Scientiam launches with four founding events — a forensics room, a chemistry challenge, a mathematics relay, and a general quiz — hosted entirely within the school's own science block.</p>
+        <div class="timeline__stats"><span>4 events</span><span>4 schools</span><span>~180 participants</span></div>
+      </div>
+      <div class="timeline__entry">
+        <div class="timeline__year">Deployment 02 — 2023</div>
+        <h3>Beyond the Science Block</h3>
+        <p>The festival expands into the auditorium and adds its first non-laboratory events — a debate chamber and a live quiz show format — while participation nearly doubles.</p>
+        <div class="timeline__stats"><span>7 events</span><span>9 schools</span><span>~410 participants</span></div>
+      </div>
+      <div class="timeline__entry">
+        <div class="timeline__year">Deployment 03 — 2024</div>
+        <h3>Full Spectrum</h3>
+        <p>Expansion to twelve distinct events spanning science, mathematics, strategy, music, and media — the lineup that stands largely unchanged today.</p>
+        <div class="timeline__stats"><span>12 events</span><span>15 schools</span><span>~760 participants</span></div>
+      </div>
+      <div class="timeline__entry">
+        <div class="timeline__year">Deployment 04 — 2025</div>
+        <h3>Two-Day Format</h3>
+        <p>Cresco Scientiam becomes a two-day festival for the first time, adding a formal opening ceremony and a dedicated awards night.</p>
+        <div class="timeline__stats"><span>12 events</span><span>21 schools</span><span>~1,050 participants</span></div>
+      </div>
+      <div class="timeline__entry">
+        <div class="timeline__year">Deployment 05 — 2026</div>
+        <h3>Command Center Online</h3>
+        <p>The fifth deployment introduces a complete digital operations system: live school registration, credentialing, real-time festival telemetry, and a role-based management console replacing what used to be a set of spreadsheets and a WhatsApp group.</p>
+        <div class="timeline__stats"><span>12 events</span><span>Growing</span><span>Live data</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Rules and code of conduct">
+    <p class="section-eyebrow">Rules of Engagement</p>
+    <h2 class="reveal" style="font-size:var(--step-4); max-width:640px; margin-bottom:50px;">The rules that apply across every event.</h2>
+    <div class="rules-grid reveal">
+      <div class="rule-card">
+        <div class="rule-card__num">R.01</div>
+        <h3>Eligibility</h3>
+        <p>Open to students of any recognized school, grades 9–12, registered through that school's coordinator — no individual walk-in entries.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.02</div>
+        <h3>Team composition</h3>
+        <p>Team sizes are fixed per event (see each event's dossier) and may not be changed after the registration deadline without Admin approval.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.03</div>
+        <h3>Substitutions</h3>
+        <p>A registered participant may be substituted up to 48 hours before the festival via a Request Permission form in the School Portal.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.04</div>
+        <h3>Materials & devices</h3>
+        <p>Personal phones are not permitted inside any event room during active rounds unless the event's brief explicitly allows them.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.05</div>
+        <h3>Academic integrity</h3>
+        <p>Any evidence of pre-arranged answers, external communication during a round, or plagiarized material results in immediate disqualification of the team.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.06</div>
+        <h3>Conduct</h3>
+        <p>Participants, teachers, and volunteers are expected to treat judges, organizers, and each other with respect. Harassment of any kind ends participation immediately.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.07</div>
+        <h3>Judging decisions</h3>
+        <p>Judging panels are drawn from subject specialists where possible. Decisions are final; written feedback is provided to every team on request.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.08</div>
+        <h3>Safety</h3>
+        <p>All chemistry and engineering events run under direct teacher-in-charge supervision, with safety equipment provided at the venue.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__num">R.09</div>
+        <h3>Appeals</h3>
+        <p>Disputes may be raised with the Event Head within 30 minutes of results being posted, and are escalated to Core Team if unresolved.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Downloads">
+    <p class="section-eyebrow">Downloads</p>
+    <h2 class="reveal" style="font-size:var(--step-4); max-width:640px; margin-bottom:40px;">Rulebooks, circulars, and reference documents.</h2>
+    <div class="downloads-list reveal" id="downloads-list">
+      <p class="telemetry-empty">Syncing document index…</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom">
+    <span id="footer-timestamp">MISSION LOG SYNCED —</span>
+    <span><a href="index.html">← Return to Command Center</a> · © 2026 CRESCO SCIENTIAM — DELHI PUBLIC SCHOOL MEGACITY</span>
+  </div>
+</footer>
+
+<script type="module">
+import { db, collection, query, orderBy, onSnapshot } from "./firebase-config.js";
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+if (isTouchDevice) document.body.classList.add('touch-device');
+
+/* Boot sequence */
+const BOOT_LINES = [
+  { tag: 'SYS', text: 'Loading Mission Database…' },
+  { tag: 'DB', text: 'Indexing rulebooks and circulars…', ok: true },
+  { tag: 'RDY', text: 'Database ready.', ok: true },
+];
+(function runBootSequence() {
+  const log = document.getElementById('boot-log');
+  const fill = document.getElementById('boot-progress-fill');
+  const pct = document.getElementById('boot-percent');
+  const overlay = document.getElementById('boot-sequence');
+  if (prefersReducedMotion) { overlay.classList.add('is-hidden'); return; }
+  let i = 0;
+  function nextLine() {
+    if (i >= BOOT_LINES.length) { setTimeout(() => overlay.classList.add('is-hidden'), 350); return; }
+    const { tag, text, ok } = BOOT_LINES[i];
+    const row = document.createElement('div'); row.className = 'line';
+    row.innerHTML = `<span class="tag">[${tag}]</span>${text}${ok ? ' <span class="ok">READY</span>' : ''}`;
+    log.appendChild(row); i += 1;
+    const progress = Math.round((i / BOOT_LINES.length) * 100);
+    fill.style.width = progress + '%'; pct.textContent = progress + '%';
+    setTimeout(nextLine, 220);
+  }
+  nextLine();
+})();
+
+/* Custom cursor */
+if (!isTouchDevice) {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, ringX = mouseX, ringY = mouseY;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.18; ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, [data-cursor]').forEach((el) => {
+    el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+  });
+}
+
+/* Ambient particle field */
+(function ambientParticleField() {
+  const canvas = document.getElementById('particle-field');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles, dpr;
+  const PARTICLE_COUNT = prefersReducedMotion ? 0 : (window.innerWidth < 700 ? 30 : 65);
+  const LINK_DIST = 120;
+  const mouse = { x: -9999, y: -9999 };
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = window.innerWidth * dpr; h = canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function initParticles() {
+    particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2, r: Math.random() * 1.2 + 0.4,
+    }));
+  }
+  function step() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      const dx = p.x - mouse.x, dy = p.y - mouse.y, distSq = dx * dx + dy * dy;
+      if (distSq < 14000) { const dist = Math.sqrt(distSq) || 1; p.x += (dx / dist) * 0.5; p.y += (dy / dist) * 0.5; }
+      if (p.x < 0) p.x = window.innerWidth; if (p.x > window.innerWidth) p.x = 0;
+      if (p.y < 0) p.y = window.innerHeight; if (p.y > window.innerHeight) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(199, 205, 214, 0.4)'; ctx.fill();
+    }
+    for (let i = 0; i < particles.length; i++) for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j], dx = a.x - b.x, dy = a.y - b.y, dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < LINK_DIST) {
+        ctx.strokeStyle = `rgba(255, 106, 43, ${0.1 * (1 - dist / LINK_DIST)})`; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    if (!prefersReducedMotion) requestAnimationFrame(step);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  resize(); initParticles(); if (PARTICLE_COUNT > 0) step();
+})();
+
+/* HUD clock */
+(function hudClock() {
+  const el = document.getElementById('hud-clock-text');
+  function tick() { el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false }) + ' IST'; }
+  tick(); setInterval(tick, 1000);
+})();
+
+/* Scroll reveal */
+(function scrollReveal() {
+  const targets = document.querySelectorAll('.reveal');
+  if (prefersReducedMotion) { targets.forEach((t) => t.classList.add('is-visible')); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); } });
+  }, { threshold: 0.12 });
+  targets.forEach((t) => io.observe(t));
+})();
+
+/* Reaction transitions */
+(function reactionTransitions() {
+  const overlay = document.getElementById('reaction-overlay');
+  document.querySelectorAll('[data-transition]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || prefersReducedMotion) return;
+      e.preventDefault(); overlay.classList.add('is-firing');
+      setTimeout(() => { window.location.href = href; }, 420);
+    });
+  });
+})();
+
+/* Mobile nav toggle */
+(function mobileNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('command-nav');
+  toggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+})();
+
+/* ==========================================================================
+   LIVE DOCUMENT INDEX
+   Reads collection "documents" — each doc: {name, url, sizeLabel, category,
+   uploadedAt}. Populated by Admin via the "Manage Circulars" module.
+   Degrades honestly to an empty-state message rather than fake entries.
+   ========================================================================== */
+(function liveDownloads() {
+  const list = document.getElementById('downloads-list');
+  const fileIconSvg = `<svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>`;
+  try {
+    const q = query(collection(db, 'documents'), orderBy('uploadedAt', 'desc'));
+    onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        list.innerHTML = '<p class="telemetry-empty">No documents have been published yet. Check back closer to the festival date.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      snap.forEach((docSnap) => {
+        const d = docSnap.data();
+        const row = document.createElement('a');
+        row.className = 'download-row';
+        row.href = d.url || '#';
+        row.target = '_blank';
+        row.rel = 'noopener';
+        row.innerHTML = `
+          <div class="download-row__meta">
+            <div class="download-row__icon">${fileIconSvg}</div>
+            <div>
+              <div class="download-row__name">${d.name ?? 'Untitled document'}</div>
+              <div class="download-row__size">${d.category ?? 'Document'} ${d.sizeLabel ? '· ' + d.sizeLabel : ''}</div>
+            </div>
+          </div>
+          <span class="download-row__action">Download →</span>`;
+        list.appendChild(row);
+      });
+    }, () => {
+      list.innerHTML = '<p class="telemetry-empty">Document index unreachable.</p>';
+    });
+  } catch (err) {
+    list.innerHTML = '<p class="telemetry-empty">Document index unreachable.</p>';
+  }
+})();
+
+/* Footer timestamp */
+(function footerTimestamp() {
+  const el = document.getElementById('footer-timestamp');
+  el.textContent = `MISSION LOG SYNCED — ${new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+})();
+</script>
+</body>
+</html>

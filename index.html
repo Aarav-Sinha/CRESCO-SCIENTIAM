@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Cresco Scientiam 5.0 — Command Center | Delhi Public School Megacity</title>
+<meta name="description" content="Cresco Scientiam 5.0 — the interschool science festival of Delhi Public School Megacity. Twelve premier events. One command center. Enter the terminal." />
+<meta name="theme-color" content="#05070A" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2305070A'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='50' fill='%23FF6A2B' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+
+<style>
+/* ============================================================================
+   0. DESIGN TOKENS
+   ============================================================================ */
+:root{
+  --c-void:        #05070A;   /* deep background */
+  --c-graphite:    #12151A;   /* panel surfaces */
+  --c-gunmetal:    #1E232B;   /* raised panel / card surfaces */
+  --c-gunmetal-2:  #2A313B;   /* borders, dividers */
+  --c-silver:      #C7CDD6;   /* primary text on dark */
+  --c-silver-dim:  #7C8794;   /* secondary text */
+  --c-white:       #F4F6F8;   /* headline text */
+  --c-signal:      #FF6A2B;   /* signal orange — primary accent */
+  --c-signal-dim:  #B34D1E;   /* orange, low-emission variant */
+  --c-signal-glow: rgba(255, 106, 43, 0.35);
+  --c-ok:          #52D68A;   /* status: nominal */
+  --c-warn:        #E8B339;   /* status: caution */
+  --c-crit:        #E85B3F;   /* status: critical */
+
+  /* -- Type -- */
+  --f-display: 'Space Grotesk', system-ui, sans-serif;
+  --f-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --f-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  /* -- Scale -- */
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0:  clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --step-1:  clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --step-2:  clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+  --step-3:  clamp(2rem, 1.6rem + 1.6vw, 2.9rem);
+  --step-4:  clamp(2.7rem, 2rem + 3vw, 4.4rem);
+  --step-5:  clamp(3.4rem, 2.2rem + 5vw, 6.4rem);
+
+  /* -- Layout -- */
+  --rail-w: 88px;
+  --hud-pad: 22px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================================
+   1. RESET & BASE
+   ============================================================================ */
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+body{
+  margin: 0;
+  background: var(--c-void);
+  color: var(--c-silver);
+  font-family: var(--f-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+body.touch-device{ cursor: auto; }
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+button{ font-family: inherit; cursor: inherit; }
+h1,h2,h3,h4{ font-family: var(--f-display); margin: 0; color: var(--c-white); font-weight: 500; }
+p{ margin: 0; }
+ul{ margin: 0; padding: 0; list-style: none; }
+
+::selection{ background: var(--c-signal); color: var(--c-void); }
+
+:focus-visible{
+  outline: 2px solid var(--c-signal);
+  outline-offset: 3px;
+}
+
+.skip-link{
+  position: absolute; top: -100px; left: 16px;
+  background: var(--c-signal); color: var(--c-void);
+  padding: 10px 18px; z-index: 999;
+  font-family: var(--f-mono); font-size: var(--step--1);
+  transition: top 0.2s var(--ease-out);
+}
+.skip-link:focus{ top: 16px; }
+
+.visually-hidden{
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ============================================================================
+   2. CUSTOM CURSOR
+   ============================================================================ */
+#cursor-dot, #cursor-ring{
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  border-radius: 50%; transform: translate(-50%, -50%);
+  will-change: transform;
+}
+#cursor-dot{ width: 5px; height: 5px; background: var(--c-signal); }
+#cursor-ring{
+  width: 34px; height: 34px; border: 1px solid var(--c-signal-dim);
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), border-color 0.25s;
+}
+#cursor-ring.is-active{ width: 56px; height: 56px; border-color: var(--c-signal); }
+body.touch-device #cursor-dot, body.touch-device #cursor-ring{ display: none; }
+
+/* ============================================================================
+   3. AMBIENT FIELD & OVERLAYS
+   ============================================================================ */
+#particle-field{ position: fixed; inset: 0; z-index: 0; background: var(--c-void); }
+.hud-atmosphere{
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,106,43,0.06), transparent 55%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.7), transparent 60%);
+}
+.hud-atmosphere::after{
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: overlay;
+}
+
+/* ============================================================================
+   4. BOOT SEQUENCE OVERLAY
+   ============================================================================ */
+#boot-sequence{
+  position: fixed; inset: 0; z-index: 9999; background: var(--c-void);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.9s var(--ease-inout), visibility 0.9s;
+}
+#boot-sequence.is-hidden{ opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-frame{ width: min(560px, 86vw); }
+.boot-log{ font-family: var(--f-mono); font-size: var(--step--1); color: var(--c-silver-dim); min-height: 220px; line-height: 1.9; }
+.boot-log .line{ opacity: 0; transform: translateY(4px); animation: bootLineIn 0.4s var(--ease-out) forwards; }
+.boot-log .line .tag{ color: var(--c-signal); margin-right: 10px; }
+.boot-log .line .ok{ color: var(--c-ok); }
+@keyframes bootLineIn{ to{ opacity: 1; transform: translateY(0); } }
+.boot-progress-track{ margin-top: 28px; height: 2px; width: 100%; background: var(--c-gunmetal-2); position: relative; overflow: hidden; }
+.boot-progress-fill{ position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--c-signal); box-shadow: 0 0 12px var(--c-signal-glow); transition: width 0.3s linear; }
+.boot-meta{ display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--c-silver-dim); text-transform: uppercase; }
+
+/* ============================================================================
+   5. HUD PERSISTENT CHROME
+   ============================================================================ */
+.hud-corner{ position: fixed; width: 26px; height: 26px; border-color: var(--c-signal-dim); z-index: 40; pointer-events: none; opacity: 0.7; }
+.hud-corner.tl{ top: var(--hud-pad); left: var(--hud-pad); border-top: 1px solid; border-left: 1px solid; }
+.hud-corner.tr{ top: var(--hud-pad); right: var(--hud-pad); border-top: 1px solid; border-right: 1px solid; }
+.hud-corner.bl{ bottom: var(--hud-pad); left: var(--hud-pad); border-bottom: 1px solid; border-left: 1px solid; }
+.hud-corner.br{ bottom: var(--hud-pad); right: var(--hud-pad); border-bottom: 1px solid; border-right: 1px solid; }
+
+.hud-clock{ position: fixed; top: var(--hud-pad); right: calc(var(--hud-pad) + 40px); z-index: 40; font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-silver-dim); letter-spacing: 0.06em; text-align: right; }
+.hud-clock .status-dot{ display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--c-ok); margin-right: 6px; box-shadow: 0 0 6px var(--c-ok); }
+
+/* ============================================================================
+   6. PRIMARY NAVIGATION — INTERACTION STRIP
+   ============================================================================ */
+.command-nav{
+  position: fixed; top: 0; left: 0; height: 100vh; width: var(--rail-w); z-index: 50;
+  display: flex; flex-direction: column; align-items: center; padding: 84px 0 24px;
+  background: linear-gradient(180deg, rgba(18,21,26,0.6), rgba(18,21,26,0.2));
+  border-right: 1px solid var(--c-gunmetal-2); backdrop-filter: blur(6px);
+}
+.command-nav__brand{ font-family: var(--f-mono); font-size: 0.62rem; color: var(--c-signal); letter-spacing: 0.18em; writing-mode: vertical-rl; margin-bottom: 34px; text-transform: uppercase; }
+.command-nav__tiles{ display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+.nav-node{
+  --node-accent: var(--c-signal);
+  position: relative; width: 52px; height: 52px;
+  border: 1px solid var(--c-gunmetal-2); background: var(--c-graphite);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--c-silver-dim); transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+.nav-node__icon{
+  width: 20px; height: 20px; display: block;
+  stroke: currentColor; fill: none; stroke-width: 1.5;
+  transition: stroke 0.25s;
+}
+.nav-node:hover, .nav-node:focus-visible, .nav-node.is-current{
+  border-color: var(--node-accent);
+  box-shadow: 0 0 18px -4px var(--node-accent);
+  transform: translateX(3px);
+  color: var(--c-white);
+}
+.nav-node.is-current::before{
+  content: ''; position: absolute; left: -13px; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 6px; background: var(--node-accent); border-radius: 50%;
+  box-shadow: 0 0 8px var(--node-accent);
+}
+.nav-node__tooltip{
+  position: absolute; left: calc(100% + 14px); top: 50%; transform: translateY(-50%) translateX(-6px);
+  background: var(--c-gunmetal); border: 1px solid var(--c-gunmetal-2);
+  padding: 8px 12px; white-space: nowrap; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver);
+  opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 60;
+}
+.nav-node__tooltip strong{ color: var(--node-accent); display:block; font-size: 0.72rem; letter-spacing: 0.04em;}
+.nav-node:hover .nav-node__tooltip, .nav-node:focus-visible .nav-node__tooltip{ opacity: 1; transform: translateY(-50%) translateX(0); }
+
+.command-nav__login{
+  margin-top: auto; width: 52px; height: 52px; border: 1px solid var(--c-signal-dim); background: transparent;
+  color: var(--c-signal); font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.05em;
+  writing-mode: vertical-rl; display: flex; align-items: center; justify-content: center;
+  transition: background 0.25s, color 0.25s;
+}
+.command-nav__login:hover{ background: var(--c-signal); color: var(--c-void); }
+.command-nav__toggle{ display: none; position: fixed; top: var(--hud-pad); left: var(--hud-pad); z-index: 60; width: 42px; height: 42px; background: var(--c-graphite); border: 1px solid var(--c-gunmetal-2); color: var(--c-signal); align-items: center; justify-content: center; font-family: var(--f-mono); }
+
+/* ============================================================================
+   7. TRANSITION LAYER
+   ============================================================================ */
+#reaction-overlay{ position: fixed; inset: 0; z-index: 9997; background: var(--c-signal); transform: scaleY(0); transform-origin: bottom; pointer-events: none; }
+#reaction-overlay.is-firing{ animation: reactionWipe 0.75s var(--ease-inout) forwards; }
+@keyframes reactionWipe{ 0%{ transform: scaleY(0); transform-origin: bottom; } 48%{ transform: scaleY(1); transform-origin: bottom; } 52%{ transform: scaleY(1); transform-origin: top; } 100%{ transform: scaleY(0); transform-origin: top; } }
+
+/* ============================================================================
+   8. LAYOUT SHELL
+   ============================================================================ */
+main{ position: relative; z-index: 2; margin-left: var(--rail-w); }
+section{ position: relative; padding: 120px clamp(24px, 5vw, 80px); }
+.section-eyebrow{ font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-signal); display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.section-eyebrow::before{ content: ''; width: 22px; height: 1px; background: var(--c-signal); }
+.reveal{ opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+/* ============================================================================
+   9. HERO SECTIONS
+   ============================================================================ */
+.hero{ min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 100px; }
+.hero__kicker{ font-family: var(--f-mono); font-size: var(--step--1); color: var(--c-silver-dim); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 20px; }
+.hero__kicker .flicker{ color: var(--c-signal); }
+#hero-title-canvas{ width: 100%; max-width: 980px; height: clamp(160px, 24vw, 300px); display: block; }
+.hero__sub{ font-size: var(--step-1); color: var(--c-silver); max-width: 620px; margin-top: 8px; font-weight: 300; }
+.hero__presenter{ margin-top: 26px; font-family: var(--f-mono); font-size: var(--step--1); color: var(--c-silver-dim); letter-spacing: 0.04em; }
+.hero__presenter strong{ color: var(--c-silver); font-weight: 500;}
+.hero__actions{ margin-top: 46px; display: flex; gap: 16px; flex-wrap: wrap; }
+
+.btn{
+  font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 15px 28px; border: 1px solid var(--c-gunmetal-2); background: transparent; color: var(--c-silver);
+  position: relative; display: inline-flex; align-items: center; gap: 10px; transition: border-color 0.25s, color 0.25s, transform 0.25s;
+}
+.btn:hover{ transform: translateY(-2px); }
+.btn--primary{ border-color: var(--c-signal); color: var(--white); }
+.btn--primary::before{ content:''; position: absolute; inset: 0; background: var(--c-signal); z-index: -1; opacity: 0; transition: opacity 0.25s; }
+.btn--primary:hover{ color: var(--c-void); }
+.btn--primary:hover::before{ opacity: 1; }
+.btn--ghost:hover{ border-color: var(--c-silver); }
+.btn .arrow{ transition: transform 0.25s; }
+.btn:hover .arrow{ transform: translateX(4px); }
+
+.telemetry-panel{ margin-top: 62px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); max-width: 620px; border: 1px solid var(--c-gunmetal-2); }
+.telemetry-cell{ padding: 18px 16px; border-right: 1px solid var(--c-gunmetal-2); background: rgba(18,21,26,0.5); }
+.telemetry-cell:last-child{ border-right: none; }
+.telemetry-cell__value{ font-family: var(--f-mono); font-size: var(--step-2); color: var(--c-white); font-variant-numeric: tabular-nums; }
+.telemetry-cell__label{ font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-silver-dim); margin-top: 4px; }
+
+/* ============================================================================
+   10. LIVE STATUS READOUTS
+   ============================================================================ */
+.status-strip{ padding: 40px clamp(24px,5vw,80px); border-top: 1px solid var(--c-gunmetal-2); border-bottom: 1px solid var(--c-gunmetal-2); display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; background: rgba(18,21,26,0.3); }
+@media (max-width: 900px){ .status-strip{ grid-template-columns: 1fr; } }
+.ticker-head{ display: flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-signal); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+.ticker-head .pulse{ width: 6px; height: 6px; border-radius: 50%; background: var(--c-signal); animation: pulseDot 1.6s ease-in-out infinite; }
+@keyframes pulseDot{ 0%,100%{ opacity: 1; } 50%{ opacity: 0.25; } }
+
+#announcement-list{ display: flex; flex-direction: column; gap: 12px; min-height: 90px; }
+.announcement-row{ display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding-bottom: 12px; border-bottom: 1px dashed var(--c-gunmetal-2); font-size: var(--step--1); }
+.announcement-row time{ font-family: var(--f-mono); color: var(--c-silver-dim); font-size: 0.7rem; }
+.telemetry-empty{ font-family: var(--f-mono); font-size: 0.75rem; color: var(--c-silver-dim); }
+.telemetry-empty::before{ content: '▸ '; color: var(--c-signal); }
+
+.stat-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.stat-cell{ border: 1px solid var(--c-gunmetal-2); padding: 16px; text-align: center; }
+.stat-cell__value{ font-family: var(--f-mono); font-size: var(--step-2); color: var(--c-signal); font-variant-numeric: tabular-nums; }
+.stat-cell__label{ font-family: var(--f-mono); font-size: 0.6rem; color: var(--c-silver-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+/* ============================================================================
+   11. EVENTS HUB PREVIEW — CUSTOM PANEL ARCHITECTURE
+   ============================================================================ */
+.events-heading{ display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; margin-bottom: 48px; }
+.events-heading h2{ font-size: var(--step-4); max-width: 640px; }
+
+.event-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+
+.event-card{
+  --event-accent: var(--c-signal);
+  background: var(--c-graphite); border: 1px solid var(--c-gunmetal-2);
+  padding: 26px 22px; min-height: 230px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease-out);
+}
+.event-card::before{
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 0% 0%, var(--event-accent), transparent 65%);
+  opacity: 0.03; transition: opacity 0.35s;
+}
+.event-card:hover::before, .event-card:focus-visible::before{ opacity: 0.12; }
+.event-card:hover, .event-card:focus-visible{ background: var(--c-gunmetal); border-color: var(--event-accent); transform: translateY(-2px); }
+
+.event-card__top{ display: flex; justify-content: space-between; align-items: flex-start; }
+.event-card__tag{ font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver-dim); letter-spacing: 0.05em; }
+
+/* Dedicated, modular styling container for distinct, custom branding/logos per event */
+.event-card__logo-wrapper{
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); background: rgba(255,255,255,0.02); color: var(--event-accent);
+}
+.event-card__logo-wrapper svg{ width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+
+.event-card__name{ font-family: var(--f-display); font-size: var(--step-1); color: var(--c-white); margin-top: 24px; font-weight: 600; line-height: 1.2; }
+.event-card__desc{ font-size: 0.82rem; color: var(--c-silver-dim); margin-top: 6px; line-height: 1.4; }
+.event-card__action{ margin-top: 20px; font-family: var(--f-mono); font-size: 0.68rem; color: var(--event-accent); letter-spacing: 0.08em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.event-card__action .arrow{ transition: transform 0.25s; }
+.event-card:hover .event-card__action .arrow{ transform: translateX(4px); }
+
+/* ============================================================================
+   12. MISSION BRIEFING
+   ============================================================================ */
+.briefing{ display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 60px; align-items: start; }
+@media (max-width: 900px){ .briefing{ grid-template-columns: 1fr; } }
+.briefing h2{ font-size: var(--step-4); }
+.briefing p{ color: var(--c-silver); margin-top: 20px; max-width: 46ch; }
+.briefing-log{ border-left: 1px solid var(--c-gunmetal-2); padding-left: 28px; display: flex; flex-direction: column; gap: 26px; }
+.briefing-log__entry{ position: relative; }
+.briefing-log__entry::before{ content: ''; position: absolute; left: -33px; top: 4px; width: 8px; height: 8px; background: var(--c-void); border: 1px solid var(--c-signal); }
+.briefing-log__entry h4{ font-size: var(--step-0); color: var(--c-white); }
+.briefing-log__entry span{ display:block; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-signal); letter-spacing: 0.08em; margin-bottom: 6px; text-transform: uppercase; }
+.briefing-log__entry p{ font-size: 0.88rem; color: var(--c-silver-dim); margin-top: 6px; max-width: 46ch;}
+
+/* ============================================================================
+   13. TEAM ROSTER
+   ============================================================================ */
+.team-grid{ display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px; }
+.holo-card{ border: 1px solid var(--c-gunmetal-2); padding: 22px; background: linear-gradient(160deg, rgba(255,106,43,0.05), transparent 60%); position: relative; transition: transform 0.35s var(--ease-out), border-color 0.35s; }
+.holo-card:hover{ transform: translateY(-6px); border-color: var(--c-signal-dim); }
+.holo-card__avatar{ width: 56px; height: 56px; border: 1px solid var(--c-gunmetal-2); display: flex; align-items: center; justify-content: center; font-family: var(--f-display); color: var(--c-signal); font-size: var(--step-1); margin-bottom: 16px; }
+.holo-card__name{ font-family: var(--f-display); color: var(--c-white); font-size: var(--step-0); }
+.holo-card__role{ font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-signal); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+.holo-card__bio{ font-size: 0.82rem; color: var(--c-silver-dim); margin-top: 10px; }
+.holo-card__links{ margin-top: 14px; display: flex; gap: 12px; }
+.holo-card__links a{ font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver-dim); border-bottom: 1px solid transparent; }
+.holo-card__links a:hover{ color: var(--c-signal); border-color: var(--c-signal); }
+
+/* ============================================================================
+   14. SPONSOR RUNWAY
+   ============================================================================ */
+.sponsor-track-wrap{ overflow: hidden; border-top: 1px solid var(--c-gunmetal-2); border-bottom: 1px solid var(--c-gunmetal-2); padding: 30px 0; }
+#sponsor-track{ display: flex; gap: 60px; width: max-content; animation: scrollTrack 34s linear infinite; font-family: var(--f-mono); color: var(--c-silver-dim); letter-spacing: 0.1em; font-size: var(--step-1); padding-left: 60px; }
+@keyframes scrollTrack{ from{ transform: translateX(0);} to{ transform: translateX(-50%);} }
+@media (prefers-reduced-motion: reduce){ #sponsor-track{ animation: none; overflow-x: auto; } }
+
+/* ============================================================================
+   15. FOOTER FRAME
+   ============================================================================ */
+footer{ padding: 80px clamp(24px,5vw,80px) 50px; border-top: 1px solid var(--c-gunmetal-2); }
+.footer-grid{ display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 40px; }
+@media (max-width: 900px){ .footer-grid{ grid-template-columns: repeat(2,1fr); } }
+.footer-brand{ font-family: var(--f-display); font-size: var(--step-2); color: var(--c-white); }
+.footer-brand span{ color: var(--c-signal); }
+.footer-col h5{ font-family: var(--f-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-signal); margin-bottom: 14px; }
+.footer-col ul{ display: flex; flex-direction: column; gap: 10px; }
+.footer-col a{ font-size: 0.85rem; color: var(--c-silver-dim); transition: color 0.2s; }
+.footer-col a:hover{ color: var(--c-white); }
+.footer-bottom{ margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--c-gunmetal-2); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver-dim); }
+
+/* ============================================================================
+   16. VIEWPORT RESPONSIVITY
+   ============================================================================ */
+@media (max-width: 860px){
+  .command-nav{ transform: translateX(-100%); transition: transform 0.35s var(--ease-inout); width: 220px; align-items: flex-start; padding: 90px 20px 24px; }
+  .command-nav.is-open{ transform: translateX(0); }
+  .command-nav__toggle{ display: flex; }
+  .command-nav__tiles{ width: 100%; }
+  .nav-node{ width: 100%; height: 46px; flex-direction: row; justify-content: flex-start; gap: 14px; padding: 0 16px; }
+  .nav-node__tooltip{ display: none; }
+  main{ margin-left: 0; }
+  .command-nav__brand{ writing-mode: horizontal-tb; margin-bottom: 20px; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<canvas id="particle-field" aria-hidden="true"></canvas>
+<div class="hud-atmosphere" aria-hidden="true"></div>
+<div id="reaction-overlay" aria-hidden="true"></div>
+
+<div id="boot-sequence" role="status" aria-live="polite">
+  <div class="boot-frame">
+    <div class="boot-log" id="boot-log"></div>
+    <div class="boot-progress-track">
+      <div class="boot-progress-fill" id="boot-progress-fill"></div>
+    </div>
+    <div class="boot-meta">
+      <span id="boot-percent">0%</span>
+      <span>CRESCO-SCIENTIAM-OS // BUILD 5.0</span>
+    </div>
+  </div>
+</div>
+
+<div class="hud-corner tl" aria-hidden="true"></div>
+<div class="hud-corner tr" aria-hidden="true"></div>
+<div class="hud-corner bl" aria-hidden="true"></div>
+<div class="hud-corner br" aria-hidden="true"></div>
+<div class="hud-clock" id="hud-clock" aria-hidden="true"><span class="status-dot"></span><span id="hud-clock-text">--:--:--</span></div>
+
+<button class="command-nav__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="command-nav">☰</button>
+
+<nav class="command-nav" id="command-nav" aria-label="Primary">
+  <div class="command-nav__brand">CRESCO&nbsp;SCIENTIAM&nbsp;5.0</div>
+  <ul class="command-nav__tiles">
+    <li>
+      <a href="index.html" class="nav-node is-current" style="--node-accent:#FF6A2B" aria-current="page">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="nav-node__tooltip"><strong>Command Center</strong>Dashboard Base</span>
+      </a>
+    </li>
+    <li>
+      <a href="events.html" class="nav-node" style="--node-accent:#52D68A">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="nav-node__tooltip"><strong>Events Hub</strong>Competitive Disciplines</span>
+      </a>
+    </li>
+    <li>
+      <a href="mission-database.html" class="nav-node" style="--node-accent:#4E9BD8">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="nav-node__tooltip"><strong>Mission Database</strong>Context & Briefs</span>
+      </a>
+    </li>
+    <li>
+      <a href="team.html" class="nav-node" style="--node-accent:#C7CDD6">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span class="nav-node__tooltip"><strong>Operations Team</strong>Structure Roster</span>
+      </a>
+    </li>
+    <li>
+      <a href="gallery.html" class="nav-node" style="--node-accent:#E85B9A">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="nav-node__tooltip"><strong>Visual Gallery</strong>Telemetry Media</span>
+      </a>
+    </li>
+    <li>
+      <a href="sponsors.html" class="nav-node" style="--node-accent:#E8B339">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="nav-node__tooltip"><strong>Sponsors</strong>Logistical Partners</span>
+      </a>
+    </li>
+    <li>
+      <a href="portal/school-registration.html" class="nav-node" style="--node-accent:#9B7EDE">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span class="nav-node__tooltip"><strong>Enlist Base</strong>School Registration</span>
+      </a>
+    </li>
+  </ul>
+  <a href="login.html" class="command-nav__login">SIGN&nbsp;IN</a>
+</nav>
+
+<main id="main-content">
+
+  <section class="hero" aria-label="Command Center introduction">
+    <p class="hero__kicker"><span class="flicker">●</span> SYSTEM ONLINE — DELHI PUBLIC SCHOOL MEGACITY PRESENTS</p>
+    <canvas id="hero-title-canvas" aria-hidden="true"></canvas>
+    <h1 class="visually-hidden">Cresco Scientiam 5.0</h1>
+    <p class="hero__sub">Twelve dynamic events. One digital terminal. The interschool science festival engineered as a high-performance workspace.</p>
+    <p class="hero__presenter">Staged by <strong>Delhi Public School Megacity</strong> — fifth deployment.</p>
+
+    <div class="hero__actions">
+      <a href="events.html" class="btn btn--primary" data-transition>EXPLORE EVENTS <span class="arrow">→</span></a>
+      <a href="portal/school-registration.html" class="btn btn--ghost" data-transition>REGISTER YOUR SCHOOL <span class="arrow">→</span></a>
+    </div>
+
+    <div class="telemetry-panel" id="countdown-board" aria-label="Countdown to live operations">
+      <div class="telemetry-cell"><div class="telemetry-cell__value" id="cd-days">--</div><div class="telemetry-cell__label">Days</div></div>
+      <div class="telemetry-cell"><div class="telemetry-cell__value" id="cd-hours">--</div><div class="telemetry-cell__label">Hours</div></div>
+      <div class="telemetry-cell"><div class="telemetry-cell__value" id="cd-mins">--</div><div class="telemetry-cell__label">Minutes</div></div>
+      <div class="telemetry-cell"><div class="telemetry-cell__value" id="cd-secs">--</div><div class="telemetry-cell__label">Seconds</div></div>
+    </div>
+  </section>
+
+  <section class="status-strip" aria-label="Live operations telemetry" style="padding-top:0; padding-bottom:0;">
+    <div>
+      <div class="ticker-head"><span class="pulse"></span> LIVE ANNOUNCEMENTS</div>
+      <div id="announcement-list">
+        <p class="telemetry-empty">Awaiting operational feed…</p>
+      </div>
+    </div>
+    <div>
+      <div class="ticker-head"><span class="pulse"></span> MISSION STATISTICS</div>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="stat-cell__value" id="stat-schools">—</div><div class="stat-cell__label">Schools</div></div>
+        <div class="stat-cell"><div class="stat-cell__value" id="stat-participants">—</div><div class="stat-cell__label">Participants</div></div>
+        <div class="stat-cell"><div class="stat-cell__value" id="stat-events">12</div><div class="stat-cell__label">Active Events</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Competitive events preview" id="events">
+    <p class="section-eyebrow">Events Spectrum</p>
+    <div class="events-heading reveal">
+      <h2>Twelve events. Twelve distinct domains. Engineered with tailored visual identities.</h2>
+      <a href="events.html" class="btn btn--ghost" data-transition>VIEW ALL EVENTS <span class="arrow">→</span></a>
+    </div>
+    
+    <div class="event-grid reveal">
+      <a class="event-card" style="--event-accent:#D8564B" href="events.html#corpus-vestigium" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-01</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Corpus Vestigium</div>
+          <div class="event-card__desc">Forensics & criminal investigations chamber.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#3FA9E0" href="events.html#chromatica" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-02</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-3"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Chromatica</div>
+          <div class="event-card__desc">Chemical reactions mapped into conceptual art installations.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#E8B339" href="events.html#tesoro-jagen" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-03</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 4L9 7"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Tesoro Jagen</div>
+          <div class="event-card__desc">Decryption matrix and logical treasure hunt sandbox.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#7B7FD8" href="events.html#quantum-clash" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-04</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Quantum Clash</div>
+          <div class="event-card__desc">Advanced scientific argumentation & debate house.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#52D68A" href="events.html#pi-orbit" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-05</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M9 7h6m-6 4h6m-6 4h6M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">πOrbit</div>
+          <div class="event-card__desc">Theoretical modeling and applied mathematical universe.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#E88D3F" href="events.html#astropulse" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-06</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M9 19V6l12-3v13M9 10l12-3M7 19a3 3 0 11-6 0 3 3 0 016 0zm14-3a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">AstroPulse</div>
+          <div class="event-card__desc">Acoustic production utilizing signals from deep space telemetry.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#C7CDD6" href="events.html#techforge" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-07</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">TechForge</div>
+          <div class="event-card__desc">Structural mechanics and micro-engineering production floor.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#8C8C8C" href="events.html#strategos" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-08</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Strategos</div>
+          <div class="event-card__desc">Combinatorial calculations & digital chess arena.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#4E4E4E" href="events.html#genesis-nova" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-09</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 10-1.022-.547l-2.387 2.386a2 2 0 10-.77.77l2.386-2.387a2 2 0 001.793-.222zM8.5 14a4 4 0 110-8 4 4 0 010 8zm0 0v6M5 17h7"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Genesis Nova</div>
+          <div class="event-card__desc">Algorithmic simulation of environmental models and life cycles.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#D85BA8" href="events.html#vox-futuri" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-10</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Vox Futuri</div>
+          <div class="event-card__desc">Sci-tech analytical investigative journalism and video studio.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#E8D23F" href="events.html#mindrift" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-11</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l.707-.707m2.808 13.019a1.6 1.6 0 01-.264-.468l-.427-1.16a.417.417 0 00-.39-.274H7.266a.417.417 0 00-.39.274l-.427 1.16a1.6 1.6 0 01-.264.468M16.734 14.86a.417.417 0 00-.39-.274h-1.012a.417.417 0 00-.39.274l-.427 1.16a1.6 1.6 0 01-.264.468 2.025 2.025 0 01-3.504 0 1.6 1.6 0 01-.264-.468l-.427-1.16z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">MindRift</div>
+          <div class="event-card__desc">Neural cognitive assessment sprint & logical quiz track.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+
+      <a class="event-card" style="--event-accent:#FF6A2B" href="events.html#time-trial" data-transition>
+        <div class="event-card__top">
+          <span class="event-card__tag">EV-12</span>
+          <div class="event-card__logo-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="event-card__name">Time Trial</div>
+          <div class="event-card__desc">Live interactive real-time multi-stage tactical theater arena.</div>
+          <div class="event-card__action">Launch Overview <span class="arrow">→</span></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section aria-label="Mission briefing" id="briefing">
+    <p class="section-eyebrow">Mission Briefing</p>
+    <div class="briefing">
+      <div class="reveal">
+        <h2>Cresco Scientiam means "I grow through knowledge."</h2>
+        <p>Now in its fifth deployment, Cresco Scientiam is Delhi Public School Megacity's flagship interschool science festival — a two-day convergence of forensics, chemistry, mathematics, mechanics, design, strategy, and engineering operations, staged as twelve independent dynamic events.</p>
+        <a href="mission-database.html" class="btn btn--ghost" data-transition style="margin-top:28px;">READ MISSION SPECIFICATIONS <span class="arrow">→</span></a>
+      </div>
+      <div class="briefing-log reveal">
+        <div class="briefing-log__entry">
+          <span>Deployment 01 — 2022</span>
+          <h4>First Ignition</h4>
+          <p>Cresco Scientiam launches with four founding events and four participating units.</p>
+        </div>
+        <div class="briefing-log__entry">
+          <span>Deployment 03 — 2024</span>
+          <h4>Full Spectrum</h4>
+          <p>Expansion to twelve distinct competitive lines spanning science, computation, strategy, and media.</p>
+        </div>
+        <div class="briefing-log__entry">
+          <span>Deployment 05 — 2026</span>
+          <h4>Command Center Online</h4>
+          <p>A complete digital operations node: real-time registration, programmatic validation, and real-time festival metrics tracking.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Team preview" id="team-preview">
+    <p class="section-eyebrow">The Team</p>
+    <h2 class="reveal" style="font-size:var(--step-4); max-width:640px; margin-bottom:44px;">Nine operational units. One command line.</h2>
+    <div class="team-grid reveal" id="team-grid">
+      <p class="telemetry-empty">Synchronizing team manifest…</p>
+    </div>
+  </section>
+
+  <div class="sponsor-track-wrap" aria-label="Sponsors">
+    <div id="sponsor-track">
+      <span>LOGISTICAL SLOTS OPENING SOON</span>
+      <span>LOGISTICAL SLOTS OPENING SOON</span>
+      <span>LOGISTICAL SLOTS OPENING SOON</span>
+      <span>LOGISTICAL SLOTS OPENING SOON</span>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Cresco <span>Scientiam</span> 5.0</div>
+      <p style="margin-top:14px; max-width:32ch; color:var(--c-silver-dim); font-size:0.85rem;">The interschool science festival of Delhi Public School Megacity.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Terminal</h5>
+      <ul>
+        <li><a href="events.html">Events Grid</a></li>
+        <li><a href="mission-database.html">Mission Database</a></li>
+        <li><a href="team.html">Operations Team</a></li>
+        <li><a href="gallery.html">Media Logs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Access Node</h5>
+      <ul>
+        <li><a href="portal/school-registration.html">Enlist a School</a></li>
+        <li><a href="portal/school-portal.html">School Portal</a></li>
+        <li><a href="login.html">Staff Authorization</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Comms Control</h5>
+      <ul>
+        <li><a href="tel:+911140000000">HQ Desk: +91 11 4000 0000</a></li>
+        <li><a href="mailto:control@crescoscientiam.org">control@crescoscientiam.org</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span id="footer-timestamp">MISSION LOG SYNCED —</span>
+    <span>© 2026 CRESCO SCIENTIAM — DELHI PUBLIC SCHOOL MEGACITY</span>
+  </div>
+</footer>
+
+<script type="module">
+import {
+  db, collection, query, orderBy, limit, onSnapshot, getDoc, doc,
+} from "./firebase-config.js";
+
+/* ==========================================================================
+   0. SYSTEM EVALUATIONS
+   ========================================================================== */
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+if (isTouchDevice) document.body.classList.add('touch-device');
+
+/* ==========================================================================
+   1. SYSTEM INITIALIZATION
+   ========================================================================== */
+const BOOT_LINES = [
+  { tag: 'SYS', text: 'Initializing Cresco Scientiam Command Subsystems…' },
+  { tag: 'AUTH', text: 'Loading authorization layer…', ok: true },
+  { tag: 'DB', text: 'Connecting to structural Firestore context…', ok: true },
+  { tag: 'CAL', text: 'Syncing dynamic clock offsets with central server…', ok: true },
+  { tag: 'NET', text: 'Awaiting target event date from configuration document…', ok: true },
+  { tag: 'RDY', text: 'Terminal Interface Active.', ok: true },
+];
+
+function runBootSequence() {
+  const log = document.getElementById('boot-log');
+  const fill = document.getElementById('boot-progress-fill');
+  const pct = document.getElementById('boot-percent');
+  const overlay = document.getElementById('boot-sequence');
+
+  if (prefersReducedMotion) {
+    overlay.classList.add('is-hidden');
+    return;
+  }
+
+  let i = 0;
+  const stepDelay = 220;
+
+  function nextLine() {
+    if (i >= BOOT_LINES.length) {
+      setTimeout(() => overlay.classList.add('is-hidden'), 450);
+      return;
+    }
+    const { tag, text, ok } = BOOT_LINES[i];
+    const row = document.createElement('div');
+    row.className = 'line';
+    row.innerHTML = `<span class="tag">[${tag}]</span>${text}${ok ? ' <span class="ok">READY</span>' : ''}`;
+    log.appendChild(row);
+
+    i += 1;
+    const progress = Math.round((i / BOOT_LINES.length) * 100);
+    fill.style.width = progress + '%';
+    pct.textContent = progress + '%';
+
+    setTimeout(nextLine, stepDelay);
+  }
+  nextLine();
+}
+runBootSequence();
+
+/* ==========================================================================
+   2. INTERACTION MECHANICS
+   ========================================================================== */
+if (!isTouchDevice) {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  let ringX = mouseX, ringY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, [data-cursor]').forEach((el) => {
+    el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+  });
+}
+
+/* ==========================================================================
+   3. BACKGROUND CONSTELLATION GRAPH
+   ========================================================================== */
+(function ambientParticleField() {
+  const canvas = document.getElementById('particle-field');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles, dpr;
+
+  const PARTICLE_COUNT = prefersReducedMotion ? 0 : (window.innerWidth < 700 ? 35 : 85);
+  const LINK_DIST = 125;
+  const mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = window.innerWidth * dpr;
+    h = canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function initParticles() {
+    particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      r: Math.random() * 1.2 + 0.4,
+    }));
+  }
+
+  function step() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const distSq = dx * dx + dy * dy;
+      if (distSq < 14000) {
+        const dist = Math.sqrt(distSq) || 1;
+        p.x += (dx / dist) * 0.5;
+        p.y += (dy / dist) * 0.5;
+      }
+      if (p.x < 0) p.x = window.innerWidth; if (p.x > window.innerWidth) p.x = 0;
+      if (p.y < 0) p.y = window.innerHeight; if (p.y > window.innerHeight) p.y = 0;
+
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(199, 205, 214, 0.45)'; ctx.fill();
+    }
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < LINK_DIST) {
+          ctx.strokeStyle = `rgba(255, 106, 43, ${0.11 * (1 - dist / LINK_DIST)})`;
+          ctx.lineWidth = 0.5; ctx.beginPath();
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    if (!prefersReducedMotion) requestAnimationFrame(step);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  resize(); initParticles();
+  if (PARTICLE_COUNT > 0) step();
+})();
+
+/* ==========================================================================
+   4. SYSTEM CORE DISPLAY GRAPHIC — ENVERGING MATRIX
+   ========================================================================== */
+(function heroTitleParticles() {
+  const canvas = document.getElementById('hero-title-canvas');
+  const ctx = canvas.getContext('2d');
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function sizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { w: rect.width, h: rect.height };
+  }
+
+  function sampleTextPoints(w, h) {
+    const off = document.createElement('canvas');
+    off.width = w; off.height = h;
+    const octx = off.getContext('2d'); octx.fillStyle = '#fff';
+    const fontSize = Math.min(w / 8.6, h * 0.62);
+    octx.font = `600 ${fontSize}px 'Space Grotesk', sans-serif`;
+    octx.textAlign = 'center'; octx.textBaseline = 'middle';
+    octx.fillText('CRESCO', w / 2, h * 0.34);
+    octx.fillText('SCIENTIAM', w / 2, h * 0.74);
+    const data = octx.getImageData(0, 0, w, h).data;
+    const points = []; const gap = w < 500 ? 5 : 4;
+    for (let y = 0; y < h; y += gap) {
+      for (let x = 0; x < w; x += gap) {
+        const idx = (y * w + x) * 4 + 3;
+        if (data[idx] > 128) points.push({ x, y });
+      }
+    }
+    return points;
+  }
+
+  function run() {
+    const { w, h } = sizeCanvas();
+    const targets = sampleTextPoints(w, h);
+    const particles = targets.map((t) => ({
+      x: Math.random() * w, y: h + Math.random() * 80,
+      tx: t.x, ty: t.y,
+    }));
+
+    if (prefersReducedMotion) {
+      ctx.fillStyle = '#F4F6F8';
+      particles.forEach((p) => ctx.fillRect(p.tx, p.ty, 1.6, 1.6));
+      return;
+    }
+
+    let frame = 0; const totalFrames = 65;
+    function animate() {
+      frame++; ctx.clearRect(0, 0, w, h);
+      const t = Math.min(frame / totalFrames, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      ctx.fillStyle = '#F4F6F8';
+      for (const p of particles) {
+        const cx = p.x + (p.tx - p.x) * ease;
+        const cy = p.y + (p.ty - p.y) * ease;
+        ctx.fillRect(cx, cy, 1.6, 1.6);
+      }
+      if (t < 1) requestAnimationFrame(animate);
+      else idleShimmer();
+    }
+    function idleShimmer() {
+      ctx.clearRect(0, 0, w, h); ctx.fillStyle = '#F4F6F8';
+      for (const p of particles) {
+        const jitter = Math.sin((Date.now() / 900) + p.tx * 0.05) * 0.4;
+        ctx.fillRect(p.tx, p.ty + jitter, 1.6, 1.6);
+      }
+      requestAnimationFrame(idleShimmer);
+    }
+    animate();
+  }
+  window.addEventListener('resize', () => { run(); }, { passive: true });
+  run();
+})();
+
+/* ==========================================================================
+   5. REALTIME SYSTEM CLOCK OFFSET (FIRESTORE CALIBRATED)
+   ========================================================================== */
+(function adminControlledCountdown() {
+  const els = {
+    days: document.getElementById('cd-days'),
+    hours: document.getElementById('cd-hours'),
+    mins: document.getElementById('cd-mins'),
+    secs: document.getElementById('cd-secs'),
+  };
+  
+  // Default fallback target date if database node is not instantiated yet
+  let targetTimestamp = new Date('2026-11-07T09:00:00+05:30').getTime();
+
+  // Programmatic realtime synchronization block reading straight from admin global settings config
+  try {
+    onSnapshot(doc(db, 'config', 'festival'), (docSnap) => {
+      if (docSnap.exists()) {
+        const remoteData = docSnap.data();
+        if (remoteData.eventDate) {
+          // Supports standard ISO string formats or raw Firestore server timestamps
+          targetTimestamp = remoteData.eventDate.toDate ? remoteData.eventDate.toDate().getTime() : new Date(remoteData.eventDate).getTime();
+        }
+      }
+    });
+  } catch (err) {
+    console.warn("Uplink to target timestamp node unreachable. Operating with built-in fallbacks.");
+  }
+
+  function tick() {
+    const diff = targetTimestamp - Date.now();
+    if (diff <= 0) {
+      els.days.textContent = els.hours.textContent = els.mins.textContent = els.secs.textContent = '00';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    els.days.textContent = String(d).padStart(2, '0');
+    els.hours.textContent = String(h).padStart(2, '0');
+    els.mins.textContent = String(m).padStart(2, '0');
+    els.secs.textContent = String(s).padStart(2, '0');
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+/* ==========================================================================
+   6. LOCAL CHRONO STAMP
+   ========================================================================== */
+(function hudClock() {
+  const el = document.getElementById('hud-clock-text');
+  function tick() { el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false }) + ' IST'; }
+  tick(); setInterval(tick, 1000);
+})();
+
+/* ==========================================================================
+   7. SCROLL VIEW MONITOR
+   ========================================================================== */
+(function scrollReveal() {
+  const targets = document.querySelectorAll('.reveal');
+  if (prefersReducedMotion) {
+    targets.forEach((t) => t.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  targets.forEach((t) => io.observe(t));
+})();
+
+/* ==========================================================================
+   8. TACTICAL SCREEN WIPE MECHANICS
+   ========================================================================== */
+(function reactionTransitions() {
+  const overlay = document.getElementById('reaction-overlay');
+  document.querySelectorAll('[data-transition]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || prefersReducedMotion) return;
+      e.preventDefault(); overlay.classList.add('is-firing');
+      setTimeout(() => { window.location.href = href; }, 420);
+    });
+  });
+})();
+
+/* ==========================================================================
+   9. MOBILE COLLAPSE MATRIX
+   ========================================================================== */
+(function mobileNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('command-nav');
+  toggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+})();
+
+/* ==========================================================================
+   10. REALTIME OPERATIONAL TELEMETRY READS
+   ========================================================================== */
+
+// -- Transmission Channel Node --
+(function liveAnnouncements() {
+  const list = document.getElementById('announcement-list');
+  try {
+    const q = query(collection(db, 'announcements'), orderBy('publishedAt', 'desc'), limit(5));
+    onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        list.innerHTML = '<p class="telemetry-empty">No active operational logs.</p>';
+        return;
+      }
+      list.innerHTML = '';
+      snap.forEach((docSnap) => {
+        const a = docSnap.data(); const row = document.createElement('div');
+        row.className = 'announcement-row';
+        const publishedDate = a.publishedAt?.toDate ? a.publishedAt.toDate() : new Date();
+        row.innerHTML = `<time datetime="${publishedDate.toISOString()}">${publishedDate.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</time><span>${a.title ?? 'Untitled Log Entry'}</span>`;
+        list.appendChild(row);
+      });
+    }, () => {
+      list.innerHTML = '<p class="telemetry-empty">Uplink broken — reconnecting…</p>';
+    });
+  } catch (err) {
+    list.innerHTML = '<p class="telemetry-empty">Uplink unestablished.</p>';
+  }
+})();
+
+// -- Numerical Status Matrices --
+(function liveStats() {
+  const schoolsEl = document.getElementById('stat-schools');
+  const participantsEl = document.getElementById('stat-participants');
+  try {
+    onSnapshot(doc(db, 'stats', 'live'), (snap) => {
+      if (!snap.exists()) { schoolsEl.textContent = '—'; participantsEl.textContent = '—'; return; }
+      const data = snap.data();
+      schoolsEl.textContent = typeof data.schools === 'number' ? data.schools : '—';
+      participantsEl.textContent = typeof data.participants === 'number' ? data.participants : '—';
+    }, () => {
+      schoolsEl.textContent = '—'; participantsEl.textContent = '—';
+    });
+  } catch (err) {
+    schoolsEl.textContent = '—'; participantsEl.textContent = '—';
+  }
+})();
+
+// -- Human Resource Registry Node --
+(function liveTeam() {
+  const grid = document.getElementById('team-grid');
+  try {
+    const q = query(collection(db, 'team'), orderBy('order', 'asc'), limit(8));
+    onSnapshot(q, (snap) => {
+      if (snap.empty) {
+        grid.innerHTML = '<p class="telemetry-empty">Operations structural manifest unpublished.</p>';
+        return;
+      }
+      grid.innerHTML = '';
+      snap.forEach((docSnap) => {
+        const m = docSnap.data();
+        const initials = (m.name || '??').split(' ').map((s) => s[0]).slice(0, 2).join('');
+        const card = document.createElement('article'); card.className = 'holo-card';
+        card.innerHTML = `
+          <div class="holo-card__avatar">${initials}</div>
+          <div class="holo-card__name">${m.name ?? 'Operational Agent'}</div>
+          <div class="holo-card__role">${m.role ?? ''}</div>
+          <p class="holo-card__bio">${m.bio ?? ''}</p>
+          <div class="holo-card__links">
+            ${m.linkedin ? `<a href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : ''}
+            ${m.email ? `<a href="mailto:${m.email}">Email</a>` : ''}
+          </div>`;
+        grid.appendChild(card);
+      });
+    }, () => {
+      grid.innerHTML = '<p class="telemetry-empty">Manifest stream unreachable.</p>';
+    });
+  } catch (err) {
+    grid.innerHTML = '<p class="telemetry-empty">Manifest stream unreachable.</p>';
+  }
+})();
+
+/* ==========================================================================
+   11. DATA COMPLETION LOG TIMESTAMP
+   ========================================================================== */
+(function footerTimestamp() {
+  const el = document.getElementById('footer-timestamp');
+  const stamp = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+  el.textContent = `MISSION SYSTEM CONTEXT SYNCED — ${stamp}`;
+})();
+</script>
+</body>
+</html>

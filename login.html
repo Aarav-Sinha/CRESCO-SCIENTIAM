@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Sign In — Cresco Scientiam 5.0</title>
+<meta name="description" content="Staff sign-in for Cresco Scientiam 5.0 command systems." />
+<meta name="theme-color" content="#05070A" />
+<meta name="robots" content="noindex" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2305070A'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='50' fill='%23FF6A2B' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+
+<style>
+:root{
+  --c-void:        #05070A;
+  --c-graphite:    #12151A;
+  --c-gunmetal:    #1E232B;
+  --c-gunmetal-2:  #2A313B;
+  --c-silver:      #C7CDD6;
+  --c-silver-dim:  #7C8794;
+  --c-white:       #F4F6F8;
+  --c-signal:      #FF6A2B;
+  --c-signal-dim:  #B34D1E;
+  --c-signal-glow: rgba(255, 106, 43, 0.35);
+  --c-ok:          #52D68A;
+  --c-warn:        #E8B339;
+  --c-crit:        #E85B3F;
+
+  --f-display: 'Space Grotesk', system-ui, sans-serif;
+  --f-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --f-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0:  clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --step-1:  clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --step-2:  clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+  --step-3:  clamp(2rem, 1.6rem + 1.6vw, 2.9rem);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+body{
+  margin: 0; min-height: 100vh; background: var(--c-void); color: var(--c-silver);
+  font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+body.touch-device{ cursor: auto; }
+a{ color: inherit; text-decoration: none; }
+h1,h2{ font-family: var(--f-display); margin: 0; color: var(--c-white); font-weight: 500; }
+p{ margin: 0; }
+label{ display: block; font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-silver-dim); margin-bottom: 8px; }
+::selection{ background: var(--c-signal); color: var(--c-void); }
+:focus-visible{ outline: 2px solid var(--c-signal); outline-offset: 3px; }
+.visually-hidden{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+#cursor-dot, #cursor-ring{ position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; border-radius: 50%; transform: translate(-50%, -50%); will-change: transform; }
+#cursor-dot{ width: 5px; height: 5px; background: var(--c-signal); }
+#cursor-ring{ width: 34px; height: 34px; border: 1px solid var(--c-signal-dim); transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), border-color 0.25s; }
+#cursor-ring.is-active{ width: 56px; height: 56px; border-color: var(--c-signal); }
+body.touch-device #cursor-dot, body.touch-device #cursor-ring{ display: none; }
+
+#particle-field{ position: fixed; inset: 0; z-index: 0; background: var(--c-void); }
+.hud-atmosphere{ position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 0%, rgba(255,106,43,0.08), transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.75), transparent 60%); }
+
+.hud-corner{ position: fixed; width: 26px; height: 26px; border-color: var(--c-signal-dim); z-index: 40; pointer-events: none; opacity: 0.7; }
+.hud-corner.tl{ top: 22px; left: 22px; border-top: 1px solid; border-left: 1px solid; }
+.hud-corner.tr{ top: 22px; right: 22px; border-top: 1px solid; border-right: 1px solid; }
+.hud-corner.bl{ bottom: 22px; left: 22px; border-bottom: 1px solid; border-left: 1px solid; }
+.hud-corner.br{ bottom: 22px; right: 22px; border-bottom: 1px solid; border-right: 1px solid; }
+
+.back-link{
+  position: fixed; top: 26px; left: 30px; z-index: 40;
+  font-family: var(--f-mono); font-size: 0.7rem; color: var(--c-silver-dim); letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 8px; transition: color 0.2s;
+}
+.back-link:hover{ color: var(--c-signal); }
+
+.auth-shell{
+  position: relative; z-index: 2;
+  width: min(420px, 100%);
+  border: 1px solid var(--c-gunmetal-2);
+  background: rgba(18,21,26,0.55);
+  backdrop-filter: blur(10px);
+  padding: 44px 38px;
+}
+.auth-brand{ display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.auth-brand__mark{ width: 38px; height: 38px; border: 1px solid var(--c-signal-dim); display: flex; align-items: center; justify-content: center; font-family: var(--f-display); color: var(--c-signal); font-size: 0.95rem; }
+.auth-brand__text{ font-family: var(--f-mono); font-size: 0.62rem; color: var(--c-silver-dim); letter-spacing: 0.12em; text-transform: uppercase; }
+
+.auth-shell h1{ font-size: var(--step-2); }
+.auth-shell .sub{ margin-top: 8px; color: var(--c-silver-dim); font-size: 0.85rem; }
+
+.auth-status{
+  margin-top: 20px; padding: 12px 14px; border: 1px solid var(--c-gunmetal-2);
+  font-family: var(--f-mono); font-size: 0.76rem; display: none; align-items: center; gap: 10px;
+}
+.auth-status.is-visible{ display: flex; }
+.auth-status.is-error{ border-color: var(--c-crit); color: var(--c-crit); }
+.auth-status.is-info{ border-color: var(--c-signal-dim); color: var(--c-signal); }
+.auth-status.is-ok{ border-color: var(--c-ok); color: var(--c-ok); }
+.auth-status .dot{ width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+form{ margin-top: 24px; display: flex; flex-direction: column; gap: 20px; }
+.field input{
+  width: 100%; background: var(--c-void); border: 1px solid var(--c-gunmetal-2); color: var(--c-white);
+  font-family: var(--f-mono); font-size: 0.9rem; padding: 13px 14px; transition: border-color 0.2s;
+}
+.field input:focus{ border-color: var(--c-signal); outline: none; }
+.field-row{ display: flex; justify-content: space-between; align-items: baseline; }
+.forgot-link{ font-family: var(--f-mono); font-size: 0.66rem; color: var(--c-silver-dim); letter-spacing: 0.04em; }
+.forgot-link:hover{ color: var(--c-signal); }
+
+.submit-btn{
+  margin-top: 4px; font-family: var(--f-mono); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 15px; border: 1px solid var(--c-signal); background: transparent; color: var(--c-white);
+  cursor: inherit; position: relative; overflow: hidden; transition: color 0.25s;
+}
+.submit-btn::before{ content: ''; position: absolute; inset: 0; background: var(--c-signal); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease-out); z-index: -1; }
+.submit-btn:hover::before, .submit-btn:focus-visible::before{ transform: scaleX(1); }
+.submit-btn:hover, .submit-btn:focus-visible{ color: var(--c-void); }
+.submit-btn:disabled{ opacity: 0.5; cursor: not-allowed; }
+.submit-btn:disabled::before{ transform: scaleX(0) !important; }
+
+.auth-footnote{ margin-top: 26px; font-family: var(--f-mono); font-size: 0.66rem; color: var(--c-silver-dim); line-height: 1.7; border-top: 1px solid var(--c-gunmetal-2); padding-top: 20px; }
+.auth-footnote strong{ color: var(--c-silver); }
+
+.role-strip{ display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+.role-strip span{ font-family: var(--f-mono); font-size: 0.58rem; border: 1px solid var(--c-gunmetal-2); padding: 3px 7px; color: var(--c-silver-dim); }
+</style>
+</head>
+<body>
+
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<canvas id="particle-field" aria-hidden="true"></canvas>
+<div class="hud-atmosphere" aria-hidden="true"></div>
+<div class="hud-corner tl" aria-hidden="true"></div>
+<div class="hud-corner tr" aria-hidden="true"></div>
+<div class="hud-corner bl" aria-hidden="true"></div>
+<div class="hud-corner br" aria-hidden="true"></div>
+
+<a href="index.html" class="back-link">← COMMAND CENTER</a>
+
+<main class="auth-shell">
+  <div class="auth-brand">
+    <div class="auth-brand__mark">Cr</div>
+    <div class="auth-brand__text">Cresco Scientiam 5.0<br>Staff Authorization</div>
+  </div>
+
+  <h1>Sign in</h1>
+  <p class="sub">Accounts are provisioned by the Super Admin. There is no self-registration for staff roles — if you don't have credentials yet, contact your Teacher In-Charge or the control desk.</p>
+
+  <div class="auth-status" id="auth-status" role="alert">
+    <span class="dot" aria-hidden="true"></span>
+    <span id="auth-status-text"></span>
+  </div>
+
+  <form id="login-form" novalidate>
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="username" required placeholder="you@crescoscientiam.org" />
+    </div>
+    <div class="field">
+      <div class="field-row">
+        <label for="password" style="margin-bottom:8px;">Password</label>
+        <button type="button" class="forgot-link" id="forgot-btn">Forgot password?</button>
+      </div>
+      <input type="password" id="password" name="password" autocomplete="current-password" required placeholder="••••••••" />
+    </div>
+    <button type="submit" class="submit-btn" id="submit-btn">Authenticate</button>
+  </form>
+
+  <div class="auth-footnote">
+    <strong>Role-based routing:</strong> on successful sign-in you're redirected automatically to the console matching your assigned role. Client-side redirects are for convenience only — every dashboard independently verifies your role against Firestore before granting access.
+    <div class="role-strip" aria-hidden="true">
+      <span>Super Admin</span><span>Teacher-in-Charge</span><span>Core Team</span><span>Logistics</span><span>Volunteer</span><span>Event Head</span><span>Role Head</span><span>School</span>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import {
+  auth, onAuthStateChanged, signInWithEmailAndPassword, sendPasswordResetEmail,
+  resolveUserRole, ROLE_DASHBOARD_MAP,
+} from "./firebase-config.js";
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+if (isTouchDevice) document.body.classList.add('touch-device');
+
+/* Custom cursor */
+if (!isTouchDevice) {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, ringX = mouseX, ringY = mouseY;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.18; ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, input').forEach((el) => {
+    el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+  });
+}
+
+/* Ambient particle field — sparse, since this is a focused auth screen */
+(function ambientParticleField() {
+  const canvas = document.getElementById('particle-field');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles, dpr;
+  const PARTICLE_COUNT = prefersReducedMotion ? 0 : (window.innerWidth < 700 ? 20 : 45);
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = window.innerWidth * dpr; h = canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function initParticles() {
+    particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.15, vy: (Math.random() - 0.5) * 0.15, r: Math.random() * 1.1 + 0.3,
+    }));
+  }
+  function step() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = window.innerWidth; if (p.x > window.innerWidth) p.x = 0;
+      if (p.y < 0) p.y = window.innerHeight; if (p.y > window.innerHeight) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(199, 205, 214, 0.35)'; ctx.fill();
+    }
+    if (!prefersReducedMotion) requestAnimationFrame(step);
+  }
+  window.addEventListener('resize', resize);
+  resize(); initParticles(); if (PARTICLE_COUNT > 0) step();
+})();
+
+/* ==========================================================================
+   AUTH LOGIC
+   ========================================================================== */
+const statusEl = document.getElementById('auth-status');
+const statusText = document.getElementById('auth-status-text');
+const form = document.getElementById('login-form');
+const submitBtn = document.getElementById('submit-btn');
+const forgotBtn = document.getElementById('forgot-btn');
+
+function setStatus(kind, message) {
+  statusEl.className = 'auth-status is-visible is-' + kind;
+  statusText.textContent = message;
+}
+
+function friendlyAuthError(err) {
+  const code = err?.code || '';
+  switch (code) {
+    case 'auth/invalid-email': return 'That email address doesn\u2019t look valid.';
+    case 'auth/user-disabled': return 'This account has been deactivated. Contact your Super Admin.';
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential': return 'Incorrect email or password.';
+    case 'auth/too-many-requests': return 'Too many attempts. Wait a few minutes and try again.';
+    default: return 'Sign-in failed. Please try again.';
+  }
+}
+
+/**
+ * Redirects a signed-in user to the dashboard matching their role.
+ * If no role document exists yet, the account has been created in
+ * Firebase Auth but not yet provisioned in Firestore by the Super Admin —
+ * this is a real, expected state (not an error) and is explained clearly.
+ */
+async function routeToDashboard(user) {
+  setStatus('info', 'Verifying access level…');
+  const role = await resolveUserRole(user);
+  if (!role || !ROLE_DASHBOARD_MAP[role]) {
+    setStatus('error', 'Your account exists but has no role assigned yet. Ask your Super Admin to provision access.');
+    return;
+  }
+  setStatus('ok', `Access confirmed — routing to ${role.replace(/_/g, ' ')} console…`);
+  setTimeout(() => {
+    // Dashboards live one level up from this page's own folder context.
+    window.location.href = ROLE_DASHBOARD_MAP[role];
+  }, 600);
+}
+
+// If a session already exists (e.g. returning to this page directly), route immediately.
+onAuthStateChanged(auth, (user) => {
+  if (user) routeToDashboard(user);
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !password) {
+    setStatus('error', 'Enter both an email and a password.');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  setStatus('info', 'Authenticating…');
+
+  try {
+    const credential = await signInWithEmailAndPassword(auth, email, password);
+    await routeToDashboard(credential.user);
+  } catch (err) {
+    setStatus('error', friendlyAuthError(err));
+  } finally {
+    submitBtn.disabled = false;
+  }
+});
+
+forgotBtn.addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  if (!email) {
+    setStatus('error', 'Enter your email address first, then tap "Forgot password?" again.');
+    return;
+  }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    setStatus('ok', `Password reset link sent to ${email}.`);
+  } catch (err) {
+    setStatus('error', friendlyAuthError(err));
+  }
+});
+</script>
+</body>
+</html>

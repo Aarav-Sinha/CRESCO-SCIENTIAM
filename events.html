@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Events Hub — Cresco Scientiam 5.0 | Delhi Public School Megacity</title>
+<meta name="description" content="Twelve events. Twelve distinct domains. Explore the full dossier for every competitive event at Cresco Scientiam 5.0." />
+<meta name="theme-color" content="#05070A" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2305070A'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='50' fill='%23FF6A2B' text-anchor='middle'%3ECS%3C/text%3E%3C/svg%3E" />
+
+<style>
+/* ============================================================================
+   0. DESIGN TOKENS (identical system to index.html — kept self-contained
+      per-page rather than a shared stylesheet, per project architecture)
+   ============================================================================ */
+:root{
+  --c-void:        #05070A;
+  --c-graphite:    #12151A;
+  --c-gunmetal:    #1E232B;
+  --c-gunmetal-2:  #2A313B;
+  --c-silver:      #C7CDD6;
+  --c-silver-dim:  #7C8794;
+  --c-white:       #F4F6F8;
+  --c-signal:      #FF6A2B;
+  --c-signal-dim:  #B34D1E;
+  --c-signal-glow: rgba(255, 106, 43, 0.35);
+  --c-ok:          #52D68A;
+  --c-warn:        #E8B339;
+  --c-crit:        #E85B3F;
+
+  --f-display: 'Space Grotesk', system-ui, sans-serif;
+  --f-body:    'IBM Plex Sans', system-ui, sans-serif;
+  --f-mono:    'IBM Plex Mono', 'Courier New', monospace;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0:  clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --step-1:  clamp(1.15rem, 1.05rem + 0.4vw, 1.35rem);
+  --step-2:  clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+  --step-3:  clamp(2rem, 1.6rem + 1.6vw, 2.9rem);
+  --step-4:  clamp(2.7rem, 2rem + 3vw, 4.4rem);
+  --step-5:  clamp(3.4rem, 2.2rem + 5vw, 6.4rem);
+
+  --rail-w: 88px;
+  --hud-pad: 22px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================================
+   1. RESET & BASE
+   ============================================================================ */
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *, *::before, *::after{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+body{
+  margin: 0; background: var(--c-void); color: var(--c-silver);
+  font-family: var(--f-body); font-size: var(--step-0); line-height: 1.6;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased; cursor: none;
+}
+body.touch-device{ cursor: auto; }
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+button{ font-family: inherit; cursor: inherit; background: none; border: none; }
+h1,h2,h3,h4{ font-family: var(--f-display); margin: 0; color: var(--c-white); font-weight: 500; }
+p{ margin: 0; }
+ul{ margin: 0; padding: 0; list-style: none; }
+::selection{ background: var(--c-signal); color: var(--c-void); }
+:focus-visible{ outline: 2px solid var(--c-signal); outline-offset: 3px; }
+
+.skip-link{
+  position: absolute; top: -100px; left: 16px; background: var(--c-signal); color: var(--c-void);
+  padding: 10px 18px; z-index: 999; font-family: var(--f-mono); font-size: var(--step--1);
+  transition: top 0.2s var(--ease-out);
+}
+.skip-link:focus{ top: 16px; }
+.visually-hidden{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ============================================================================
+   2. CUSTOM CURSOR
+   ============================================================================ */
+#cursor-dot, #cursor-ring{
+  position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998;
+  border-radius: 50%; transform: translate(-50%, -50%); will-change: transform;
+}
+#cursor-dot{ width: 5px; height: 5px; background: var(--c-signal); }
+#cursor-ring{ width: 34px; height: 34px; border: 1px solid var(--c-signal-dim); transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), border-color 0.25s; }
+#cursor-ring.is-active{ width: 56px; height: 56px; border-color: var(--c-signal); }
+body.touch-device #cursor-dot, body.touch-device #cursor-ring{ display: none; }
+
+/* ============================================================================
+   3. AMBIENT FIELD & OVERLAYS
+   ============================================================================ */
+#particle-field{ position: fixed; inset: 0; z-index: 0; background: var(--c-void); }
+.hud-atmosphere{
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,106,43,0.06), transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.7), transparent 60%);
+}
+.hud-atmosphere::after{
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: overlay;
+}
+#reaction-overlay{ position: fixed; inset: 0; z-index: 9997; background: var(--c-signal); transform: scaleY(0); transform-origin: bottom; pointer-events: none; }
+#reaction-overlay.is-firing{ animation: reactionWipe 0.75s var(--ease-inout) forwards; }
+@keyframes reactionWipe{ 0%{ transform: scaleY(0); transform-origin: bottom; } 48%{ transform: scaleY(1); transform-origin: bottom; } 52%{ transform: scaleY(1); transform-origin: top; } 100%{ transform: scaleY(0); transform-origin: top; } }
+
+/* ============================================================================
+   4. BOOT SEQUENCE (brief, since this is a secondary page — see JS: shorter log)
+   ============================================================================ */
+#boot-sequence{
+  position: fixed; inset: 0; z-index: 9999; background: var(--c-void);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.7s var(--ease-inout), visibility 0.7s;
+}
+#boot-sequence.is-hidden{ opacity: 0; visibility: hidden; pointer-events: none; }
+.boot-frame{ width: min(520px, 86vw); }
+.boot-log{ font-family: var(--f-mono); font-size: var(--step--1); color: var(--c-silver-dim); min-height: 110px; line-height: 1.9; }
+.boot-log .line{ opacity: 0; transform: translateY(4px); animation: bootLineIn 0.4s var(--ease-out) forwards; }
+.boot-log .line .tag{ color: var(--c-signal); margin-right: 10px; }
+.boot-log .line .ok{ color: var(--c-ok); }
+@keyframes bootLineIn{ to{ opacity: 1; transform: translateY(0); } }
+.boot-progress-track{ margin-top: 20px; height: 2px; width: 100%; background: var(--c-gunmetal-2); position: relative; overflow: hidden; }
+.boot-progress-fill{ position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--c-signal); box-shadow: 0 0 12px var(--c-signal-glow); transition: width 0.3s linear; }
+.boot-meta{ display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--c-silver-dim); text-transform: uppercase; }
+
+/* ============================================================================
+   5. HUD PERSISTENT CHROME
+   ============================================================================ */
+.hud-corner{ position: fixed; width: 26px; height: 26px; border-color: var(--c-signal-dim); z-index: 40; pointer-events: none; opacity: 0.7; }
+.hud-corner.tl{ top: var(--hud-pad); left: var(--hud-pad); border-top: 1px solid; border-left: 1px solid; }
+.hud-corner.tr{ top: var(--hud-pad); right: var(--hud-pad); border-top: 1px solid; border-right: 1px solid; }
+.hud-corner.bl{ bottom: var(--hud-pad); left: var(--hud-pad); border-bottom: 1px solid; border-left: 1px solid; }
+.hud-corner.br{ bottom: var(--hud-pad); right: var(--hud-pad); border-bottom: 1px solid; border-right: 1px solid; }
+.hud-clock{ position: fixed; top: var(--hud-pad); right: calc(var(--hud-pad) + 40px); z-index: 40; font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-silver-dim); letter-spacing: 0.06em; text-align: right; }
+.hud-clock .status-dot{ display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--c-ok); margin-right: 6px; box-shadow: 0 0 6px var(--c-ok); }
+
+/* Shortlist counter badge, top-right — new feature specific to this page */
+.hud-shortlist{
+  position: fixed; top: calc(var(--hud-pad) + 24px); right: calc(var(--hud-pad) + 40px); z-index: 40;
+  font-family: var(--f-mono); font-size: 0.66rem; color: var(--c-signal); letter-spacing: 0.06em; text-align: right;
+}
+.hud-shortlist button{ color: var(--c-signal); border-bottom: 1px dashed var(--c-signal-dim); padding-bottom: 1px; }
+
+/* ============================================================================
+   6. PRIMARY NAVIGATION — INTERACTION STRIP (identical to index.html)
+   ============================================================================ */
+.command-nav{
+  position: fixed; top: 0; left: 0; height: 100vh; width: var(--rail-w); z-index: 50;
+  display: flex; flex-direction: column; align-items: center; padding: 84px 0 24px;
+  background: linear-gradient(180deg, rgba(18,21,26,0.6), rgba(18,21,26,0.2));
+  border-right: 1px solid var(--c-gunmetal-2); backdrop-filter: blur(6px);
+}
+.command-nav__brand{ font-family: var(--f-mono); font-size: 0.62rem; color: var(--c-signal); letter-spacing: 0.18em; writing-mode: vertical-rl; margin-bottom: 34px; text-transform: uppercase; }
+.command-nav__tiles{ display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.nav-node{
+  --node-accent: var(--c-signal); position: relative; width: 52px; height: 52px;
+  border: 1px solid var(--c-gunmetal-2); background: var(--c-graphite);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--c-silver-dim); transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+.nav-node__icon{ width: 20px; height: 20px; display: block; stroke: currentColor; fill: none; stroke-width: 1.5; transition: stroke 0.25s; }
+.nav-node:hover, .nav-node:focus-visible, .nav-node.is-current{ border-color: var(--node-accent); box-shadow: 0 0 18px -4px var(--node-accent); transform: translateX(3px); color: var(--c-white); }
+.nav-node.is-current::before{ content: ''; position: absolute; left: -13px; top: 50%; transform: translateY(-50%); width: 6px; height: 6px; background: var(--node-accent); border-radius: 50%; box-shadow: 0 0 8px var(--node-accent); }
+.nav-node__tooltip{
+  position: absolute; left: calc(100% + 14px); top: 50%; transform: translateY(-50%) translateX(-6px);
+  background: var(--c-gunmetal); border: 1px solid var(--c-gunmetal-2); padding: 8px 12px; white-space: nowrap;
+  font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver); opacity: 0; pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s; z-index: 60;
+}
+.nav-node__tooltip strong{ color: var(--node-accent); display:block; font-size: 0.72rem; letter-spacing: 0.04em;}
+.nav-node:hover .nav-node__tooltip, .nav-node:focus-visible .nav-node__tooltip{ opacity: 1; transform: translateY(-50%) translateX(0); }
+.command-nav__login{
+  margin-top: auto; width: 52px; height: 52px; border: 1px solid var(--c-signal-dim); background: transparent;
+  color: var(--c-signal); font-family: var(--f-mono); font-size: 0.6rem; letter-spacing: 0.05em;
+  writing-mode: vertical-rl; display: flex; align-items: center; justify-content: center; transition: background 0.25s, color 0.25s;
+}
+.command-nav__login:hover{ background: var(--c-signal); color: var(--c-void); }
+.command-nav__toggle{ display: none; position: fixed; top: var(--hud-pad); left: var(--hud-pad); z-index: 60; width: 42px; height: 42px; background: var(--c-graphite); border: 1px solid var(--c-gunmetal-2); color: var(--c-signal); align-items: center; justify-content: center; font-family: var(--f-mono); }
+
+/* ============================================================================
+   7. LAYOUT SHELL
+   ============================================================================ */
+main{ position: relative; z-index: 2; margin-left: var(--rail-w); }
+.hub-header{ padding: 140px clamp(24px,5vw,80px) 60px; }
+.section-eyebrow{ font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--c-signal); display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.section-eyebrow::before{ content: ''; width: 22px; height: 1px; background: var(--c-signal); }
+.hub-header h1{ font-size: var(--step-5); max-width: 900px; line-height: 1.05; }
+.hub-header p{ margin-top: 22px; max-width: 56ch; color: var(--c-silver-dim); font-size: var(--step-1); font-weight: 300; }
+.reveal{ opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.reveal.is-visible{ opacity: 1; transform: translateY(0); }
+
+/* ============================================================================
+   8. JUMP STRIP — sticky quick-navigation chips between the 12 dossiers
+   ============================================================================ */
+.jump-strip-wrap{
+  position: sticky; top: 0; z-index: 30;
+  background: rgba(5,7,10,0.85); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--c-gunmetal-2);
+  padding: 14px clamp(24px,5vw,80px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.jump-strip-wrap::-webkit-scrollbar{ display: none; }
+.jump-strip{ display: flex; gap: 8px; width: max-content; }
+.jump-chip{
+  --chip-accent: var(--c-signal);
+  font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.03em;
+  padding: 8px 14px; border: 1px solid var(--c-gunmetal-2); color: var(--c-silver-dim);
+  white-space: nowrap; transition: border-color 0.2s, color 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.jump-chip strong{ color: var(--chip-accent); font-family: var(--f-display); }
+.jump-chip:hover, .jump-chip.is-active{ border-color: var(--chip-accent); color: var(--c-white); }
+
+/* ============================================================================
+   9. EVENT DOSSIER SECTIONS
+   ============================================================================ */
+.dossier{
+  position: relative;
+  padding: 100px clamp(24px,5vw,80px);
+  border-bottom: 1px solid var(--c-gunmetal-2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  scroll-margin-top: 70px;
+}
+.dossier:nth-of-type(even){ direction: rtl; }
+.dossier:nth-of-type(even) > *{ direction: ltr; }
+@media (max-width: 980px){
+  .dossier{ grid-template-columns: 1fr; direction: ltr !important; }
+  .dossier > *{ direction: ltr !important; }
+}
+.dossier::before{
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 15% 15%, var(--dossier-accent), transparent 55%);
+  opacity: 0.04; pointer-events: none;
+}
+
+.dossier__art{
+  aspect-ratio: 4/3;
+  border: 1px solid var(--c-gunmetal-2);
+  background: var(--c-graphite);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.dossier__art svg{ width: 62%; height: 62%; color: var(--dossier-accent); }
+.dossier__art::after{
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 14px);
+}
+
+.dossier__meta{ display: flex; align-items: center; gap: 14px; font-family: var(--f-mono); font-size: 0.7rem; color: var(--c-silver-dim); letter-spacing: 0.05em; margin-bottom: 18px; }
+.dossier__meta .num{ color: var(--dossier-accent); font-family: var(--f-display); font-size: var(--step-2); }
+.dossier__meta .sym{ border: 1px solid var(--c-gunmetal-2); padding: 2px 8px; color: var(--dossier-accent); }
+
+.dossier h2{ font-size: var(--step-3); line-height: 1.1; }
+.dossier__theme{ font-family: var(--f-mono); font-size: 0.76rem; color: var(--dossier-accent); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 10px; }
+.dossier__desc{ margin-top: 18px; color: var(--c-silver); max-width: 52ch; font-size: 0.94rem; }
+.dossier__format{ margin-top: 12px; color: var(--c-silver-dim); max-width: 52ch; font-size: 0.86rem; }
+
+.spec-grid{ margin-top: 26px; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--c-gunmetal-2); max-width: 460px; }
+.spec-cell{ padding: 12px 14px; border-right: 1px solid var(--c-gunmetal-2); }
+.spec-cell:last-child{ border-right: none; }
+.spec-cell__value{ font-family: var(--f-mono); font-size: 0.88rem; color: var(--c-white); }
+.spec-cell__label{ font-family: var(--f-mono); font-size: 0.58rem; color: var(--c-silver-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+
+.dossier__status{ margin-top: 20px; font-family: var(--f-mono); font-size: 0.72rem; color: var(--c-silver-dim); display: flex; align-items: center; gap: 8px; }
+.dossier__status .dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--c-silver-dim); }
+.dossier__status .dot.ok{ background: var(--c-ok); box-shadow: 0 0 6px var(--c-ok); }
+.dossier__status .dot.warn{ background: var(--c-warn); box-shadow: 0 0 6px var(--c-warn); }
+
+.dossier__actions{ margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap; }
+.btn{
+  font-family: var(--f-mono); font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 13px 24px; border: 1px solid var(--c-gunmetal-2); background: transparent; color: var(--c-silver);
+  position: relative; display: inline-flex; align-items: center; gap: 10px; transition: border-color 0.25s, color 0.25s, transform 0.25s;
+}
+.btn:hover{ transform: translateY(-2px); }
+.btn--primary{ border-color: var(--dossier-accent, var(--c-signal)); color: var(--c-white); }
+.btn--primary::before{ content:''; position: absolute; inset: 0; background: var(--dossier-accent, var(--c-signal)); z-index: -1; opacity: 0; transition: opacity 0.25s; }
+.btn--primary:hover{ color: var(--c-void); }
+.btn--primary:hover::before{ opacity: 1; }
+.btn--ghost:hover{ border-color: var(--c-silver); }
+.btn .arrow{ transition: transform 0.25s; }
+.btn:hover .arrow{ transform: translateX(4px); }
+.btn--shortlist[data-active="true"]{ border-color: var(--c-ok); color: var(--c-ok); }
+
+/* ============================================================================
+   10. CLOSING CTA
+   ============================================================================ */
+.hub-cta{ padding: 100px clamp(24px,5vw,80px); text-align: center; }
+.hub-cta h2{ font-size: var(--step-4); max-width: 700px; margin: 0 auto; }
+.hub-cta p{ margin-top: 18px; color: var(--c-silver-dim); }
+.hub-cta .btn{ margin-top: 30px; }
+
+/* ============================================================================
+   11. FOOTER
+   ============================================================================ */
+footer{ padding: 70px clamp(24px,5vw,80px) 50px; border-top: 1px solid var(--c-gunmetal-2); }
+.footer-bottom{ display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-family: var(--f-mono); font-size: 0.68rem; color: var(--c-silver-dim); }
+.footer-bottom a{ color: var(--c-signal); }
+
+/* ============================================================================
+   12. RESPONSIVE NAV COLLAPSE
+   ============================================================================ */
+@media (max-width: 860px){
+  .command-nav{ transform: translateX(-100%); transition: transform 0.35s var(--ease-inout); width: 220px; align-items: flex-start; padding: 90px 20px 24px; }
+  .command-nav.is-open{ transform: translateX(0); }
+  .command-nav__toggle{ display: flex; }
+  .command-nav__tiles{ width: 100%; }
+  .nav-node{ width: 100%; height: 46px; flex-direction: row; justify-content: flex-start; gap: 14px; padding: 0 16px; }
+  .nav-node__tooltip{ display: none; }
+  main{ margin-left: 0; }
+  .command-nav__brand{ writing-mode: horizontal-tb; margin-bottom: 20px; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<canvas id="particle-field" aria-hidden="true"></canvas>
+<div class="hud-atmosphere" aria-hidden="true"></div>
+<div id="reaction-overlay" aria-hidden="true"></div>
+
+<div id="boot-sequence" role="status" aria-live="polite">
+  <div class="boot-frame">
+    <div class="boot-log" id="boot-log"></div>
+    <div class="boot-progress-track"><div class="boot-progress-fill" id="boot-progress-fill"></div></div>
+    <div class="boot-meta"><span id="boot-percent">0%</span><span>EVENTS-HUB // NODE 02</span></div>
+  </div>
+</div>
+
+<div class="hud-corner tl" aria-hidden="true"></div>
+<div class="hud-corner tr" aria-hidden="true"></div>
+<div class="hud-corner bl" aria-hidden="true"></div>
+<div class="hud-corner br" aria-hidden="true"></div>
+<div class="hud-clock" id="hud-clock" aria-hidden="true"><span class="status-dot"></span><span id="hud-clock-text">--:--:--</span></div>
+<div class="hud-shortlist" aria-live="polite">SHORTLIST: <button id="shortlist-count-btn" type="button">0</button></div>
+
+<button class="command-nav__toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="command-nav">☰</button>
+
+<nav class="command-nav" id="command-nav" aria-label="Primary">
+  <div class="command-nav__brand">CRESCO&nbsp;SCIENTIAM&nbsp;5.0</div>
+  <ul class="command-nav__tiles">
+    <li>
+      <a href="index.html" class="nav-node" style="--node-accent:#FF6A2B">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="nav-node__tooltip"><strong>Command Center</strong>Dashboard Base</span>
+      </a>
+    </li>
+    <li>
+      <a href="events.html" class="nav-node is-current" style="--node-accent:#52D68A" aria-current="page">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="nav-node__tooltip"><strong>Events Hub</strong>Competitive Disciplines</span>
+      </a>
+    </li>
+    <li>
+      <a href="mission-database.html" class="nav-node" style="--node-accent:#4E9BD8">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span class="nav-node__tooltip"><strong>Mission Database</strong>Context & Briefs</span>
+      </a>
+    </li>
+    <li>
+      <a href="team.html" class="nav-node" style="--node-accent:#C7CDD6">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span class="nav-node__tooltip"><strong>Operations Team</strong>Structure Roster</span>
+      </a>
+    </li>
+    <li>
+      <a href="gallery.html" class="nav-node" style="--node-accent:#E85B9A">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="nav-node__tooltip"><strong>Visual Gallery</strong>Telemetry Media</span>
+      </a>
+    </li>
+    <li>
+      <a href="sponsors.html" class="nav-node" style="--node-accent:#E8B339">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="nav-node__tooltip"><strong>Sponsors</strong>Logistical Partners</span>
+      </a>
+    </li>
+    <li>
+      <a href="portal/school-registration.html" class="nav-node" style="--node-accent:#9B7EDE">
+        <svg class="nav-node__icon" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span class="nav-node__tooltip"><strong>Enlist Base</strong>School Registration</span>
+      </a>
+    </li>
+  </ul>
+  <a href="login.html" class="command-nav__login">SIGN&nbsp;IN</a>
+</nav>
+
+<main id="main-content">
+
+  <header class="hub-header">
+    <p class="section-eyebrow">Events Hub</p>
+    <h1 class="reveal">Twelve domains.<br>Twelve distinct realities.</h1>
+    <p class="reveal">Every event at Cresco Scientiam runs as its own environment, with its own format, its own judging criteria, and its own visual identity — not a shared template with the name swapped out. Scroll through the full dossier below, or jump straight to a discipline.</p>
+  </header>
+
+  <div class="jump-strip-wrap" aria-label="Jump to event">
+    <div class="jump-strip">
+      <a class="jump-chip" style="--chip-accent:#D8564B" href="#corpus-vestigium"><strong>Fe</strong>Corpus Vestigium</a>
+      <a class="jump-chip" style="--chip-accent:#3FA9E0" href="#chromatica"><strong>Cu</strong>Chromatica</a>
+      <a class="jump-chip" style="--chip-accent:#E8B339" href="#tesoro-jagen"><strong>Au</strong>Tesoro Jagen</a>
+      <a class="jump-chip" style="--chip-accent:#7B7FD8" href="#quantum-clash"><strong>Xe</strong>Quantum Clash</a>
+      <a class="jump-chip" style="--chip-accent:#52D68A" href="#pi-orbit"><strong>Si</strong>πOrbit</a>
+      <a class="jump-chip" style="--chip-accent:#E88D3F" href="#astropulse"><strong>He</strong>AstroPulse</a>
+      <a class="jump-chip" style="--chip-accent:#C7CDD6" href="#techforge"><strong>Ti</strong>TechForge</a>
+      <a class="jump-chip" style="--chip-accent:#8C8C8C" href="#strategos"><strong>W</strong>Strategos</a>
+      <a class="jump-chip" style="--chip-accent:#4E4E4E" href="#genesis-nova"><strong>C</strong>Genesis Nova</a>
+      <a class="jump-chip" style="--chip-accent:#D85BA8" href="#vox-futuri"><strong>Ga</strong>Vox Futuri</a>
+      <a class="jump-chip" style="--chip-accent:#E8D23F" href="#mindrift"><strong>P</strong>MindRift</a>
+      <a class="jump-chip" style="--chip-accent:#FF6A2B" href="#time-trial"><strong>Cs</strong>Time Trial</a>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       01 — CORPUS VESTIGIUM
+       ======================================================================== -->
+  <section class="dossier reveal" id="corpus-vestigium" style="--dossier-accent:#D8564B" data-slug="corpus-vestigium" data-elname="Iron" data-elsym="Fe" data-elnum="26">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="40" cy="42" r="18"/><line x1="53" y1="55" x2="74" y2="76"/>
+        <path d="M40 30a12 12 0 010 24M40 34a8 8 0 010 16M40 38a4 4 0 010 8" stroke-width="1.1"/>
+        <circle cx="70" cy="30" r="3" fill="currentColor" stroke="none"/><circle cx="80" cy="22" r="2" fill="currentColor" stroke="none"/>
+        <circle cx="62" cy="18" r="1.6" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">26</span><span class="sym">Fe · Iron</span><span>EV-01</span></div>
+      <h2>Corpus Vestigium</h2>
+      <p class="dossier__theme">Crime investigation laboratory</p>
+      <p class="dossier__desc">A staged crime scene, a fabricated victim profile, and a room full of forensic evidence — blood-pattern analysis, latent fingerprints, trace fibers, and a toxicology panel. Teams work the scene like real investigators and present a case file, not a guess.</p>
+      <p class="dossier__format">Format: teams of 3. 90-minute scene investigation, followed by a 10-minute case presentation to a forensic-science judging panel.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">3</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">100 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Lab</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="corpus-vestigium"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/corpus-vestigium.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="corpus-vestigium" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       02 — CHROMATICA
+       ======================================================================== -->
+  <section class="dossier reveal" id="chromatica" style="--dossier-accent:#3FA9E0" data-slug="chromatica" data-elname="Copper" data-elsym="Cu" data-elnum="29">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M42 15v20l-16 30a10 10 0 009 15h20a10 10 0 009-15l-16-30V15" />
+        <path d="M36 15h20" />
+        <circle cx="46" cy="62" r="3" fill="currentColor" stroke="none"/><circle cx="58" cy="70" r="2" fill="currentColor" stroke="none"/>
+        <circle cx="38" cy="72" r="2.4" fill="currentColor" stroke="none"/><circle cx="52" cy="55" r="1.6" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">29</span><span class="sym">Cu · Copper</span><span>EV-02</span></div>
+      <h2>Chromatica</h2>
+      <p class="dossier__theme">Chemical art laboratory</p>
+      <p class="dossier__desc">pH indicators, redox reactions, and precipitate chemistry, redirected away from a titration curve and toward a canvas. Teams engineer real chemical reactions to produce a piece of visual art — judged on both the chemistry and the composition.</p>
+      <p class="dossier__format">Format: teams of 2. 75 minutes to plan and execute a reaction-based artwork, plus a written reaction log explaining every step.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">2</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">75 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Studio</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="chromatica"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/chromatica.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="chromatica" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       03 — TESORO JAGEN
+       ======================================================================== -->
+  <section class="dossier reveal" id="tesoro-jagen" style="--dossier-accent:#E8B339" data-slug="tesoro-jagen" data-elname="Gold" data-elsym="Au" data-elnum="79">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="22" y="42" width="56" height="34" rx="2"/><path d="M22 52h56"/>
+        <circle cx="50" cy="47" r="4"/><path d="M50 51v6"/>
+        <path d="M30 42V32a20 20 0 0140 0v10" stroke-width="1.3"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">79</span><span class="sym">Au · Gold</span><span>EV-03</span></div>
+      <h2>Tesoro Jagen</h2>
+      <p class="dossier__theme">Ancient hidden vault — treasure hunt</p>
+      <p class="dossier__desc">A multi-room "vault" built around ciphers, riddles rooted in the history of science, and physical puzzle locks. Every clue solved unlocks the next room; the fastest team to reach the vault's final chamber wins.</p>
+      <p class="dossier__format">Format: teams of 4. Single elimination heats across four rooms, timed to the second.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">4</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">60 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Vault</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="tesoro-jagen"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/tesoro-jagen.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="tesoro-jagen" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       04 — QUANTUM CLASH
+       ======================================================================== -->
+  <section class="dossier reveal" id="quantum-clash" style="--dossier-accent:#7B7FD8" data-slug="quantum-clash" data-elname="Xenon" data-elsym="Xe" data-elnum="54">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <ellipse cx="50" cy="50" rx="34" ry="14"/>
+        <ellipse cx="50" cy="50" rx="34" ry="14" transform="rotate(60 50 50)"/>
+        <ellipse cx="50" cy="50" rx="34" ry="14" transform="rotate(120 50 50)"/>
+        <circle cx="50" cy="50" r="4" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">54</span><span class="sym">Xe · Xenon</span><span>EV-04</span></div>
+      <h2>Quantum Clash</h2>
+      <p class="dossier__theme">Quantum debate chamber</p>
+      <p class="dossier__desc">A formal, structured debate on live questions at the edge of physics and ethics — from interpretations of quantum mechanics to the limits of AI cognition. Teams are assigned a position minutes before the round and must defend it under cross-examination.</p>
+      <p class="dossier__format">Format: teams of 2. Three preliminary rounds and a final, judged on argument rigor and rebuttal quality.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">2</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">20 min/rd</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Chamber</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="quantum-clash"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/quantum-clash.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="quantum-clash" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       05 — πORBIT
+       ======================================================================== -->
+  <section class="dossier reveal" id="pi-orbit" style="--dossier-accent:#52D68A" data-slug="pi-orbit" data-elname="Silicon" data-elsym="Si" data-elnum="14">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <ellipse cx="50" cy="50" rx="38" ry="18"/>
+        <circle cx="50" cy="50" r="5" fill="currentColor" stroke="none"/>
+        <circle cx="82" cy="50" r="3" fill="currentColor" stroke="none"/>
+        <text x="50" y="30" font-family="monospace" font-size="16" fill="currentColor" stroke="none" text-anchor="middle">π</text>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">14</span><span class="sym">Si · Silicon</span><span>EV-05</span></div>
+      <h2>πOrbit</h2>
+      <p class="dossier__theme">Mathematical universe</p>
+      <p class="dossier__desc">Floating equation stations, gravity-well puzzles, and a proof-relay where each team's answer becomes the next team's starting point. Built for people who think in numbers, not for people who memorize formulas.</p>
+      <p class="dossier__format">Format: teams of 2. Rotating stations across topology, probability, and applied calculus, culminating in a live proof relay.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">2</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">90 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Arena</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="pi-orbit"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/pi-orbit.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="pi-orbit" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       06 — ASTROPULSE
+       ======================================================================== -->
+  <section class="dossier reveal" id="astropulse" style="--dossier-accent:#E88D3F" data-slug="astropulse" data-elname="Helium" data-elsym="He" data-elnum="2">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M20 60 Q 30 40, 40 60 T 60 60 T 80 60" />
+        <circle cx="70" cy="30" r="10"/><circle cx="70" cy="30" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="25" cy="30" r="1.6" fill="currentColor" stroke="none"/><circle cx="35" cy="20" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">2</span><span class="sym">He · Helium</span><span>EV-06</span></div>
+      <h2>AstroPulse</h2>
+      <p class="dossier__theme">Galaxy recording studio</p>
+      <p class="dossier__desc">A live music production event where teams score an original piece to a real astronomical dataset — pulsar timing, orbital resonance, or a supernova light curve — translating scientific rhythm into sound.</p>
+      <p class="dossier__format">Format: teams of up to 4. Compose and record on-site, then perform a 4-minute live set for a panel of musicians and astronomers.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">≤4</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">150 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Studio</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="astropulse"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/astropulse.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="astropulse" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       07 — TECHFORGE
+       ======================================================================== -->
+  <section class="dossier reveal" id="techforge" style="--dossier-accent:#C7CDD6" data-slug="techforge" data-elname="Titanium" data-elsym="Ti" data-elnum="22">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="40" cy="45" r="14"/><circle cx="40" cy="45" r="5"/>
+        <circle cx="66" cy="60" r="9"/><circle cx="66" cy="60" r="3"/>
+        <path d="M53 48l7 6" />
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">22</span><span class="sym">Ti · Titanium</span><span>EV-07</span></div>
+      <h2>TechForge</h2>
+      <p class="dossier__theme">Engineering factory</p>
+      <p class="dossier__desc">A build-and-break engineering challenge — hydraulic arms, load-bearing structures, and simple robotics — with a fixed materials kit and a live stress test at the end. No pre-built kits; everything is assembled on-site.</p>
+      <p class="dossier__format">Format: teams of 4. Build phase followed by a live load/stress test, judged on performance and design rationale.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">4</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">120 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Workshop</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="techforge"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/techforge.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="techforge" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       08 — STRATEGOS
+       ======================================================================== -->
+  <section class="dossier reveal" id="strategos" style="--dossier-accent:#8C8C8C" data-slug="strategos" data-elname="Tungsten" data-elsym="W" data-elnum="74">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M50 20l6 10h-12z"/><rect x="42" y="30" width="16" height="10"/>
+        <path d="M36 40h28l-4 30H40z"/><rect x="32" y="70" width="36" height="8"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">74</span><span class="sym">W · Tungsten</span><span>EV-08</span></div>
+      <h2>Strategos</h2>
+      <p class="dossier__theme">Digital chess arena</p>
+      <p class="dossier__desc">A single-elimination chess arena run on digital boards with live move analysis displayed to spectators — combining classical strategy with real-time computational insight into every game.</p>
+      <p class="dossier__format">Format: individual entrants. Swiss-system qualifiers, single-elimination knockout finals.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">1</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">All day</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Arena</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="strategos"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/strategos.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="strategos" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       09 — GENESIS NOVA
+       ======================================================================== -->
+  <section class="dossier reveal" id="genesis-nova" style="--dossier-accent:#4E4E4E" data-slug="genesis-nova" data-elname="Carbon" data-elsym="C" data-elnum="6">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M35 20c15 5 15 15 0 20s-15 15 0 20 15 15 0 20" />
+        <path d="M65 20c-15 5-15 15 0 20s15 15 0 20-15 15 0 20" />
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">6</span><span class="sym">C · Carbon</span><span>EV-09</span></div>
+      <h2>Genesis Nova</h2>
+      <p class="dossier__theme">Evolution simulation</p>
+      <p class="dossier__desc">Teams design a synthetic organism's genome under a fixed set of environmental pressures, then run it through generations of a simulated ecosystem to see whether it survives, adapts, or dies out — real selection pressure, no hand-waving.</p>
+      <p class="dossier__format">Format: teams of 3. Design phase, then a live simulated run judged on survival outcome and the biological reasoning behind each design choice.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">3</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">100 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Lab</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="genesis-nova"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/genesis-nova.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="genesis-nova" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       10 — VOX FUTURI
+       ======================================================================== -->
+  <section class="dossier reveal" id="vox-futuri" style="--dossier-accent:#D85BA8" data-slug="vox-futuri" data-elname="Gallium" data-elsym="Ga" data-elnum="31">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="30" y="60" width="8" height="14"/><line x1="34" y1="60" x2="34" y2="30"/>
+        <circle cx="34" cy="24" r="6"/>
+        <path d="M46 34a12 12 0 010 12M56 28a20 20 0 010 24" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">31</span><span class="sym">Ga · Gallium</span><span>EV-10</span></div>
+      <h2>Vox Futuri</h2>
+      <p class="dossier__theme">AI news studio</p>
+      <p class="dossier__desc">A live broadcast studio where teams research, script, and deliver a science news segment reporting from an imagined ten-years-forward present — anchored, produced, and edited entirely within the event window.</p>
+      <p class="dossier__format">Format: teams of 3. Research and script window, then a live-to-tape broadcast in front of a production panel.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">3</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">120 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Studio</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="vox-futuri"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/vox-futuri.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="vox-futuri" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       11 — MINDRIFT
+       ======================================================================== -->
+  <section class="dossier reveal" id="mindrift" style="--dossier-accent:#E8D23F" data-slug="mindrift" data-elname="Phosphorus" data-elsym="P" data-elnum="15">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M40 25a15 15 0 00-15 15c0 6 3 9 5 12v10h20V52c2-3 5-6 5-12a15 15 0 00-15-15z"/>
+        <line x1="43" y1="62" x2="43" y2="70"/><line x1="49" y1="62" x2="49" y2="70"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">15</span><span class="sym">P · Phosphorus</span><span>EV-11</span></div>
+      <h2>MindRift</h2>
+      <p class="dossier__theme">Neural quiz arena</p>
+      <p class="dossier__desc">A fast-paced, buzzer-based science quiz that escalates in difficulty every round — general science through to graduate-level trivia — with a live leaderboard visible to the whole room.</p>
+      <p class="dossier__format">Format: teams of 2. Written prelims, buzzer-round semifinals, and a rapid-fire final.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">2</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">90 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Arena</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="mindrift"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/mindrift.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="mindrift" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       12 — TIME TRIAL
+       ======================================================================== -->
+  <section class="dossier reveal" id="time-trial" style="--dossier-accent:#FF6A2B" data-slug="time-trial" data-elname="Caesium" data-elsym="Cs" data-elnum="55">
+    <div class="dossier__art">
+      <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="50" cy="52" r="26"/><line x1="50" y1="52" x2="50" y2="36"/><line x1="50" y1="52" x2="62" y2="58"/>
+        <path d="M42 22h16M50 22v8" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div>
+      <div class="dossier__meta"><span class="num">55</span><span class="sym">Cs · Caesium</span><span>EV-12</span></div>
+      <h2>Time Trial</h2>
+      <p class="dossier__theme">KBC-inspired auditorium</p>
+      <p class="dossier__desc">A televised-format knowledge show, staged in a full auditorium with escalating stakes, lifelines, and a hot seat — built around science, history of discovery, and lateral thinking rather than pure recall.</p>
+      <p class="dossier__format">Format: individual entrants. Open qualifying round, then an on-stage hot-seat final in front of the full festival audience.</p>
+      <div class="spec-grid">
+        <div class="spec-cell"><div class="spec-cell__value">1</div><div class="spec-cell__label">Team Size</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">150 min</div><div class="spec-cell__label">Duration</div></div>
+        <div class="spec-cell"><div class="spec-cell__value">Auditorium</div><div class="spec-cell__label">Venue Type</div></div>
+      </div>
+      <p class="dossier__status" data-status-for="time-trial"><span class="dot"></span><span class="status-text">Checking registration status…</span></p>
+      <div class="dossier__actions">
+        <a href="events/time-trial.html" class="btn btn--primary" data-transition>FULL BROCHURE <span class="arrow">→</span></a>
+        <button class="btn btn--ghost btn--shortlist" data-shortlist="time-trial" type="button">ADD TO SHORTLIST</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="hub-cta reveal">
+    <p class="section-eyebrow" style="justify-content:center;">Ready to enlist</p>
+    <h2>Twelve labs. One registration.</h2>
+    <p>Your school registers once — students are allocated to individual events from inside the School Portal after enrollment.</p>
+    <a href="portal/school-registration.html" class="btn btn--primary" data-transition>REGISTER YOUR SCHOOL <span class="arrow">→</span></a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-bottom">
+    <span id="footer-timestamp">MISSION LOG SYNCED —</span>
+    <span><a href="index.html">← Return to Command Center</a> · © 2026 CRESCO SCIENTIAM — DELHI PUBLIC SCHOOL MEGACITY</span>
+  </div>
+</footer>
+
+<script type="module">
+import { db, doc, onSnapshot } from "./firebase-config.js";
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+if (isTouchDevice) document.body.classList.add('touch-device');
+
+/* ==========================================================================
+   1. BRIEF BOOT SEQUENCE (secondary-page variant — shorter than the homepage)
+   ========================================================================== */
+const BOOT_LINES = [
+  { tag: 'SYS', text: 'Loading Events Hub…' },
+  { tag: 'DB', text: 'Connecting to event registry…', ok: true },
+  { tag: 'RDY', text: 'Dossiers ready.', ok: true },
+];
+(function runBootSequence() {
+  const log = document.getElementById('boot-log');
+  const fill = document.getElementById('boot-progress-fill');
+  const pct = document.getElementById('boot-percent');
+  const overlay = document.getElementById('boot-sequence');
+  if (prefersReducedMotion) { overlay.classList.add('is-hidden'); return; }
+  let i = 0;
+  function nextLine() {
+    if (i >= BOOT_LINES.length) { setTimeout(() => overlay.classList.add('is-hidden'), 350); return; }
+    const { tag, text, ok } = BOOT_LINES[i];
+    const row = document.createElement('div'); row.className = 'line';
+    row.innerHTML = `<span class="tag">[${tag}]</span>${text}${ok ? ' <span class="ok">READY</span>' : ''}`;
+    log.appendChild(row); i += 1;
+    const progress = Math.round((i / BOOT_LINES.length) * 100);
+    fill.style.width = progress + '%'; pct.textContent = progress + '%';
+    setTimeout(nextLine, 220);
+  }
+  nextLine();
+})();
+
+/* ==========================================================================
+   2. CUSTOM CURSOR
+   ========================================================================== */
+if (!isTouchDevice) {
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, ringX = mouseX, ringY = mouseY;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.18; ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, [data-cursor]').forEach((el) => {
+    el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+  });
+}
+
+/* ==========================================================================
+   3. AMBIENT PARTICLE FIELD
+   ========================================================================== */
+(function ambientParticleField() {
+  const canvas = document.getElementById('particle-field');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles, dpr;
+  const PARTICLE_COUNT = prefersReducedMotion ? 0 : (window.innerWidth < 700 ? 30 : 70);
+  const LINK_DIST = 120;
+  const mouse = { x: -9999, y: -9999 };
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = window.innerWidth * dpr; h = canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px'; canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function initParticles() {
+    particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2, r: Math.random() * 1.2 + 0.4,
+    }));
+  }
+  function step() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      const dx = p.x - mouse.x, dy = p.y - mouse.y, distSq = dx * dx + dy * dy;
+      if (distSq < 14000) { const dist = Math.sqrt(distSq) || 1; p.x += (dx / dist) * 0.5; p.y += (dy / dist) * 0.5; }
+      if (p.x < 0) p.x = window.innerWidth; if (p.x > window.innerWidth) p.x = 0;
+      if (p.y < 0) p.y = window.innerHeight; if (p.y > window.innerHeight) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(199, 205, 214, 0.4)'; ctx.fill();
+    }
+    for (let i = 0; i < particles.length; i++) for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j], dx = a.x - b.x, dy = a.y - b.y, dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < LINK_DIST) {
+        ctx.strokeStyle = `rgba(255, 106, 43, ${0.1 * (1 - dist / LINK_DIST)})`; ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    if (!prefersReducedMotion) requestAnimationFrame(step);
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  resize(); initParticles(); if (PARTICLE_COUNT > 0) step();
+})();
+
+/* ==========================================================================
+   4. HUD CLOCK
+   ========================================================================== */
+(function hudClock() {
+  const el = document.getElementById('hud-clock-text');
+  function tick() { el.textContent = new Date().toLocaleTimeString('en-IN', { hour12: false }) + ' IST'; }
+  tick(); setInterval(tick, 1000);
+})();
+
+/* ==========================================================================
+   5. SCROLL REVEAL
+   ========================================================================== */
+(function scrollReveal() {
+  const targets = document.querySelectorAll('.reveal');
+  if (prefersReducedMotion) { targets.forEach((t) => t.classList.add('is-visible')); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); } });
+  }, { threshold: 0.12 });
+  targets.forEach((t) => io.observe(t));
+})();
+
+/* ==========================================================================
+   6. REACTION TRANSITIONS
+   ========================================================================== */
+(function reactionTransitions() {
+  const overlay = document.getElementById('reaction-overlay');
+  document.querySelectorAll('[data-transition]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#') || prefersReducedMotion) return;
+      e.preventDefault(); overlay.classList.add('is-firing');
+      setTimeout(() => { window.location.href = href; }, 420);
+    });
+  });
+})();
+
+/* ==========================================================================
+   7. MOBILE NAV TOGGLE
+   ========================================================================== */
+(function mobileNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('command-nav');
+  toggle.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+})();
+
+/* ==========================================================================
+   8. JUMP-STRIP ACTIVE STATE — highlights the chip for the dossier in view
+   ========================================================================== */
+(function jumpStripActiveState() {
+  const chips = Array.from(document.querySelectorAll('.jump-chip'));
+  const dossiers = Array.from(document.querySelectorAll('.dossier'));
+  if (!chips.length || !dossiers.length) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        chips.forEach((c) => c.classList.toggle('is-active', c.getAttribute('href') === `#${id}`));
+      }
+    });
+  }, { threshold: 0.5 });
+  dossiers.forEach((d) => io.observe(d));
+})();
+
+/* ==========================================================================
+   9. LOCAL SHORTLIST — bookmarking events client-side (no backend required)
+   ========================================================================== */
+(function shortlistFeature() {
+  const STORAGE_KEY = 'cresco.shortlist';
+  const countBtn = document.getElementById('shortlist-count-btn');
+
+  function readShortlist() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch (err) { return []; }
+  }
+  function writeShortlist(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+  function refreshButtons() {
+    const list = readShortlist();
+    countBtn.textContent = String(list.length);
+    document.querySelectorAll('[data-shortlist]').forEach((btn) => {
+      const slug = btn.getAttribute('data-shortlist');
+      const active = list.includes(slug);
+      btn.dataset.active = String(active);
+      btn.textContent = active ? 'SHORTLISTED ✓' : 'ADD TO SHORTLIST';
+    });
+  }
+
+  document.querySelectorAll('[data-shortlist]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const slug = btn.getAttribute('data-shortlist');
+      const list = readShortlist();
+      const idx = list.indexOf(slug);
+      if (idx === -1) list.push(slug); else list.splice(idx, 1);
+      writeShortlist(list);
+      refreshButtons();
+    });
+  });
+
+  countBtn.addEventListener('click', () => {
+    const list = readShortlist();
+    if (!list.length) { alert('Your shortlist is empty. Add events using the "Add to Shortlist" button on any dossier.'); return; }
+    alert('Shortlisted events:\n\n' + list.join('\n'));
+  });
+
+  refreshButtons();
+})();
+
+/* ==========================================================================
+   10. LIVE REGISTRATION STATUS PER EVENT
+   Reads collection "events/{slug}" — each doc: {registeredTeams, maxTeams, status}
+   Falls back to an honest "not yet published" state rather than a fake number.
+   ========================================================================== */
+(function liveEventStatus() {
+  const rows = document.querySelectorAll('[data-status-for]');
+  rows.forEach((row) => {
+    const slug = row.getAttribute('data-status-for');
+    const dot = row.querySelector('.dot');
+    const text = row.querySelector('.status-text');
+    try {
+      onSnapshot(doc(db, 'events', slug), (snap) => {
+        if (!snap.exists()) {
+          text.textContent = 'Registration data not yet published.';
+          dot.className = 'dot';
+          return;
+        }
+        const data = snap.data();
+        const registered = typeof data.registeredTeams === 'number' ? data.registeredTeams : null;
+        const max = typeof data.maxTeams === 'number' ? data.maxTeams : null;
+        if (registered !== null && max !== null) {
+          text.textContent = `${registered} / ${max} teams registered`;
+          dot.className = 'dot ' + (registered >= max ? 'warn' : 'ok');
+        } else {
+          text.textContent = data.status || 'Open for registration.';
+          dot.className = 'dot ok';
+        }
+      }, () => {
+        text.textContent = 'Status feed unreachable.';
+        dot.className = 'dot';
+      });
+    } catch (err) {
+      text.textContent = 'Status feed unreachable.';
+      dot.className = 'dot';
+    }
+  });
+})();
+
+/* ==========================================================================
+   11. FOOTER TIMESTAMP
+   ========================================================================== */
+(function footerTimestamp() {
+  const el = document.getElementById('footer-timestamp');
+  el.textContent = `MISSION LOG SYNCED — ${new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+})();
+</script>
+</body>
+</html>

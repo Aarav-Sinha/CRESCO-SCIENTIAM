@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cresco Scientiam 5.0 - Under Development</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Glows */
+        .glow-1 {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 400px;
+            height: 400px;
+            background: var(--accent-glow);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: float 8s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        .glow-2 {
+            position: absolute;
+            bottom: 25%;
+            right: 25%;
+            width: 350px;
+            height: 350px;
+            background: rgba(139, 92, 246, 0.12);
+            border-radius: 50%;
+            filter: blur(90px);
+            animation: float 10s ease-in-out infinite alternate-reverse;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 3rem 2.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            width: 480px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 0.87rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Pulse Indicator */
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        /* Button Styling */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+
+    <div class="container">
+        <div class="tagline">Cresco Scientiam 5.0</div>
+        <h1>Evolution in Progress</h1>
+        
+        <div class="status">
+            <span class="pulse-dot"></span>
+            <span>Page Development in Progress</span>
+        </div>
+
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+
+</body>
+</html>

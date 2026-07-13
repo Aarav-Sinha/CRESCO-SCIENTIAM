@@ -1,194 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cresco Scientiam 5.0 - Under Development</title>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --accent-color: #6366f1;
-            --accent-hover: #4f46e5;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#030816">
+<meta name="description" content="The story behind Cresco Scientiam 5.0 — Delhi Public School Megacity, the emblem, and five editions of growth.">
+<title>About — Cresco Scientiam 5.0</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23030816'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%231c39bb' stroke-width='3'/%3E%3Ccircle cx='50' cy='16' r='4' fill='%235ee0ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#030816;--navy:#060f2c;--panel:rgba(13,20,38,.5);--panel-solid:#0b1120;
+  --line:rgba(140,170,255,.11);--line2:rgba(140,170,255,.26);--line3:rgba(140,170,255,.4);
+  --blue:#1c39bb;--electric:#5ee0ff;--amber:#ffb648;--alert:#ef4a5a;
+  --paper:#eef2fb;--dim:rgba(238,242,251,.62);--faint:rgba(238,242,251,.34);
+  --disp:'Syne',sans-serif;--ui:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;overflow-x:hidden;width:100%;}
+body{background:var(--ink);color:var(--paper);font-family:var(--ui);font-size:17px;line-height:1.55;overflow-x:hidden;width:100%;-webkit-font-smoothing:antialiased;cursor:none;opacity:0;animation:pageIn .7s ease .05s forwards;}
+@keyframes pageIn{to{opacity:1;}}
+@media (hover:none),(pointer:coarse){body{cursor:auto;}}
+a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;} ul,ol{list-style:none;}
+.scanlines{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;mix-blend-mode:overlay;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.028) 0px,rgba(255,255,255,.028) 1px,transparent 1px,transparent 3px);}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 55% 40% at 82% -6%, rgba(28,57,187,.16), transparent 60%);}
+.reticle{position:fixed;top:0;left:0;width:26px;height:26px;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .2s,height .2s;}
+.reticle::before,.reticle::after{content:'';position:absolute;background:#fff;}
+.reticle::before{left:50%;top:0;width:1px;height:100%;transform:translateX(-.5px);}
+.reticle::after{top:50%;left:0;height:1px;width:100%;transform:translateY(-.5px);}
+.reticle.big{width:54px;height:54px;}
+@media (hover:none),(pointer:coarse){.reticle{display:none;}}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,72px);position:relative;z-index:3;}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--electric);}
+.eyebrow::before{content:'';width:24px;height:1px;background:linear-gradient(90deg,transparent,var(--electric));}
+section{position:relative;z-index:2;padding:100px 0;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
+.ticker-bar{position:fixed;top:0;left:0;right:0;z-index:90;height:32px;overflow:hidden;backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);background:rgba(3,8,22,.7);border-bottom:1px solid var(--line);display:flex;align-items:center;}
+.ticker-track{display:flex;white-space:nowrap;animation:tickerScroll 34s linear infinite;}
+.ticker-track span{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);padding:0 24px;display:inline-flex;align-items:center;gap:10px;}
+.ticker-track span i{width:4px;height:4px;border-radius:50%;background:var(--electric);display:inline-block;}
+@keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-        /* Ambient Background Glows */
-        .glow-1 {
-            position: absolute;
-            top: 25%;
-            left: 25%;
-            width: 400px;
-            height: 400px;
-            background: var(--accent-glow);
-            border-radius: 50%;
-            filter: blur(100px);
-            animation: float 8s ease-in-out infinite alternate;
-            z-index: 1;
-        }
+.topbar{position:fixed;top:44px;left:50%;transform:translateX(-50%);z-index:96;width:min(94vw,1180px);border-radius:24px;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);background:rgba(8,12,26,.72);border:1px solid var(--line2);box-shadow:0 14px 44px -16px rgba(0,0,0,.65);transition:background .3s;}
+.topbar.scrolled{background:rgba(6,9,20,.9);}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 12px 9px 14px;}
+.tb-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.tb-logo-stack{display:flex;flex-direction:column;gap:2px;}
+.tb-cell{width:28px;height:20px;border-radius:5px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:10px;border:1px solid var(--line3);}
+.tb-cell[data-el="cr"]{color:#8fd8ff;background:rgba(28,57,187,.2);}
+.tb-cell[data-el="es"]{color:#5ee0ff;background:rgba(28,57,187,.2);}
+.tb-cell[data-el="co"]{color:#3f7fe0;background:rgba(28,57,187,.2);}
+.tb-words{display:none;font-family:var(--disp);font-weight:700;font-size:.72rem;letter-spacing:.02em;color:var(--dim);white-space:nowrap;}
+.tb-words b{color:var(--paper);}
+@media (min-width:460px){.tb-words{display:block;}}
+.tb-tabs{display:none;gap:2px;align-items:center;}
+.tb-tabs a{font-family:var(--ui);font-weight:600;font-size:13px;color:var(--dim);padding:9px 14px;border-radius:14px;transition:color .25s,background .25s;white-space:nowrap;}
+.tb-tabs a:hover{color:var(--paper);background:rgba(94,224,255,.08);}
+.tb-tabs a.active{color:var(--ink);background:var(--electric);}
+.tb-bar-btn{display:flex;flex-direction:column;gap:4px;width:40px;height:40px;align-items:center;justify-content:center;border-radius:12px;border:1px solid var(--line2);background:transparent;cursor:pointer;flex-shrink:0;transition:border-color .3s,background .3s;}
+.tb-bar-btn:hover{border-color:var(--electric);background:rgba(94,224,255,.06);}
+.tb-bar-btn:active{transform:scale(.93);}
+.tb-bar-btn span{width:18px;height:2px;background:var(--paper);border-radius:2px;transition:transform .3s,opacity .3s;}
+.tb-bar-btn.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.tb-bar-btn.open span:nth-child(2){opacity:0;}
+.tb-bar-btn.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+@media (min-width:981px){.tb-tabs{display:flex;} .tb-bar-btn{display:none;}}
+@media (max-width:980px){.topbar{top:40px;border-radius:20px;}}
+@media (max-width:420px){.tb-words{display:none;}}
 
-        .glow-2 {
-            position: absolute;
-            bottom: 25%;
-            right: 25%;
-            width: 350px;
-            height: 350px;
-            background: rgba(139, 92, 246, 0.12);
-            border-radius: 50%;
-            filter: blur(90px);
-            animation: float 10s ease-in-out infinite alternate-reverse;
-            z-index: 1;
-        }
+.overlay-nav{position:fixed;inset:0;z-index:200;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(3,6,14,.96);clip-path:circle(2% at calc(100% - 46px) 60px);transition:clip-path .7s cubic-bezier(.7,0,.2,1);pointer-events:none;}
+.overlay-nav.open{clip-path:circle(150% at calc(100% - 46px) 60px);pointer-events:all;}
+.overlay-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.5;}
+.overlay-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:110px clamp(24px,7vw,110px) 40px;max-width:1000px;margin:0 auto;overflow-y:auto;}
+.overlay-clock{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.14em;margin-bottom:30px;}
+.overlay-clock b{display:inline-block;margin-left:10px;font-size:15px;color:var(--electric);font-weight:500;}
+.overlay-links{display:flex;flex-direction:column;gap:0;}
+.overlay-links a{display:flex;align-items:baseline;gap:20px;font-family:var(--disp);font-weight:700;font-size:clamp(1.7rem,7vw,2.6rem);color:var(--faint);padding:12px 0;border-bottom:1px solid var(--line);transition:color .35s,padding .35s;}
+.overlay-links a small{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:400;letter-spacing:.1em;}
+.overlay-links a:hover,.overlay-links a.active{color:var(--paper);padding-left:12px;}
+.overlay-links a:hover small,.overlay-links a.active small{color:var(--electric);}
+.overlay-bottom{display:flex;flex-direction:column;gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line);}
+.overlay-bottom .ob-col span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-bottom:6px;}
+.overlay-bottom .ob-col a,.overlay-bottom .ob-col p{color:var(--dim);font-size:.92rem;}
 
-        /* Main Container */
-        .container {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 3rem 2.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
-            width: 480px;
-            animation: fadeIn 1.2s ease-out;
-        }
+.btn{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;padding:16px 30px;border:1px solid var(--line3);position:relative;display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--paper);cursor:pointer;transition:all .3s;}
+.btn-solid{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn-solid:hover{box-shadow:0 0 34px rgba(28,57,187,.5);}
+.btn-ghost:hover{border-color:var(--electric);color:var(--electric);background:rgba(94,224,255,.06);}
+.btn .arrow{transition:transform .3s;} .btn:hover .arrow{transform:translateX(4px);}
+.btn:active{transform:scale(.96);}
 
-        /* Typography */
-        h1 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            margin-bottom: 0.75rem;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.page-hero{padding:170px 0 50px;}
+.page-hero .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;}
+.page-hero h1{font-family:var(--disp);font-weight:800;font-size:clamp(2.4rem,6.4vw,4.6rem);line-height:1.04;margin-top:16px;max-width:900px;}
+.page-hero h1 em{font-style:normal;color:var(--blue);}
+.page-hero p{margin-top:20px;color:var(--dim);max-width:600px;font-size:1.05rem;}
 
-        .tagline {
-            font-size: 0.87rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent-color);
-            margin-bottom: 2rem;
-            font-weight: 600;
-        }
+.section-title{font-family:var(--disp);font-weight:800;font-size:clamp(1.8rem,4.2vw,2.8rem);margin-top:16px;line-height:1.1;}
+.section-title em{font-style:normal;color:var(--blue);}
+.section-head{max-width:680px;}
+.section-head p{margin-top:16px;color:var(--dim);}
 
-        .status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            margin-bottom: 2.5rem;
-        }
+.mission-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:60px;}
+.mission-grid .prose{color:var(--dim);line-height:1.9;font-size:1.03rem;}
+.mission-grid .prose p+p{margin-top:20px;}
+.mission-grid .prose em{color:var(--electric);font-style:normal;}
+.stat-rail{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line);}
+.stat-rail .sr{display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);}
+.stat-rail .sr b{font-family:var(--disp);font-weight:800;font-size:1.8rem;color:var(--electric);}
+.stat-rail .sr span{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;}
+@media (max-width:900px){.mission-grid{grid-template-columns:1fr;}}
 
-        /* Pulse Indicator */
-        .pulse-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
-            animation: pulse 2s infinite;
-        }
+.emblem-wrap{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;}
+.emblem-visual{position:relative;aspect-ratio:1;}
+.emblem-visual svg{width:100%;height:100%;cursor:pointer;}
+.emblem-tabs{display:flex;gap:10px;margin-top:24px;}
+.emblem-tab{flex:1;padding:12px;text-align:center;border:1px solid var(--line2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);cursor:pointer;transition:all .3s;background:transparent;}
+.emblem-tab.active{border-color:var(--electric);color:var(--electric);background:rgba(94,224,255,.06);}
+.emblem-copy .el-num{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.2em;}
+.emblem-copy h3{font-family:var(--disp);font-weight:800;font-size:2.2rem;margin:10px 0 6px;}
+.emblem-copy .el-sub{font-family:var(--mono);font-size:12px;color:var(--electric);letter-spacing:.1em;}
+.emblem-copy p{color:var(--dim);margin-top:18px;line-height:1.85;}
+.emblem-meta{display:flex;gap:26px;margin-top:22px;flex-wrap:wrap;}
+.emblem-meta div{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.1em;}
+.emblem-meta b{display:block;color:var(--paper);font-size:1rem;font-family:var(--ui);margin-top:4px;}
+@media (max-width:900px){.emblem-wrap{grid-template-columns:1fr;}.emblem-visual{max-width:320px;margin:0 auto;}}
 
-        /* Button Styling */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.85rem 2rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #ffffff;
-            background-color: var(--accent-color);
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-        }
+.tl-wrap{position:relative;padding-left:36px;}
+.tl-wrap::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:1px;background:linear-gradient(to bottom,transparent,var(--line3) 6%,var(--line3) 94%,transparent);}
+.tl-row{position:relative;padding-bottom:44px;}
+.tl-row:last-child{padding-bottom:0;}
+.tl-dot{position:absolute;left:-36px;top:2px;width:19px;height:19px;border-radius:50%;border:2px solid var(--electric);background:var(--ink);box-shadow:0 0 14px rgba(94,224,255,.5);}
+.tl-year{font-family:var(--disp);font-weight:800;font-size:1.6rem;color:var(--electric);}
+.tl-card{display:flex;gap:24px;flex-wrap:wrap;align-items:baseline;margin-top:6px;}
+.tl-card h4{font-family:var(--disp);font-weight:700;font-size:1.2rem;}
+.tl-card p{color:var(--dim);font-size:.94rem;max-width:520px;}
 
-        .btn:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-        }
+.school-panel{border:1px solid var(--line2);background:var(--panel);padding:40px;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center;border-radius:10px;}
+.school-mark{width:80px;height:80px;border-radius:50%;border:1px solid var(--line3);display:grid;place-items:center;background:radial-gradient(circle,rgba(28,57,187,.16),transparent);flex-shrink:0;overflow:hidden;position:relative;}
+.school-mark img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;z-index:2;}
+@media (max-width:640px){.school-panel{grid-template-columns:1fr;text-align:center;}.school-mark{margin:0 auto;}}
 
-        .btn:active {
-            transform: translateY(0);
-        }
+.values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+.value-card{background:var(--ink);padding:30px 24px;}
+.value-card .vn{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.16em;}
+.value-card h4{font-family:var(--disp);font-weight:700;font-size:1.1rem;margin:10px 0 8px;}
+.value-card p{color:var(--dim);font-size:.85rem;line-height:1.6;}
+@media (max-width:900px){.values-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:520px){.values-grid{grid-template-columns:1fr;}}
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.team-cta{border:1px solid var(--line2);background:linear-gradient(135deg,rgba(28,57,187,.16),rgba(94,224,255,.03));padding:clamp(30px,5vw,50px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;border-radius:10px;}
+.team-cta h3{font-family:var(--disp);font-weight:800;font-size:clamp(1.2rem,2.4vw,1.6rem);}
+.team-cta p{color:var(--dim);margin-top:8px;max-width:440px;}
 
-        @keyframes float {
-            from { transform: translate(0, 0) scale(1); }
-            to { transform: translate(30px, -30px) scale(1.1); }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
-            }
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
-            }
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-            }
-        }
-    </style>
+footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-index:2;}
+.foot-top{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:40px;padding-bottom:50px;}
+.foot-brand-word{font-family:var(--disp);font-weight:800;font-size:1.6rem;}
+.foot-brand p{color:var(--dim);margin-top:16px;font-size:.92rem;line-height:1.8;max-width:280px;}
+.foot-col span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--faint);text-transform:uppercase;margin-bottom:18px;}
+.foot-col a{display:block;color:var(--dim);font-size:.92rem;padding:7px 0;}
+.foot-col a:hover{color:var(--electric);}
+.foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:26px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.06em;}
+@media (max-width:900px){.foot-top{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.foot-top{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
+<div class="scanlines"></div><div class="grain"></div>
+<div class="reticle" id="reticle"></div>
 
-    <div class="glow-1"></div>
-    <div class="glow-2"></div>
+<div class="ticker-bar"><div class="ticker-track" id="tickerTrack"></div></div>
 
-    <div class="container">
-        <div class="tagline">Cresco Scientiam 5.0</div>
-        <h1>Evolution in Progress</h1>
-        
-        <div class="status">
-            <span class="pulse-dot"></span>
-            <span>Page Development in Progress</span>
-        </div>
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="tb-brand">
+      <span class="tb-logo-stack"><span class="tb-cell" data-el="cr">Cr</span><span class="tb-cell" data-el="es">Es</span><span class="tb-cell" data-el="co">Co</span></span>
+      <span class="tb-words"><b>Cresco</b> Scientiam 5.0</span>
+    </a>
+    <nav class="tb-tabs">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="team.html">Team</a>
+      <a href="events.html">Events</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="sponsors.html">Sponsors</a>
+      <a href="help.html">Help</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="tb-bar-btn" id="menuTrigger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-        <a href="index.html" class="btn">Return to Home</a>
+<nav class="overlay-nav" id="overlayNav">
+  <div class="overlay-grid"></div>
+  <div class="overlay-inner">
+    <div class="overlay-clock">LOCAL TIME &middot; IST<b id="overlayClock">00:00:00</b></div>
+    <div class="overlay-links">
+      <a href="index.html"><small>01</small>Home</a>
+      <a href="about.html" class="active"><small>02</small>About</a>
+      <a href="team.html"><small>03</small>Team</a>
+      <a href="events.html"><small>04</small>Events</a>
+      <a href="schedule.html"><small>05</small>Schedule</a>
+      <a href="sponsors.html"><small>06</small>Sponsors</a>
+      <a href="help.html"><small>07</small>Help &amp; Support</a>
+      <a href="contact.html"><small>08</small>Contact</a>
     </div>
+    <div class="overlay-bottom">
+      <div class="ob-col"><span>Presented By</span><p>DPS Megacity, Kolkata</p></div>
+      <div class="ob-col"><span>Email</span><a href="mailto:crescoscientiam@dpsmegacity.in">crescoscientiam@dpsmegacity.in</a></div>
+      <div class="ob-col"><span>Social</span><a href="https://www.instagram.com/cresco_2026/" target="_blank" rel="noopener">@cresco_2026</a></div>
+    </div>
+  </div>
+</nav>
 
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="kicker">Mission Brief &middot; About</span>
+      <h1>Not a science fair.<br><em>A signal we send every year.</em></h1>
+      <p>Cresco Scientiam is DPS Megacity's answer to a simple question: what happens when you hand school students a real problem, a real clock, and a real stage?</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap mission-grid">
+      <div class="reveal">
+        <div class="stat-rail">
+          <div class="sr"><b>2022</b><span>First Edition</span></div>
+          <div class="sr"><b>05</b><span>Editions Run</span></div>
+          <div class="sr"><b>12</b><span>Events, 2026</span></div>
+          <div class="sr"><b>500+</b><span>Delegates Expected</span></div>
+        </div>
+      </div>
+      <div class="prose reveal">
+        <p><em>Cresco Scientiam</em> is DPS Megacity's annual science fest for senior students across the city, designed to sharpen logical thinking without losing sight of imagination. Hosted every year by Delhi Public School Megacity, Kolkata, it runs on a simple belief: science taught only from a textbook is science half-learned.</p>
+        <p>Across its five editions, the fest has widened from a single afternoon of four events to a full two-day arena of twelve — spanning chemistry, mathematics, forensics, genetics, architecture, debate, drama, music and more. What hasn't changed is the format: real problems, real deadlines, real judges.</p>
+        <p>This year's theme, <em>Beyond the Horizon</em>, asks delegates to think past the immediate brief — to treat every event not as a task to finish, but as a frontier to push. Three theme-worlds — Mythology, Cosmos, Eco — hold the twelve events together.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Decode The Mark</span>
+        <h2 class="section-title">Anatomy of the <em>emblem</em>.</h2>
+        <p>The Cresco Scientiam logotype is built from three real periodic-table cells — Cr, Es, Co — chosen for a reason: their symbols spell out the fest's whole philosophy. Click through the electron shells below.</p>
+      </div>
+      <div class="emblem-wrap reveal">
+        <div>
+          <div class="emblem-visual"><svg viewBox="0 0 300 300" id="emblemSvg"></svg></div>
+          <div class="emblem-tabs">
+            <button class="emblem-tab active" data-el="cr">Cr &middot; 24</button>
+            <button class="emblem-tab" data-el="es">Es &middot; 99</button>
+            <button class="emblem-tab" data-el="co">Co &middot; 27</button>
+          </div>
+        </div>
+        <div class="emblem-copy" id="emblemCopy">
+          <span class="el-num">ELEMENT 01 / 03</span>
+          <h3>Cr — Chromium</h3>
+          <span class="el-sub">CReate</span>
+          <p>The first pillar. Every event on the Cresco roster starts as a blank page — an unsolved crime scene, an empty chessboard, an unbuilt model. Chromium is prized for the shine it gives to raw metal; Create is the spark that gives a raw idea its shine.</p>
+          <div class="emblem-meta"><div>Atomic No.<b>24</b></div><div>Mass<b>51.996</b></div><div>Shells<b>2, 8, 13, 1</b></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">Flight Log</span><h2 class="section-title">Five editions, <em>logged</em>.</h2></div>
+      <div class="tl-wrap reveal" style="margin-top:50px;">
+        <div class="tl-row"><div class="tl-dot"></div><div class="tl-year">2022</div><div class="tl-card"><h4>Cresco Scientiam 1.0 — First Ignition</h4><p>A single-day meet with four events. The first trophy was engraved by hand the night before results.</p></div></div>
+        <div class="tl-row"><div class="tl-dot"></div><div class="tl-year">2023</div><div class="tl-card"><h4>Cresco Scientiam 2.0 — Widening Orbit</h4><p>Eight events, six schools. The fest outgrew a single auditorium for the first time.</p></div></div>
+        <div class="tl-row"><div class="tl-dot"></div><div class="tl-year">2024</div><div class="tl-card"><h4>Cresco Scientiam 3.0 — Critical Mass</h4><p>Crossed 300 participants across two full days — the first year Cresco needed a proper schedule grid.</p></div></div>
+        <div class="tl-row"><div class="tl-dot"></div><div class="tl-year">2025</div><div class="tl-card"><h4>Cresco Scientiam 4.0 — Escape Velocity</h4><p>Twelve events, three theme-worlds — the exact format the fest still runs on.</p></div></div>
+        <div class="tl-row"><div class="tl-dot" style="border-color:var(--amber);box-shadow:0 0 14px rgba(255,182,72,.5);"></div><div class="tl-year" style="color:var(--amber);">2026</div><div class="tl-card"><h4>Cresco Scientiam 5.0 — Beyond The Horizon</h4><p>This edition. The biggest arena yet, and the one you're reading about right now.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">Our School</span><h2 class="section-title">Delhi Public School <em>Megacity</em></h2></div>
+      <div class="school-panel reveal" style="margin-top:36px;">
+        <div class="school-mark"><img src="dps-logo.png" alt="" onerror="this.style.display='none'"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5ee0ff" stroke-width="1.3"><path d="M12 2 3 7l9 5 9-5-9-5Z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+        <p style="color:var(--dim);line-height:1.85;">Delhi Public School Megacity is built around a straightforward idea: academic excellence and genuine curiosity aren't in tension, they reinforce each other. The school's science, robotics, and debate circuits regularly send delegates to city and national-level competitions — and Cresco Scientiam is the platform where that culture opens its doors to every other school in the city, once a year, for two days.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">What We Reward</span><h2 class="section-title">Four things every judge <em>looks for</em>.</h2></div>
+      <div class="values-grid reveal" style="margin-top:40px;">
+        <div class="value-card"><span class="vn">01</span><h4>Rigor</h4><p>Can you defend the reasoning behind what you built, not just the result?</p></div>
+        <div class="value-card"><span class="vn">02</span><h4>Originality</h4><p>Does your approach look like everyone else's, or did you take a real risk?</p></div>
+        <div class="value-card"><span class="vn">03</span><h4>Composure</h4><p>What happens to your work when the clock runs out and the judges push back?</p></div>
+        <div class="value-card"><span class="vn">04</span><h4>Craft</h4><p>Is the final presentation — the model, the script, the paper — actually polished?</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="team-cta reveal">
+        <div><span class="eyebrow">The People Behind It</span><h3 style="margin-top:12px;">Meet the team running the show.</h3><p>Core committee, IT, and our teachers-in-charge — the full roster lives on its own page.</p></div>
+        <a href="team.html" class="btn btn-solid">Meet The Team <span class="arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div><div class="foot-brand-word">CRESCO SCIENTIAM</div><p>Delhi Public School Megacity, Kolkata presents Cresco Scientiam 5.0. Five editions running, one signal: Beyond the Horizon.</p></div>
+      <div class="foot-col"><span>Navigate</span><a href="index.html">Home</a><a href="team.html">Team</a><a href="events.html">Events</a><a href="schedule.html">Schedule</a><a href="sponsors.html">Sponsors</a></div>
+      <div class="foot-col"><span>Support</span><a href="help.html">Help &amp; Support</a><a href="contact.html">Contact</a><a href="mailto:crescoscientiam@dpsmegacity.in">Email Us</a></div>
+      <div class="foot-col"><span>Elsewhere</span><a href="https://www.instagram.com/cresco_2026/" target="_blank" rel="noopener">Instagram</a></div>
+    </div>
+    <div class="foot-bottom"><span>&copy; 2026 CRESCO SCIENTIAM &middot; DELHI PUBLIC SCHOOL MEGACITY</span><span>BEYOND THE HORIZON</span><span>SITE BY AARAV SINHA</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const r=document.getElementById('reticle');
+  if(!window.matchMedia('(hover:none),(pointer:coarse)').matches){
+    let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
+    addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;});
+    document.body.addEventListener('mouseover',e=>{if(e.target.closest('a,button'))r.classList.add('big');});
+    document.body.addEventListener('mouseout',e=>{if(e.target.closest('a,button'))r.classList.remove('big');});
+    (function loop(){cx+=(x-cx)*.22;cy+=(y-cy)*.22;r.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+  }
+})();
+(function(){
+  const trigger=document.getElementById('menuTrigger'),overlay=document.getElementById('overlayNav'),topbar=document.getElementById('topbar');
+  function toggle(force){const open=force!==undefined?force:!overlay.classList.contains('open');overlay.classList.toggle('open',open);trigger.classList.toggle('open',open);trigger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';}
+  trigger.addEventListener('click',()=>toggle());
+  document.querySelectorAll('.overlay-links a').forEach(a=>a.addEventListener('click',()=>toggle(false)));
+  addEventListener('keydown',e=>{if(e.key==='Escape')toggle(false);});
+  function clock(){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());document.getElementById('overlayClock').textContent=`${parts.find(p=>p.type==='hour').value}:${parts.find(p=>p.type==='minute').value}:${parts.find(p=>p.type==='second').value}`;}
+  clock();setInterval(clock,1000);
+  addEventListener('scroll',()=>topbar.classList.toggle('scrolled',scrollY>30),{passive:true});
+})();
+(function(){
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+(function(){
+  const DATA={
+    cr:{num:'ELEMENT 01 / 03',name:'Cr — Chromium',sub:'CReate',mass:'51.996',z:'24',shells:[2,8,13,1],shellStr:'2, 8, 13, 1',accent:'#8fd8ff',
+      text:'The first pillar. Every event on the Cresco roster starts as a blank page — an unsolved crime scene, an empty chessboard, an unbuilt model. Chromium is prized for the shine it gives to raw metal; Create is the spark that gives a raw idea its shine.'},
+    es:{num:'ELEMENT 02 / 03',name:'Es — Einsteinium',sub:'ESstablish',mass:'[252]',z:'99',shells:[2,8,18,32,25,8,2],shellStr:'2, 8, 18, 32, 25, 8, 2',accent:'#5ee0ff',
+      text:'The second pillar. Einsteinium was discovered in the debris of the first hydrogen bomb test — chaos, and then structure pulled out of it. Establish is exactly that: the research, rehearsal and rigor that turns a spark into something you can defend on stage.'},
+    co:{num:'ELEMENT 03 / 03',name:'Co — Cobalt',sub:'COmpete',mass:'58.933',z:'27',shells:[2,8,15,2],shellStr:'2, 8, 15, 2',accent:'#3f7fe0',
+      text:'The final pillar. Cobalt sits at the heart of some of the most energy-dense materials known — small, dense, potent. Compete is the arena itself: twelve events, two days, one stage, where every school brings its best minds to test what they built.'}
+  };
+  const svg=document.getElementById('emblemSvg');
+  function render(key){
+    const d=DATA[key],cx=150,cy=150;
+    let html=`<circle cx="${cx}" cy="${cy}" r="8" fill="${d.accent}" style="filter:drop-shadow(0 0 8px ${d.accent})"/>`;
+    d.shells.forEach((count,i)=>{
+      const r=30+i*16;
+      html+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(140,170,255,.3)" stroke-width="1"/>`;
+      const dur=(6+i*3).toFixed(1),dir=i%2===0?'':'Rev';
+      html+=`<g style="transform-origin:${cx}px ${cy}px;animation:emSpin${dir} ${dur}s linear infinite;">`;
+      for(let e=0;e<count;e++){
+        const ang=(e/count)*Math.PI*2,ex=cx+r*Math.cos(ang),ey=cy+r*Math.sin(ang);
+        html+=`<circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="2.6" fill="${d.accent}" style="filter:drop-shadow(0 0 3px ${d.accent})"/>`;
+      }
+      html+='</g>';
+    });
+    svg.innerHTML=html;
+    document.getElementById('emblemCopy').innerHTML=`
+      <span class="el-num">${d.num}</span><h3>${d.name}</h3><span class="el-sub">${d.sub}</span><p>${d.text}</p>
+      <div class="emblem-meta"><div>Atomic No.<b>${d.z}</b></div><div>Mass<b>${d.mass}</b></div><div>Shells<b>${d.shellStr}</b></div></div>`;
+  }
+  render('cr');
+  const style=document.createElement('style');
+  style.textContent='@keyframes emSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}@keyframes emSpinRev{from{transform:rotate(360deg)}to{transform:rotate(0)}}';
+  document.head.appendChild(style);
+  document.querySelectorAll('.emblem-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{document.querySelectorAll('.emblem-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');render(tab.dataset.el);});
+  });
+})();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  const firebaseConfig = { apiKey: "AIzaSyCr7RU1pUOyxV88VEAgJZwEHNupTHCnv98", authDomain: "cresco-scientiam.firebaseapp.com", projectId: "cresco-scientiam", storageBucket: "cresco-scientiam.firebasestorage.app", messagingSenderId: "102065794685", appId: "1:102065794685:web:bf1bb3506d77a722368b14", measurementId: "G-QLQSFRB8ZW" };
+  try{ const app=initializeApp(firebaseConfig); const db=getFirestore(app); setDoc(doc(db,"stats","pageViews"),{ about: increment(1) },{ merge:true }).catch(()=>{}); }catch(err){ console.warn("Firebase not initialised:",err); }
+</script>
 </body>
 </html>

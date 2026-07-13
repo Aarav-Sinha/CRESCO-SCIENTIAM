@@ -7,20 +7,20 @@
 <meta name="description" content="Cresco Scientiam 5.0 — Delhi Public School Megacity's science fest. 25–26 September 2026, Kolkata. Beyond the Horizon.">
 <meta property="og:title" content="Cresco Scientiam 5.0 — Beyond the Horizon">
 <meta property="og:description" content="Delhi Public School Megacity presents Cresco Scientiam 5.0 — three theme-worlds, twelve events, two days. 25–26 September 2026, Kolkata.">
-<meta property="og:image" content="assets/og-image.jpg">
-<meta property="og:type" content="website">
+<meta property="og:image" content="og-image.jpg">
 <title>Cresco Scientiam 5.0 — Beyond the Horizon</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2303050a'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%232f6fed' stroke-width='3'/%3E%3Ccircle cx='50' cy='16' r='4' fill='%235ee0ff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23030816'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%231c39bb' stroke-width='3'/%3E%3Ccircle cx='50' cy='16' r='4' fill='%235ee0ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#030816;--navy:#060f2c;--panel:rgba(13,20,38,.58);--panel-solid:#0b1120;--steel:#151c2c;
+  --ink:#030816;--navy:#060f2c;--panel:rgba(13,20,38,.5);--panel-solid:#0b1120;--steel:#151c2c;
   --line:rgba(140,170,255,.11);--line2:rgba(140,170,255,.26);--line3:rgba(140,170,255,.4);
   --blue:#1c39bb;--electric:#5ee0ff;--amber:#ffb648;--alert:#ef4a5a;--good:#6be08a;
   --paper:#eef2fb;--dim:rgba(238,242,251,.62);--faint:rgba(238,242,251,.34);
   --disp:'Syne',sans-serif;--ui:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --myth:#c9b8ff;--cosmos:#5ee0ff;--eco:#8de8b0;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;overflow-x:hidden;width:100%;}
@@ -28,9 +28,6 @@ body{background:var(--ink);color:var(--paper);font-family:var(--ui);font-size:17
 @keyframes pageIn{to{opacity:1;}}
 @media (hover:none),(pointer:coarse){body{cursor:auto;}}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important;}}
-.btn:active,.rail-btn:active,.menu-trigger:active{transform:scale(.94);}
-.world-card,.g-card,.voice-card{transition:background .35s,border-color .35s,transform .35s;}
-#scrollProgress{position:fixed;top:34px;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--electric));width:0%;z-index:91;transition:width .12s linear;}
 a{color:inherit;text-decoration:none;} img{max-width:100%;display:block;} ul,ol{list-style:none;}
 ::selection{background:rgba(28,57,187,.4);color:#fff;}
 button{font:inherit;}
@@ -47,61 +44,66 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 @media (hover:none),(pointer:coarse){.reticle{display:none;}}
 
 .wrap{max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,72px);position:relative;z-index:3;}
-.glass{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);background:rgba(16,23,45,.38);border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 40px -12px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);transition:background .4s,border-color .4s,box-shadow .4s,transform .4s;}
-.glass:hover{background:rgba(20,28,54,.5);border-color:rgba(255,255,255,.16);}
+.glass{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);background:rgba(16,23,45,.38);border:1px solid rgba(255,255,255,.08);box-shadow:0 10px 40px -12px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);}
 .eyebrow{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--electric);}
 .eyebrow::before{content:'';width:24px;height:1px;background:linear-gradient(90deg,transparent,var(--electric));}
 .eyebrow.center{justify-content:center;} .eyebrow.center::after{content:'';width:24px;height:1px;background:linear-gradient(90deg,var(--electric),transparent);}
-section{position:relative;z-index:2;padding:120px 0;}
+section{position:relative;z-index:2;padding:110px 0;}
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
 .reveal.in{opacity:1;transform:translateY(0);}
 
-/* ---------- ticker (replaces navbar) ---------- */
-.ticker-bar{position:fixed;top:0;left:0;right:0;z-index:90;height:34px;overflow:hidden;backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);background:rgba(3,5,10,.7);border-bottom:1px solid var(--line);display:flex;align-items:center;}
+/* ---------- ticker ---------- */
+.ticker-bar{position:fixed;top:0;left:0;right:0;z-index:90;height:32px;overflow:hidden;backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);background:rgba(3,8,22,.7);border-bottom:1px solid var(--line);display:flex;align-items:center;}
 .ticker-track{display:flex;white-space:nowrap;animation:tickerScroll 34s linear infinite;}
-.ticker-track span{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);padding:0 26px;display:inline-flex;align-items:center;gap:10px;}
+.ticker-track span{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);padding:0 24px;display:inline-flex;align-items:center;gap:10px;}
 .ticker-track span i{width:4px;height:4px;border-radius:50%;background:var(--electric);display:inline-block;}
 @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+#scrollProgress{position:fixed;top:32px;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--electric));width:0%;z-index:91;transition:width .12s linear;}
 
-/* ---------- brand mark ---------- */
-.mark{position:fixed;top:50px;left:clamp(16px,5vw,72px);z-index:80;display:flex;align-items:center;gap:12px;}
-.mark-glyph{position:relative;width:118px;height:36px;flex-shrink:0;}
-.mark-glyph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;}
-.mark-glyph svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
-.mark-word{font-family:var(--mono);font-weight:400;font-size:8px;letter-spacing:.3em;color:var(--faint);display:none;}
-@media (min-width:560px){.mark-word{display:block;}}
+/* ================= TOPBAR — curved floating navbar ================= */
+.topbar{position:fixed;top:44px;left:50%;transform:translateX(-50%);z-index:96;width:min(94vw,1180px);border-radius:24px;backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);background:rgba(8,12,26,.72);border:1px solid var(--line2);box-shadow:0 14px 44px -16px rgba(0,0,0,.65);transition:background .3s,box-shadow .3s;}
+.topbar.scrolled{background:rgba(6,9,20,.9);}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 12px 9px 14px;}
+.tb-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.tb-logo-stack{display:flex;flex-direction:column;gap:2px;}
+.tb-cell{width:28px;height:20px;border-radius:5px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:10px;border:1px solid var(--line3);}
+.tb-cell[data-el="cr"]{color:#8fd8ff;background:rgba(28,57,187,.2);}
+.tb-cell[data-el="es"]{color:#5ee0ff;background:rgba(28,57,187,.2);}
+.tb-cell[data-el="co"]{color:#3f7fe0;background:rgba(28,57,187,.2);}
+.tb-words{display:none;font-family:var(--disp);font-weight:700;font-size:.72rem;letter-spacing:.02em;color:var(--dim);white-space:nowrap;}
+.tb-words b{color:var(--paper);}
+@media (min-width:460px){.tb-words{display:block;}}
+.tb-tabs{display:none;gap:2px;align-items:center;}
+.tb-tabs a{font-family:var(--ui);font-weight:600;font-size:13px;color:var(--dim);padding:9px 14px;border-radius:14px;transition:color .25s,background .25s;white-space:nowrap;}
+.tb-tabs a:hover{color:var(--paper);background:rgba(94,224,255,.08);}
+.tb-tabs a.active{color:var(--ink);background:var(--electric);}
+.tb-bar-btn{display:flex;flex-direction:column;gap:4px;width:40px;height:40px;align-items:center;justify-content:center;border-radius:12px;border:1px solid var(--line2);background:transparent;cursor:pointer;flex-shrink:0;transition:border-color .3s,background .3s;}
+.tb-bar-btn:hover{border-color:var(--electric);background:rgba(94,224,255,.06);}
+.tb-bar-btn:active{transform:scale(.93);}
+.tb-bar-btn span{width:18px;height:2px;background:var(--paper);border-radius:2px;transition:transform .3s,opacity .3s;}
+.tb-bar-btn.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.tb-bar-btn.open span:nth-child(2){opacity:0;}
+.tb-bar-btn.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+@media (min-width:981px){.tb-tabs{display:flex;} .tb-bar-btn{display:none;}}
+@media (max-width:980px){.topbar{top:40px;border-radius:20px;}}
+@media (max-width:420px){.tb-words{display:none;}}
 
-/* ---------- menu trigger ---------- */
-.menu-trigger{position:fixed;bottom:26px;right:26px;z-index:95;width:62px;height:62px;border-radius:50%;border:1px solid var(--line3);background:rgba(7,12,26,.72);backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:border-color .3s,transform .3s;}
-.menu-trigger:hover{border-color:var(--electric);transform:scale(1.06);}
-.menu-trigger span{width:19px;height:2px;background:var(--paper);transition:transform .35s,opacity .35s;}
-.menu-trigger .mt-label{position:absolute;bottom:-22px;font-family:var(--mono);font-size:8px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;}
-.menu-trigger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.menu-trigger.open span:nth-child(2){opacity:0;}
-.menu-trigger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.menu-ring{position:absolute;inset:-1px;border-radius:50%;border:1px solid transparent;border-top-color:var(--electric);animation:ringspin 6s linear infinite;opacity:.6;}
-@keyframes ringspin{to{transform:rotate(360deg);}}
-
-/* ---------- overlay nav ---------- */
-.overlay-nav{position:fixed;inset:0;z-index:200;background:rgba(3,5,10,.98);clip-path:circle(2% at calc(100% - 58px) calc(100% - 58px));transition:clip-path .7s cubic-bezier(.7,0,.2,1);pointer-events:none;}
-.overlay-nav.open{clip-path:circle(150% at calc(100% - 58px) calc(100% - 58px));pointer-events:all;}
+/* ---------- overlay nav (mobile "bar" menu) ---------- */
+.overlay-nav{position:fixed;inset:0;z-index:200;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(3,6,14,.96);clip-path:circle(2% at calc(100% - 46px) 60px);transition:clip-path .7s cubic-bezier(.7,0,.2,1);pointer-events:none;}
+.overlay-nav.open{clip-path:circle(150% at calc(100% - 46px) 60px);pointer-events:all;}
 .overlay-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.5;}
-.overlay-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:100px clamp(24px,7vw,110px);max-width:1400px;margin:0 auto;overflow-y:auto;}
-.overlay-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;margin-bottom:auto;padding-bottom:34px;}
-.overlay-clock{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.14em;}
-.overlay-clock b{display:block;font-size:22px;color:var(--electric);font-weight:500;margin-top:4px;}
+.overlay-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding:110px clamp(24px,7vw,110px) 40px;max-width:1000px;margin:0 auto;overflow-y:auto;}
+.overlay-clock{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.14em;margin-bottom:30px;}
+.overlay-clock b{display:inline-block;margin-left:10px;font-size:15px;color:var(--electric);font-weight:500;}
 .overlay-links{display:flex;flex-direction:column;gap:0;}
-.overlay-links a{display:flex;align-items:baseline;gap:22px;font-family:var(--disp);font-weight:700;font-size:clamp(1.9rem,6vw,4rem);color:var(--faint);padding:9px 0;border-bottom:1px solid var(--line);transition:color .35s,padding .35s;}
+.overlay-links a{display:flex;align-items:baseline;gap:20px;font-family:var(--disp);font-weight:700;font-size:clamp(1.7rem,7vw,2.6rem);color:var(--faint);padding:12px 0;border-bottom:1px solid var(--line);transition:color .35s,padding .35s;}
 .overlay-links a small{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:400;letter-spacing:.1em;}
-.overlay-links a:hover,.overlay-links a.active{color:var(--paper);padding-left:14px;}
+.overlay-links a:hover,.overlay-links a.active{color:var(--paper);padding-left:12px;}
 .overlay-links a:hover small,.overlay-links a.active small{color:var(--electric);}
-.overlay-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:36px;padding-top:26px;border-top:1px solid var(--line);}
-.overlay-bottom .ob-col span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-bottom:8px;}
+.overlay-bottom{display:flex;flex-direction:column;gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line);}
+.overlay-bottom .ob-col span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-bottom:6px;}
 .overlay-bottom .ob-col a,.overlay-bottom .ob-col p{color:var(--dim);font-size:.92rem;}
-.overlay-close{position:absolute;top:50px;right:clamp(16px,5vw,72px);font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--faint);}
-@media (max-width:720px){.overlay-links a{font-size:2rem;gap:12px;} .overlay-inner{padding:110px 22px 40px;}}
 
-/* ---------- buttons ---------- */
 .btn{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;padding:16px 30px;border:1px solid var(--line3);position:relative;display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--paper);cursor:pointer;transition:all .3s;}
 .btn::before,.btn::after{content:'';position:absolute;width:8px;height:8px;border-color:var(--electric);opacity:0;transition:opacity .3s;}
 .btn::before{top:-1px;left:-1px;border-top:1px solid;border-left:1px solid;}
@@ -109,54 +111,94 @@ section{position:relative;z-index:2;padding:120px 0;}
 .btn:hover::before,.btn:hover::after{opacity:1;}
 .btn-solid{background:var(--blue);border-color:var(--blue);color:#fff;}
 .btn-solid:hover{box-shadow:0 0 34px rgba(28,57,187,.5);}
-.btn-ghost:hover{border-color:var(--electric);color:var(--electric);}
+.btn-ghost:hover{border-color:var(--electric);color:var(--electric);background:rgba(94,224,255,.06);}
 .btn .arrow{transition:transform .3s;} .btn:hover .arrow{transform:translateX(4px);}
+.btn:active{transform:scale(.96);}
 
 /* ============ HERO ============ */
-.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:130px;padding-bottom:60px;overflow:hidden;}
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:150px;padding-bottom:60px;overflow:hidden;}
 .hero-backdrop{position:absolute;inset:0;z-index:0;}
 .hero-backdrop img{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.2;filter:saturate(1.1) contrast(1.05);}
 .hero-backdrop::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--ink) 0%,rgba(3,5,10,.5) 32%,rgba(3,5,10,.72) 68%,var(--ink) 100%);}
 canvas#net{position:absolute;inset:0;z-index:1;}
-.hero-inner{position:relative;z-index:3;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;}
-.hero-core-visual{position:relative;aspect-ratio:1;max-width:460px;justify-self:center;opacity:0;animation:fadeIn 1.2s .5s cubic-bezier(.16,1,.3,1) forwards;}
-.hero-core-visual svg{width:100%;height:100%;}
-@keyframes fadeIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
-@media (max-width:980px){.hero-inner{grid-template-columns:1fr;} .hero-core-visual{max-width:280px;order:-1;margin-bottom:10px;}}
+.hero-inner{
+  position:relative;z-index:3;display:grid;gap:10px 44px;
+  grid-template-columns:1.15fr .85fr;
+  grid-template-areas:"eyebrow logo" "headline logo" "tag logo" "ctas logo" "strip logo";
+  align-items:start;
+}
+.hero-inner>.eyebrow-slot{grid-area:eyebrow;align-self:end;}
+.hero-inner>.headline-slot{grid-area:headline;}
+.hero-inner>.tag-slot{grid-area:tag;}
+.hero-inner>.ctas-slot{grid-area:ctas;}
+.hero-inner>.strip-slot{grid-area:strip;}
+.hero-inner>.logo-slot{grid-area:logo;align-self:center;justify-self:center;}
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;grid-template-areas:"eyebrow" "logo" "headline" "tag" "ctas" "strip";gap:24px;}
+  .hero-inner>.logo-slot{justify-self:flex-start;}
+}
 
-.decode-eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--electric);display:inline-flex;align-items:center;gap:14px;opacity:0;animation:fadeUpSimple .8s .1s forwards;}
+.decode-eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--electric);display:inline-flex;align-items:center;gap:14px;}
 .decode-eyebrow::before{content:'';width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--electric));}
-@keyframes fadeUpSimple{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-h1.decode{font-family:var(--disp);font-weight:800;font-size:clamp(2rem,9.2vw,6.2rem);line-height:1.05;letter-spacing:0;margin-top:18px;max-width:100%;word-break:keep-all;overflow-wrap:normal;}
+h1.decode{font-family:var(--disp);font-weight:800;font-size:clamp(2rem,9.2vw,6.2rem);line-height:1.05;letter-spacing:0;max-width:100%;word-break:keep-all;overflow-wrap:normal;}
 h1.decode .ln{display:block;overflow:visible;white-space:nowrap;max-width:100%;}
-@media (max-width:420px){h1.decode{font-size:clamp(1.7rem,10.8vw,2.4rem);}}
 h1.decode .ln.b .mc{background:linear-gradient(120deg,var(--electric),var(--blue) 65%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
 h1.decode .mc{display:inline-block;opacity:0;filter:blur(6px);transform:translateY(14px);animation:materialize .7s cubic-bezier(.16,1,.3,1) forwards;}
 @keyframes materialize{to{opacity:1;filter:blur(0);transform:translateY(0);}}
+@media (max-width:420px){h1.decode{font-size:clamp(1.7rem,10.8vw,2.4rem);}}
 
-.hero-tag{font-family:var(--ui);font-weight:500;font-size:clamp(1rem,2.1vw,1.32rem);color:var(--dim);margin-top:24px;max-width:600px;opacity:0;animation:fadeUpSimple .8s .9s forwards;}
+.hero-tag{font-family:var(--ui);font-weight:500;font-size:clamp(1rem,2.1vw,1.32rem);color:var(--dim);max-width:600px;}
 .hero-tag b{color:var(--paper);font-weight:600;}
-.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-top:38px;opacity:0;animation:fadeUpSimple .8s 1.05s forwards;}
-
-.hero-strip{margin-top:clamp(44px,7vw,76px);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:18px 0;display:flex;flex-wrap:wrap;gap:0;opacity:0;animation:fadeUpSimple .8s 1.2s forwards;}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+.hero-strip{border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:18px 0;display:flex;flex-wrap:wrap;gap:0;}
 .hs-item{padding:6px 24px;border-right:1px solid var(--line);}
 .hs-item:last-child{border-right:none;}
 .hs-item span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);}
 .hs-item b{display:block;font-family:var(--disp);font-weight:700;font-size:1.15rem;color:var(--electric);margin-top:5px;}
 @media (max-width:640px){.hs-item{padding:6px 14px 6px 0;border-right:none;}}
 
+/* ---------- the interactive Cr/Es/Co lockup: paired rows ---------- */
+.logo-lockup{display:block;}
+.hlr-row{display:flex;align-items:center;gap:16px;margin-bottom:clamp(8px,1.6vw,14px);}
+.hlr-row:last-child{margin-bottom:0;}
+.hlogo-cell{position:relative;width:clamp(64px,8vw,84px);height:clamp(84px,10.5vw,104px);cursor:pointer;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.22,1,.36,1);flex-shrink:0;}
+.hlogo-cell.flipped{transform:rotateY(180deg);}
+.hlogo-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;border:1px solid var(--line3);overflow:hidden;display:flex;flex-direction:column;}
+.hlogo-front{background:linear-gradient(160deg,rgba(16,23,42,.94),rgba(3,6,14,.98));padding:6px 7px;justify-content:space-between;}
+.hlogo-front::before{content:'';position:absolute;inset:0;opacity:.65;background:radial-gradient(circle at 30% 20%,var(--cell-glow),transparent 65%);pointer-events:none;}
+.hlogo-mass-row{display:flex;justify-content:flex-end;font-family:var(--mono);font-size:clamp(7.5px,1vw,9.5px);color:var(--faint);position:relative;z-index:1;}
+.hlogo-num-row{display:flex;justify-content:flex-start;margin-top:auto;font-family:var(--mono);font-size:clamp(7.5px,1vw,9.5px);color:var(--faint);position:relative;z-index:1;}
+.hlogo-sym{flex:1;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:clamp(1.5rem,3.8vw,2.1rem);color:var(--paper);position:relative;z-index:1;text-shadow:0 0 18px var(--cell-glow);}
+.hlogo-back{transform:rotateY(180deg);background:radial-gradient(circle,rgba(16,23,42,.98),rgba(3,6,14,.99));align-items:center;justify-content:center;}
+.hlogo-orbit-svg{width:84%;height:84%;}
+.hlogo-cell[data-el="cr"]{--cell-glow:rgba(143,216,255,.5);}
+.hlogo-cell[data-el="es"]{--cell-glow:rgba(94,224,255,.45);}
+.hlogo-cell[data-el="co"]{--cell-glow:rgba(63,127,224,.5);}
+.llt-line{font-family:var(--disp);font-weight:700;font-size:clamp(1.15rem,2.8vw,1.65rem);color:var(--dim);white-space:nowrap;}
+.llt-line b{color:var(--paper);}
+.hlr-row[data-el="cr"] .llt-line b{color:#8fd8ff;}
+.hlr-row[data-el="es"] .llt-line b{color:var(--electric);}
+.hlr-row[data-el="co"] .llt-line b{color:#3f7fe0;}
+.logo-lockup-hint{margin-top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;}
+
 /* ============ MARQUEE ============ */
 .marquee-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;overflow:hidden;background:var(--navy);}
 .marquee-track{display:flex;white-space:nowrap;animation:marq 26s linear infinite;}
 .marquee-track span{font-family:var(--disp);font-weight:700;font-size:clamp(1.4rem,3.4vw,2.2rem);color:var(--faint);padding:0 34px;display:flex;align-items:center;gap:22px;}
-.marquee-track span em{font-style:normal;color:var(--paper);}
 .marquee-track span i{width:8px;height:8px;border-radius:50%;background:var(--electric);}
 @keyframes marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
+/* ============ ANNOUNCEMENTS ============ */
+.announce-list{display:flex;flex-direction:column;gap:16px;max-width:800px;margin:0 auto;}
+.announce-card{border-radius:10px;padding:24px 26px;border-left:3px solid var(--electric);}
+.announce-card h4{font-family:var(--disp);font-weight:700;font-size:1.1rem;}
+.announce-card .ac-body{color:var(--dim);margin-top:10px;line-height:1.8;font-size:.95rem;}
+.announce-card .ac-body p+p{margin-top:12px;}
+
 /* ============ SIGNAL ============ */
 .signal{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center;}
-.signal-visual{position:relative;aspect-ratio:1;border:1px solid var(--line2);background:radial-gradient(circle at 50% 50%,rgba(28,57,187,.1),transparent 70%);}
+.signal-visual{position:relative;aspect-ratio:1;border:1px solid var(--line2);background:radial-gradient(circle at 50% 50%,rgba(28,57,187,.1),transparent 70%);border-radius:10px;overflow:hidden;}
 .signal-visual svg{width:100%;height:100%;}
 .signal-copy .section-title{font-family:var(--disp);font-weight:800;font-size:clamp(1.9rem,4.4vw,3.1rem);line-height:1.06;margin-top:18px;}
 .signal-copy .section-title em{font-style:normal;color:var(--blue);}
@@ -177,7 +219,6 @@ h1.decode .mc{display:inline-block;opacity:0;filter:blur(6px);transform:translat
 .world-card:hover{transform:translateY(-8px);box-shadow:0 24px 50px -20px rgba(28,57,187,.5);border-color:var(--line3);}
 .world-card .wc-bg{position:absolute;inset:0;z-index:0;opacity:.55;transition:opacity .5s,transform 8s linear;}
 .world-card:hover .wc-bg{opacity:.8;transform:scale(1.08);}
-.world-card .wc-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;}
 .world-card>*:not(.wc-bg){position:relative;z-index:1;}
 .world-card[data-w="myth"] .wc-bg{background:radial-gradient(circle at 30% 20%,rgba(201,184,255,.22),transparent 55%),repeating-conic-gradient(from 0deg at 70% 80%,rgba(201,184,255,.06) 0deg 8deg,transparent 8deg 26deg),radial-gradient(circle at 80% 90%,rgba(255,182,72,.1),transparent 50%);}
 .world-card[data-w="cosmos"] .wc-bg{background:radial-gradient(1.4px 1.4px at 20% 30%,rgba(255,255,255,.7),transparent),radial-gradient(1.4px 1.4px at 70% 60%,rgba(255,255,255,.55),transparent),radial-gradient(1.8px 1.8px at 40% 80%,rgba(255,255,255,.4),transparent),radial-gradient(1.2px 1.2px at 85% 20%,rgba(255,255,255,.5),transparent),radial-gradient(circle at 65% 25%,rgba(94,224,255,.2),transparent 55%),radial-gradient(circle at 20% 85%,rgba(28,57,187,.22),transparent 55%);background-size:160px 160px,190px 190px,150px 150px,170px 170px,auto,auto;}
@@ -189,9 +230,44 @@ h1.decode .mc{display:inline-block;opacity:0;filter:blur(6px);transform:translat
 .world-events li{display:flex;justify-content:space-between;font-size:.85rem;padding:9px 0;border-top:1px solid var(--line);color:var(--dim);}
 .world-events li span{color:var(--faint);font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;}
 .world-card[data-w="myth"] h3{color:#c9b8ff;} .world-card[data-w="cosmos"] h3{color:var(--electric);} .world-card[data-w="eco"] h3{color:#8de8b0;}
-.world-card::before{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:currentColor;transition:width .4s;}
+.world-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:currentColor;transition:width .4s;width:0;}
 .world-card:hover::before{width:100%;}
 @media (max-width:820px){.worlds-grid{grid-template-columns:1fr;}}
+
+/* ============ EVENTS AUTO-CAROUSEL ============ */
+.ec-head{margin-bottom:40px;}
+.ec-head .section-title{font-family:var(--disp);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);margin-top:14px;}
+.ec-head .section-title em{font-style:normal;color:var(--blue);}
+.ec-stage{position:relative;border-radius:14px;border:1px solid var(--line2);overflow:hidden;min-height:340px;}
+.ec-bg-layer{position:absolute;inset:0;opacity:0;transition:opacity 1s ease;z-index:0;}
+.ec-bg-layer.active{opacity:1;}
+.ec-bg-layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.34;}
+.ec-bg-layer::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(3,8,22,.92) 0%,rgba(3,8,22,.55) 55%,rgba(3,8,22,.3) 100%);}
+.ec-bg-layer.myth{background:radial-gradient(circle at 25% 20%,rgba(201,184,255,.18),transparent 55%),repeating-conic-gradient(from 0deg at 75% 80%,rgba(201,184,255,.05) 0deg 8deg,transparent 8deg 26deg),var(--ink);}
+.ec-bg-layer.cosmos{background:radial-gradient(1.4px 1.4px at 20% 30%,rgba(255,255,255,.6),transparent),radial-gradient(1.4px 1.4px at 70% 60%,rgba(255,255,255,.5),transparent),radial-gradient(circle at 65% 25%,rgba(94,224,255,.18),transparent 55%),var(--ink);background-size:150px 150px,180px 180px,auto,auto;}
+.ec-bg-layer.eco{background:radial-gradient(circle at 25% 20%,rgba(141,232,176,.16),transparent 55%),repeating-linear-gradient(58deg,rgba(141,232,176,.045) 0 2px,transparent 2px 34px),var(--ink);}
+.ec-slides{position:relative;z-index:2;}
+.ec-slide{display:none;padding:clamp(30px,5vw,54px);align-items:center;gap:32px;flex-wrap:wrap;}
+.ec-slide.active{display:flex;animation:fadeUpSimple .5s ease both;}
+@keyframes fadeUpSimple{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.ec-slide-icon{width:74px;height:74px;border-radius:50%;border:1.5px solid var(--line3);overflow:hidden;position:relative;flex-shrink:0;display:grid;place-items:center;background:rgba(255,255,255,.03);}
+.ec-slide-icon img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2;background:var(--panel-solid);}
+.ec-slide-icon svg{position:relative;z-index:1;}
+.ec-slide-body{flex:1;min-width:220px;}
+.ec-slide-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;}
+.ec-slide-title{font-family:var(--disp);font-weight:800;font-size:clamp(1.5rem,3.4vw,2.2rem);margin-top:10px;}
+.ec-slide-sub{color:var(--dim);margin-top:4px;font-size:.95rem;}
+.ec-slide-desc{color:var(--dim);margin-top:14px;line-height:1.7;font-size:.92rem;max-width:520px;}
+.ec-slide-more{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;transition:gap .3s;}
+.ec-slide-more:hover{gap:12px;}
+.ec-controls{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:16px;padding:0 24px 26px;}
+.ec-arrow{width:38px;height:38px;border-radius:50%;border:1px solid var(--line3);background:rgba(0,0,0,.2);color:var(--paper);display:grid;place-items:center;cursor:pointer;transition:border-color .25s,background .25s,transform .2s;flex-shrink:0;}
+.ec-arrow:hover{border-color:var(--electric);background:rgba(94,224,255,.1);}
+.ec-arrow:active{transform:scale(.9);}
+.ec-dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+.ec-dot{width:7px;height:7px;border-radius:50%;background:var(--faint);cursor:pointer;transition:background .3s,transform .3s;}
+.ec-dot.active{background:var(--electric);transform:scale(1.5);}
+.ec-view-all{text-align:center;margin-top:30px;}
 
 /* ============ ARCHIVE ============ */
 .archive-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:44px;}
@@ -213,7 +289,7 @@ h1.decode .mc{display:inline-block;opacity:0;filter:blur(6px);transform:translat
 .rail-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--line3);background:transparent;color:var(--paper);display:grid;place-items:center;cursor:pointer;transition:border-color .25s,background .25s;}
 .rail-btn:hover{border-color:var(--electric);background:rgba(94,224,255,.07);}
 
-/* ============ T-MINUS ============ */
+/* ============ COUNTDOWN ============ */
 .tminus-band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--navy);}
 .tminus-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:30px;padding:60px 0;}
 .tminus-label span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;}
@@ -243,23 +319,6 @@ h1.decode .mc{display:inline-block;opacity:0;filter:blur(6px);transform:translat
 .help-band h3{font-family:var(--disp);font-weight:800;font-size:clamp(1.3rem,2.6vw,1.8rem);}
 .help-band p{color:var(--dim);margin-top:10px;max-width:480px;}
 
-/* ============ CHECKLIST ============ */
-.checklist-panel{backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border:1px dashed var(--line3);border-radius:8px;background:rgba(9,14,28,.4);padding:clamp(26px,5vw,44px);}
-.checklist-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:24px;}
-.checklist-head h3{font-family:var(--disp);font-weight:700;font-size:1.3rem;}
-.checklist-progress{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.1em;}
-.checklist-progress b{color:var(--electric);}
-.checklist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
-.check-row{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--line);background:rgba(4,6,12,.4);font-family:var(--mono);font-size:11.5px;}
-.check-row .cbox{width:16px;height:16px;border:1px solid var(--line3);flex-shrink:0;margin-top:2px;position:relative;transition:border-color .25s,background .25s;}
-.check-row.done .cbox{background:var(--good);border-color:var(--good);}
-.check-row.done .cbox::after{content:'';position:absolute;left:3px;top:0px;width:4px;height:8px;border:solid var(--ink);border-width:0 2px 2px 0;transform:rotate(45deg);}
-.check-row .ct{color:var(--dim);}
-.check-row .ct code{color:var(--electric);}
-.check-row.done .ct{color:var(--faint);text-decoration:line-through;}
-.check-row .cd{display:block;color:var(--faint);font-size:10px;margin-top:3px;}
-.checklist-note{margin-top:20px;color:var(--faint);font-size:.85rem;font-family:var(--ui);}
-
 footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-index:2;}
 .foot-top{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:40px;padding-bottom:50px;}
 .foot-brand-word{font-family:var(--disp);font-weight:800;font-size:1.6rem;}
@@ -279,51 +338,37 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
 <div class="grain"></div>
 <div class="reticle" id="reticle"></div>
 
-<div class="ticker-bar">
-  <div class="ticker-track" id="tickerTrack">
-    <span><i></i>DPS MEGACITY PRESENTS</span>
-    <span><i></i>CRESCO SCIENTIAM 5.0</span>
-    <span><i></i>25&ndash;26 SEPTEMBER 2026</span>
-    <span><i></i>THREE THEME-WORLDS &middot; TWELVE EVENTS</span>
-    <span><i></i>BEYOND THE HORIZON</span>
-    <span><i></i>DPS MEGACITY PRESENTS</span>
-    <span><i></i>CRESCO SCIENTIAM 5.0</span>
-    <span><i></i>25&ndash;26 SEPTEMBER 2026</span>
-    <span><i></i>THREE THEME-WORLDS &middot; TWELVE EVENTS</span>
-    <span><i></i>BEYOND THE HORIZON</span>
-  </div>
-</div>
-
+<div class="ticker-bar"><div class="ticker-track" id="tickerTrack"></div></div>
 <div id="scrollProgress"></div>
 
-<a href="index.html" class="mark" aria-label="Cresco Scientiam — Home">
-  <span class="mark-glyph">
-    <img src="assets/logo-mark.png" alt="" onerror="this.style.display='none'">
-    <svg viewBox="0 0 118 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="1" width="34" height="34" rx="3" fill="rgba(28,57,187,.14)" stroke="#5ee0ff" stroke-width="1"/>
-      <text x="18" y="24" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="#5ee0ff" text-anchor="middle">Cr</text>
-      <rect x="42" y="1" width="34" height="34" rx="3" fill="rgba(201,184,255,.1)" stroke="rgba(201,184,255,.65)" stroke-width="1"/>
-      <text x="59" y="24" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="#c9b8ff" text-anchor="middle">Es</text>
-      <rect x="83" y="1" width="34" height="34" rx="3" fill="rgba(255,131,144,.1)" stroke="rgba(255,131,144,.65)" stroke-width="1"/>
-      <text x="100" y="24" font-family="IBM Plex Mono" font-weight="700" font-size="15" fill="#ff8390" text-anchor="middle">Co</text>
-    </svg>
-  </span>
-  <span class="mark-word">SCIENTIAM &middot; MISSION 5.0</span>
-</a>
-
-<button class="menu-trigger" id="menuTrigger" aria-label="Open menu" aria-expanded="false">
-  <span class="menu-ring"></span><span></span><span></span><span></span>
-  <span class="mt-label">Menu</span>
-</button>
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="tb-brand">
+      <span class="tb-logo-stack">
+        <span class="tb-cell" data-el="cr">Cr</span>
+        <span class="tb-cell" data-el="es">Es</span>
+        <span class="tb-cell" data-el="co">Co</span>
+      </span>
+      <span class="tb-words"><b>Cresco</b> Scientiam 5.0</span>
+    </a>
+    <nav class="tb-tabs">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="team.html">Team</a>
+      <a href="events.html">Events</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="sponsors.html">Sponsors</a>
+      <a href="help.html">Help</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="tb-bar-btn" id="menuTrigger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
 <nav class="overlay-nav" id="overlayNav">
   <div class="overlay-grid"></div>
-  <span class="overlay-close">ESC TO CLOSE</span>
   <div class="overlay-inner">
-    <div class="overlay-top">
-      <div class="overlay-clock"><span>LOCAL TIME &middot; IST</span><b id="overlayClock">00:00:00</b></div>
-      <div class="overlay-clock" style="text-align:right;"><span>MISSION STATUS</span><b id="overlayCountdownMini">T&minus; --D</b></div>
-    </div>
+    <div class="overlay-clock">LOCAL TIME &middot; IST<b id="overlayClock">00:00:00</b></div>
     <div class="overlay-links">
       <a href="index.html" class="active"><small>01</small>Home</a>
       <a href="about.html"><small>02</small>About</a>
@@ -338,7 +383,6 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
       <div class="ob-col"><span>Presented By</span><p>DPS Megacity, Kolkata</p></div>
       <div class="ob-col"><span>Email</span><a href="mailto:crescoscientiam@dpsmegacity.in">crescoscientiam@dpsmegacity.in</a></div>
       <div class="ob-col"><span>Social</span><a href="https://www.instagram.com/cresco_2026/" target="_blank" rel="noopener">@cresco_2026</a></div>
-      <div class="ob-col"><span>Dates</span><p>25&ndash;26 Sept 2026</p></div>
     </div>
   </div>
 </nav>
@@ -346,42 +390,65 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
 <main>
   <!-- ============ HERO ============ -->
   <section class="hero" id="home">
-    <div class="hero-backdrop">
-      <img src="assets/hero-backdrop.jpg" alt="" onerror="this.style.display='none'">
-    </div>
+    <div class="hero-backdrop"><img id="heroBackdropImg" src="" alt="" style="display:none;"></div>
     <canvas id="net"></canvas>
     <div class="wrap">
       <div class="hero-inner">
-        <div>
-          <span class="decode-eyebrow">Delhi Public School Megacity, Kolkata Presents</span>
+        <div class="eyebrow-slot"><span class="decode-eyebrow">Delhi Public School Megacity, Kolkata Presents</span></div>
+
+        <div class="logo-slot">
+          <div class="logo-lockup" id="heroLogoStack">
+            <div class="hlr-row" data-el="cr">
+              <div class="hlogo-cell" data-el="cr" tabindex="0" role="button" aria-label="Cr — Create. Tap to view electron shells.">
+                <div class="hlogo-face hlogo-front"><div class="hlogo-mass-row">51.9</div><div class="hlogo-sym">Cr</div><div class="hlogo-num-row">24</div></div>
+                <div class="hlogo-face hlogo-back"><svg viewBox="0 0 120 120" class="hlogo-orbit-svg" data-shells="2,8,13,1" data-color="#8fd8ff"></svg></div>
+              </div>
+              <div class="llt-line"><b>Cr</b>eate</div>
+            </div>
+            <div class="hlr-row" data-el="es">
+              <div class="hlogo-cell" data-el="es" tabindex="0" role="button" aria-label="Es — Establish. Tap to view electron shells.">
+                <div class="hlogo-face hlogo-front"><div class="hlogo-mass-row">252</div><div class="hlogo-sym">Es</div><div class="hlogo-num-row">99</div></div>
+                <div class="hlogo-face hlogo-back"><svg viewBox="0 0 120 120" class="hlogo-orbit-svg" data-shells="2,8,18,32,25,8,2" data-color="#5ee0ff"></svg></div>
+              </div>
+              <div class="llt-line"><b>Es</b>tablish</div>
+            </div>
+            <div class="hlr-row" data-el="co">
+              <div class="hlogo-cell" data-el="co" tabindex="0" role="button" aria-label="Co — Compete. Tap to view electron shells.">
+                <div class="hlogo-face hlogo-front"><div class="hlogo-mass-row">58.9</div><div class="hlogo-sym">Co</div><div class="hlogo-num-row">27</div></div>
+                <div class="hlogo-face hlogo-back"><svg viewBox="0 0 120 120" class="hlogo-orbit-svg" data-shells="2,8,15,2" data-color="#3f7fe0"></svg></div>
+              </div>
+              <div class="llt-line"><b>Co</b>mpete</div>
+            </div>
+          </div>
+          <p class="logo-lockup-hint">Tap a cell to decode</p>
+        </div>
+
+        <div class="headline-slot">
           <h1 class="decode">
             <span class="ln" data-text="CRESCO"></span>
             <span class="ln b" data-text="SCIENTIAM"></span>
           </h1>
-          <p class="hero-tag">Create. Establish. Compete. <b>Beyond the Horizon</b> is where DPS Megacity's brightest minds turn ideas into arenas — twelve events, three theme-worlds, two days, one signal.</p>
+        </div>
+        <div class="tag-slot"><p class="hero-tag">Create. Establish. Compete. <b>Beyond the Horizon</b> is where DPS Megacity's brightest minds turn ideas into arenas — twelve events, three theme-worlds, two days, one signal.</p></div>
+        <div class="ctas-slot">
           <div class="hero-ctas">
             <a href="events.html" class="btn btn-solid">Browse Events <span class="arrow">&rarr;</span></a>
             <a href="about.html" class="btn btn-ghost">Read The Brief</a>
           </div>
-          <div class="hero-strip">
-            <div class="hs-item"><span>Edition</span><b>05.0</b></div>
-            <div class="hs-item"><span>Events</span><b>12</b></div>
-            <div class="hs-item"><span>Worlds</span><b>03</b></div>
-            <div class="hs-item"><span>Duration</span><b>2 Days</b></div>
-            <div class="hs-item"><span>Dates</span><b>25&ndash;26 Sept</b></div>
-          </div>
         </div>
-        <div class="hero-core-visual"><svg viewBox="0 0 300 300" id="heroOrbit"></svg></div>
+        <div class="strip-slot"><div class="hero-strip" id="heroStrip"></div></div>
       </div>
     </div>
   </section>
 
-  <div class="marquee-strip">
-    <div class="marquee-track">
-      <span><em>Create.</em> <i></i> <em>Establish.</em> <i></i> <em>Compete.</em> <i></i> Beyond the Horizon <i></i> <em>Create.</em> <i></i> <em>Establish.</em> <i></i> <em>Compete.</em> <i></i> Beyond the Horizon</span>
-      <span><em>Create.</em> <i></i> <em>Establish.</em> <i></i> <em>Compete.</em> <i></i> Beyond the Horizon <i></i> <em>Create.</em> <i></i> <em>Establish.</em> <i></i> <em>Compete.</em> <i></i> Beyond the Horizon</span>
+  <div class="marquee-strip"><div class="marquee-track" id="marqueeTrack"></div></div>
+
+  <section id="announceSection" style="display:none;">
+    <div class="wrap">
+      <div class="worlds-head reveal"><span class="eyebrow">Mission Log</span><h2 class="section-title" style="font-family:var(--disp);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);margin-top:18px;">Announcements</h2></div>
+      <div class="announce-list reveal glass" id="announceList" style="padding:8px;border-radius:10px;"></div>
     </div>
-  </div>
+  </section>
 
   <section>
     <div class="wrap signal">
@@ -408,63 +475,38 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
         <p>Every event this year sits inside one of three theme-worlds. Each has its own rules of engagement — but all of them ask the same question: what have you built, and can you defend it?</p>
       </div>
       <div class="worlds-grid reveal">
-        <a href="events.html" class="world-card" data-w="myth">
-          <span class="wc-bg" aria-hidden="true"></span>
-          <span class="world-idx">WORLD 01</span><h3>Mythology</h3>
-          <p class="wc-desc">Strategy, storytelling and performance drawn from the epics — where an ancient board game sits next to a modern debate stage.</p>
-          <ul class="world-events"><li>Kurukshetra <span>Chess</span></li><li>Chitrakatha <span>Pictionary</span></li><li>Dharmasangram <span>Debate</span></li><li>Swaranjali <span>Music</span></li></ul>
-        </a>
-        <a href="events.html" class="world-card" data-w="cosmos">
-          <span class="wc-bg" aria-hidden="true"></span>
-          <span class="world-idx">WORLD 02</span><h3>Cosmos</h3>
-          <p class="wc-desc">Pure STEM — chemistry as art, forensics as detective work, mathematics as sport, and a quiz that rewards speed of thought.</p>
-          <ul class="world-events"><li>Chromatica <span>Chem Art</span></li><li>Corpus Vestigium <span>Forensics</span></li><li>&pi;&middot;Infinitum <span>Mathlympics</span></li><li>Astra Cognitio <span>Quiz</span></li></ul>
-        </a>
-        <a href="events.html" class="world-card" data-w="eco">
-          <span class="wc-bg" aria-hidden="true"></span>
-          <span class="world-idx">WORLD 03</span><h3>Eco</h3>
-          <p class="wc-desc">Science with a conscience — drama, journalism, genetics and architecture all built around one question: what do we owe the planet?</p>
-          <ul class="world-events"><li>Clamor Naturae <span>Drama</span></li><li>Viridis Vox <span>News Reading</span></li><li>Genesis Nova <span>Genetics</span></li><li>Ventus Lapidum <span>Architecture</span></li></ul>
-        </a>
+        <a href="events.html" class="world-card" data-w="myth"><span class="wc-bg" aria-hidden="true"></span><span class="world-idx">WORLD 01</span><h3>Mythology</h3><p class="wc-desc">Strategy, storytelling and performance drawn from the epics — where an ancient board game sits next to a modern debate stage.</p><ul class="world-events"><li>Kurukshetra <span>Chess</span></li><li>Chitrakatha <span>Pictionary</span></li><li>Dharmasangram <span>Debate</span></li><li>Swaranjali <span>Music</span></li></ul></a>
+        <a href="events.html" class="world-card" data-w="cosmos"><span class="wc-bg" aria-hidden="true"></span><span class="world-idx">WORLD 02</span><h3>Cosmos</h3><p class="wc-desc">Pure STEM — chemistry as art, forensics as detective work, mathematics as sport, and a quiz that rewards speed of thought.</p><ul class="world-events"><li>Chromatica <span>Chem Art</span></li><li>Corpus Vestigium <span>Forensics</span></li><li>&pi;&middot;Infinitum <span>Mathlympics</span></li><li>Astra Cognitio <span>Quiz</span></li></ul></a>
+        <a href="events.html" class="world-card" data-w="eco"><span class="wc-bg" aria-hidden="true"></span><span class="world-idx">WORLD 03</span><h3>Eco</h3><p class="wc-desc">Science with a conscience — drama, journalism, genetics and architecture all built around one question: what do we owe the planet?</p><ul class="world-events"><li>Clamor Naturae <span>Drama</span></li><li>Viridis Vox <span>News Reading</span></li><li>Genesis Nova <span>Genetics</span></li><li>Ventus Lapidum <span>Architecture</span></li></ul></a>
       </div>
     </div>
   </section>
 
   <section>
     <div class="wrap">
-      <div class="archive-head reveal">
-        <div><span class="eyebrow">Flight Recorder</span><h2 class="section-title">Five editions, <em>logged</em>.</h2></div>
-        <div class="rail-controls"><button class="rail-btn" id="railPrev" aria-label="Scroll left">&larr;</button><button class="rail-btn" id="railNext" aria-label="Scroll right">&rarr;</button></div>
+      <div class="ec-head reveal"><span class="eyebrow">The Roster</span><h2 class="section-title">Twelve events, <em>one at a time</em>.</h2></div>
+      <div class="ec-stage reveal">
+        <div class="ec-bg-layer myth active" id="ecBgMyth"></div>
+        <div class="ec-bg-layer cosmos" id="ecBgCosmos"></div>
+        <div class="ec-bg-layer eco" id="ecBgEco"></div>
+        <div class="ec-slides" id="ecSlides"></div>
+        <div class="ec-controls"><button class="ec-arrow" id="ecPrev" aria-label="Previous event">&larr;</button><div class="ec-dots" id="ecDots"></div><button class="ec-arrow" id="ecNext" aria-label="Next event">&rarr;</button></div>
       </div>
-      <div class="gallery-rail reveal" id="galleryRail">
-        <div class="g-card" style="--gc1:#0e1a33;--gc2:#050810;">
-          <div class="g-thumb"><img src="assets/gallery/edition-1.jpg" alt="Cresco Scientiam 1.0" onerror="this.style.display='none'"><span class="g-fallback">1.0</span></div>
-          <div class="g-body"><div class="g-year">2022</div><div class="g-title">First Ignition</div><div class="g-desc">A single-day meet, four events, and the very first Cresco trophy.</div></div>
-        </div>
-        <div class="g-card" style="--gc1:#12203f;--gc2:#050810;">
-          <div class="g-thumb"><img src="assets/gallery/edition-2.jpg" alt="Cresco Scientiam 2.0" onerror="this.style.display='none'"><span class="g-fallback">2.0</span></div>
-          <div class="g-body"><div class="g-year">2023</div><div class="g-title">Widening Orbit</div><div class="g-desc">Eight events and six participating schools joined the roster.</div></div>
-        </div>
-        <div class="g-card" style="--gc1:#1a1440;--gc2:#050810;">
-          <div class="g-thumb"><img src="assets/gallery/edition-3.jpg" alt="Cresco Scientiam 3.0" onerror="this.style.display='none'"><span class="g-fallback">3.0</span></div>
-          <div class="g-body"><div class="g-year">2024</div><div class="g-title">Critical Mass</div><div class="g-desc">Cresco crossed 300 participants for the first time, over two full days.</div></div>
-        </div>
-        <div class="g-card" style="--gc1:#3a1420;--gc2:#050810;">
-          <div class="g-thumb"><img src="assets/gallery/edition-4.jpg" alt="Cresco Scientiam 4.0" onerror="this.style.display='none'"><span class="g-fallback">4.0</span></div>
-          <div class="g-body"><div class="g-year">2025</div><div class="g-title">Escape Velocity</div><div class="g-desc">Twelve events, three theme-worlds — the format Cresco runs on today.</div></div>
-        </div>
-        <div class="g-card" style="--gc1:#12203f;--gc2:#050810;border-color:var(--line3);">
-          <div class="g-thumb"><img src="assets/gallery/edition-5.jpg" alt="Cresco Scientiam 5.0" onerror="this.style.display='none'"><span class="g-fallback">5.0</span></div>
-          <div class="g-body"><div class="g-year">2026</div><div class="g-title">Beyond The Horizon</div><div class="g-desc">This edition. The biggest arena yet — and you're looking right at it.</div></div>
-        </div>
-      </div>
+      <div class="ec-view-all"><a href="events.html" class="btn btn-solid">View All Events <span class="arrow">&rarr;</span></a></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="archive-head reveal"><div><span class="eyebrow">Flight Recorder</span><h2 class="section-title">Five editions, <em>logged</em>.</h2></div><div class="rail-controls"><button class="rail-btn" id="railPrev" aria-label="Scroll left">&larr;</button><button class="rail-btn" id="railNext" aria-label="Scroll right">&rarr;</button></div></div>
+      <div class="gallery-rail reveal" id="galleryRail"></div>
     </div>
   </section>
 
   <section style="padding:0;">
     <div class="tminus-band">
       <div class="wrap tminus-inner">
-        <div class="tminus-label"><span>Ignition Sequence</span><b>T&minus;minus to Cresco Scientiam 5.0</b></div>
+        <div class="tminus-label"><span>Ignition Sequence</span><b>Countdown to Cresco Scientiam 5.0</b></div>
         <div class="tminus-grid" id="countdownGrid" data-target="2026-09-25T08:00:00+05:30">
           <div class="tm-box"><div class="tm-num" id="cd-days">00</div><div class="tm-label">Days</div></div>
           <div class="tm-box"><div class="tm-num" id="cd-hours">00</div><div class="tm-label">Hours</div></div>
@@ -479,9 +521,11 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
     <div class="wrap">
       <div class="worlds-head reveal"><span class="eyebrow">Field Reports</span><h2 class="section-title">What past delegates <em>said</em>.</h2></div>
       <div class="voices-grid reveal">
-        <div class="voice-card"><div class="voice-mark">&ldquo;</div><p class="voice-quote">Corpus Vestigium felt like an actual forensics unit, not a school event. We were still arguing about the evidence on the bus home.</p><div class="voice-who"><span class="voice-avatar">RS</span><div><div class="voice-name">Riya Sen</div><div class="voice-role">Participant, Cosmos &middot; 2025</div></div></div></div>
-        <div class="voice-card"><div class="voice-mark">&ldquo;</div><p class="voice-quote">Dharmasangram is the toughest debate circuit I've competed in outside an actual MUN. The judging panel does not go easy on you.</p><div class="voice-who"><span class="voice-avatar">AK</span><div><div class="voice-name">Arjun Kapadia</div><div class="voice-role">Participant, Mythology &middot; 2024</div></div></div></div>
-        <div class="voice-card"><div class="voice-mark">&ldquo;</div><p class="voice-quote">Cresco is one of the few fests where the science events are actually harder than the creative ones. Genesis Nova humbled our whole team.</p><div class="voice-who"><span class="voice-avatar">TM</span><div><div class="voice-name">Tanvi Mehta</div><div class="voice-role">Team Captain, Eco &middot; 2025</div></div></div></div>
+        <div class="voice-card"><div class="voice-mark">&ldquo;</div><p class="voice-quote">Text Here</p><div class="voice-who"><span class="voice-avatar">RS</span><div><div class="voice-name">Name</div><div class="voice-role">Participant, Cosmos &middot; 2025</div></div></div></div>
+        <div class="voice-card"><div class="voice-mark">&ldquo;</div><p class="voice-quote">Text here
+
+        </p><div class="voice-who"><span class="voice-avatar">AK</span><div><div class="voice-name">Name</div><div class="voice-role">Participant, Mythology &middot; 2024</div></div></div></div>
+        <div class="voice-card"><div class="voice-mark">&ldquo;</div><p class="voice-quote">Text Here</p><div class="voice-who"><span class="voice-avatar">TM</span><div><div class="voice-name">Name</div><div class="voice-role">Team Captain, Eco &middot; 2025</div></div></div></div>
       </div>
     </div>
   </section>
@@ -491,21 +535,6 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
       <div class="help-band reveal">
         <div><span class="eyebrow">Need A Hand?</span><h3 style="margin-top:14px;">Registration doubts, rulebook questions, venue directions —</h3><p>the Help &amp; Support desk has answers to what teams actually ask us, sorted by category, searchable in one box.</p></div>
         <a href="help.html" class="btn btn-solid">Open Help Desk <span class="arrow">&rarr;</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ ASSET PRODUCTION CHECKLIST ============ -->
-  <section>
-    <div class="wrap">
-      <div class="worlds-head reveal"><span class="eyebrow">For The Web Team</span><h2 class="section-title">Image production <em>checklist</em>.</h2><p>This panel lives on the homepage only, for whoever is uploading real photos. Each row checks itself off automatically once the matching file is found at that exact path — nothing to edit by hand. Delete this section once every row is ticked.</p></div>
-      <div class="checklist-panel reveal">
-        <div class="checklist-head">
-          <h3>Site-wide image assets</h3>
-          <div class="checklist-progress"><b id="checkDone">0</b> / <span id="checkTotal">0</span> uploaded</div>
-        </div>
-        <div class="checklist-grid" id="checklistGrid"></div>
-        <p class="checklist-note">Upload each file to the exact path shown (relative to the site root, inside an <code>/assets/</code> folder). Same-named files overwrite automatically — no code changes needed.</p>
       </div>
     </div>
   </section>
@@ -519,163 +548,237 @@ footer{border-top:1px solid var(--line);padding:80px 0 30px;position:relative;z-
       <div class="foot-col"><span>Support</span><a href="help.html">Help &amp; Support</a><a href="contact.html">Contact</a><a href="mailto:crescoscientiam@dpsmegacity.in">Email Us</a></div>
       <div class="foot-col"><span>Elsewhere</span><a href="https://www.instagram.com/cresco_2026/" target="_blank" rel="noopener">Instagram</a><a href="tel:+919830818901">Call Teachers-in-charge</a></div>
     </div>
-    <div class="foot-bottom"><span>&copy; 2026 CRESCO SCIENTIAM &middot; DELHI PUBLIC SCHOOL MEGACITY, KOLKATA</span><span>BEYOND THE HORIZON &middot; MISSION 5.0</span></div>
+    <div class="foot-bottom"><span>&copy; 2026 CRESCO SCIENTIAM &middot; DELHI PUBLIC SCHOOL MEGACITY, KOLKATA</span><span>BEYOND THE HORIZON &middot; MISSION 5.0</span><span>SITE BY AARAV SINHA</span></div>
   </div>
 </footer>
 
 <script>
-/* ================= CUSTOM RETICLE CURSOR ================= */
+const DEFAULT_CONTENT = {
+  ticker: ["DPS MEGACITY PRESENTS","CRESCO SCIENTIAM 5.0","25\u201326 SEPTEMBER 2026","THREE THEME-WORLDS \u00b7 TWELVE EVENTS","BEYOND THE HORIZON"],
+  marquee: ["Create.","Establish.","Compete.","Beyond the Horizon"],
+  heroStats: [{label:"Edition",value:"05.0"},{label:"Events",value:"12"},{label:"Worlds",value:"03"},{label:"Duration",value:"2 Days"},{label:"Dates",value:"25\u201326 Sept"}],
+  heroBackdrop: "hero-backdrop.jpg",
+  announcements: [],
+  events: [
+    {id:"e1",world:"myth",num:"01",slug:"kurukshetra",title:"Kurukshetra",sub:"Chess",icon:"chess",team:"1 (Individual)",dur:"2 hours",venue:"Classroom 12A",logo:"",box:"",
+     desc:"A classical over-the-board chess tournament run on a Swiss-league format across multiple rounds, with tie-breaks decided by Buchholz score.",
+     rules:["Individual event, one participant per school per category.","Standard FIDE rules apply throughout.","Each round is time-controlled \u2014 15 minutes per player.","Electronic devices at the board are strictly prohibited.","Decisions of the arbiter are final and binding."]},
+    {id:"e2",world:"myth",num:"02",slug:"chitrakatha",title:"Chitrakatha",sub:"Pictionary",icon:"brush",team:"2 members",dur:"1.5 hours",venue:"Hall 2",logo:"",box:"",
+     desc:"A mythology-themed Pictionary relay \u2014 one teammate sketches clue words drawn from Indian and world mythology while the other races the clock to guess.",
+     rules:["Teams of exactly two students.","No verbal clues, gestures, letters, or numbers while sketching.","Each correct guess within the time limit earns points.","Highest cumulative score across rounds wins.","Written text on the sketch disqualifies that round."]},
+    {id:"e3",world:"myth",num:"03",slug:"dharmasangram",title:"Dharmasangram",sub:"Debate",icon:"scales",team:"2 members",dur:"3 hours (incl. finals)",venue:"Library",logo:"",box:"",
+     desc:"A structured debate on motions rooted in ethics, mythology and modern dilemmas \u2014 Oxford-style prelims building to a Cambridge-style final.",
+     rules:["Teams of two; roles assigned on the day.","7 minutes per speaker, plus a 2-minute rebuttal round.","Points of Information may be raised after the first minute.","Judged on content, delivery and rebuttal strength.","Top four teams from prelims advance to the final."]},
+    {id:"e4",world:"myth",num:"04",slug:"swaranjali",title:"Swaranjali",sub:"Music",icon:"music",team:"Up to 4 members",dur:"3 hours",venue:"Hall 2",logo:"",box:"",
+     desc:"A solo or group musical performance event celebrating classical, folk and contemporary compositions inspired by mythological themes.",
+     rules:["Solo or group (max 4 members) categories available.","Performance time limit: 5 minutes per act.","Any instrument, vocal, or fusion style is permitted.","Backing tracks must be submitted 24 hours in advance.","Judged on technique, presentation and thematic relevance."]},
+    {id:"e5",world:"cosmos",num:"05",slug:"chromatica",title:"Chromatica",sub:"Chemical Art",icon:"flask",team:"2 members",dur:"2.5 hours",venue:"Classroom 12A",logo:"",box:"",
+     desc:"Teams use chemical reactions, indicators and controlled reagents to build visual art on canvas \u2014 chemistry as the medium, not just the subject.",
+     rules:["Teams of two; all reagents provided on-site.","Safety goggles and aprons are mandatory throughout.","Only fest-approved chemicals may be used.","Judged on technique, safety compliance and visual impact.","Unsafe handling results in immediate disqualification."]},
+    {id:"e6",world:"cosmos",num:"06",slug:"corpus-vestigium",title:"Corpus Vestigium",sub:"Forensics",icon:"magnifier",team:"2 members",dur:"2.5 hours",venue:"Biology Lab",logo:"",box:"",
+     desc:"A forensic-science simulation \u2014 teams analyse a staged crime scene, interpret evidence, and present a reasoned conclusion using real methodology.",
+     rules:["Teams of two students per school.","Evidence kits are provided; no personal equipment allowed.","A written report must be submitted within the time limit.","Marks reward the reasoning, not just the final answer.","Tampering with another team's station leads to disqualification."]},
+    {id:"e7",world:"cosmos",num:"07",slug:"pi-infinitum",title:"\u03c0 Infinitum",sub:"Mathlympics",icon:"pi",team:"1 (Individual)",dur:"2 hours",venue:"Room 12B",logo:"",box:"",
+     desc:"An IOQM-style mathematics olympiad testing pure problem-solving under time pressure \u2014 no calculators, just number theory, combinatorics and algebra.",
+     rules:["Individual event; calculators and smart devices are not permitted.","Paper-based question set across three difficulty tiers.","Partial marking is awarded for correct working.","Ties are broken by the hardest question solved correctly.","Communication between participants voids both papers."]},
+    {id:"e8",world:"cosmos",num:"08",slug:"astra-cognitio",title:"Astra Cognitio",sub:"Quiz",icon:"quiz",team:"2 members",dur:"2.5 hours",venue:"Auditorium",logo:"",box:"",
+     desc:"A fast-paced, multi-round STEM quiz across physics, space science, technology and general scientific awareness, ending in a live buzzer finale.",
+     rules:["Teams of two; written prelims followed by a stage final.","Top six teams from prelims qualify for the finale.","Buzzer rounds are strictly first-in, first-answer.","Negative marking applies in the finale only.","The Quizmaster's decision on any dispute is final."]},
+    {id:"e9",world:"eco",num:"09",slug:"clamor-naturae",title:"Clamor Naturae",sub:"Drama",icon:"masks",team:"Up to 10 members",dur:"3.5 hours",venue:"Ground Floor Auditorium",logo:"",box:"",
+     desc:"A themed stage-drama competition where teams dramatise pressing environmental issues through original scripts, movement and sound.",
+     rules:["Team size: up to 10 members including backstage crew.","Performance time limit: 8 minutes, strictly enforced.","Props must be self-arranged and eco-friendly.","No open flame or hazardous materials on stage.","Judged on script, direction and thematic relevance."]},
+    {id:"e10",world:"eco",num:"10",slug:"viridis-vox",title:"Viridis Vox",sub:"News Reading",icon:"mic",team:"1 (Individual)",dur:"2 hours",venue:"TBD",logo:"",box:"",
+     desc:"A mock-broadcast news reading competition on environmental and science journalism, testing clarity, composure and on-camera presence.",
+     rules:["Individual event; script provided 30 minutes before performance.","Reading time limit: 3 minutes per participant.","No personal notes beyond the given script.","Judged on diction, pace, composure and camera presence.","Prior leak or sharing of the script leads to disqualification."]},
+    {id:"e11",world:"eco",num:"11",slug:"genesis-nova",title:"Genesis Nova",sub:"Genetic Engineering",icon:"dna",team:"2 members",dur:"2.5 hours",venue:"Biotech Lab",logo:"",box:"",
+     desc:"A theory-and-model event where teams design and defend a genetic engineering solution to a real-world ecological or agricultural problem.",
+     rules:["Teams of two; problem statement revealed on the day.","A physical or digital model must support the proposal.","15-minute presentation followed by a 5-minute Q&A.","Judged on scientific validity, feasibility and originality.","Plagiarised or pre-built models will be disqualified."]},
+    {id:"e12",world:"eco",num:"12",slug:"ventus-lapidum",title:"Ventus Lapidum",sub:"Architecture",icon:"building",team:"2 members",dur:"3 hours",venue:"Physics Lab",logo:"",box:"",
+     desc:"A sustainable-architecture design challenge \u2014 teams design and build a scale model addressing a climate-resilience brief released on the spot.",
+     rules:["Teams of two; all base materials supplied on-site.","Additional sustainable materials may be brought by participants.","Final structure must be freestanding and meet the given brief.","Judged on sustainability, structural stability and design creativity.","Models exceeding the footprint limit will be marked down."]}
+  ],
+  editions: [
+    {year:"2022",edition:"1.0",title:"First Ignition",desc:"A single-day meet, four events, and the very first Cresco trophy.",image:""},
+    {year:"2023",edition:"2.0",title:"Widening Orbit",desc:"Eight events and six participating schools joined the roster.",image:""},
+    {year:"2024",edition:"3.0",title:"Critical Mass",desc:"Cresco crossed 300 participants for the first time, over two full days.",image:""},
+    {year:"2025",edition:"4.0",title:"Escape Velocity",desc:"Twelve events, three theme-worlds \u2014 the format Cresco runs on today.",image:""},
+    {year:"2026",edition:"5.0",title:"Beyond The Horizon",desc:"This edition. The biggest arena yet \u2014 and you're looking right at it.",image:""}
+  ]
+};
+window.DEFAULT_CONTENT = DEFAULT_CONTENT;
+const ICONS={
+  chess:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20h6M7 20l1-6-2-3 2-4h8l2 4-2 3 1 6M10 7V4h4v3"/></svg>',
+  brush:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c2-1 3-2 3-4M4 20l9-11 3 3-9 9-3-1Z"/><path d="M14 6l4-4 3 3-4 4"/></svg>',
+  scales:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M4 8h16M4 8l-2 5a3 3 0 0 0 6 0L6 8Zm14 0l-2 5a3 3 0 0 0 6 0l-2-5ZM8 21h8"/></svg>',
+  music:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>',
+  flask:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/></svg>',
+  magnifier:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.5-4.5"/></svg>',
+  pi:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M8 8l-1 12M16 8l1 9a2 2 0 0 0 2 2"/></svg>',
+  quiz:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-1 .5-1.5 1-1.5 2.2"/></svg>',
+  masks:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c4 0 5 2 5 5s-2 6-5 6M20 5c-4 0-5 2-5 5s2 6 5 6"/></svg>',
+  mic:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M9 22h6"/></svg>',
+  dna:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3c0 6 10 6 10 12s-10 6-10 12M17 3c0 6-10 6-10 12s10 6 10 12"/></svg>',
+  building:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6M4 21h16"/></svg>'
+};
+const WNAMES={myth:'Mythology',cosmos:'Cosmos',eco:'Eco'};
+
+function renderTicker(items){const t=document.getElementById('tickerTrack');const h=items.map(x=>`<span><i></i>${x}</span>`).join('');t.innerHTML=h+h;}
+function renderMarquee(items){const t=document.getElementById('marqueeTrack');const inner=items.map(x=>`<em>${x}</em>`).join(' <i></i> ');t.innerHTML=`<span>${inner}</span><span>${inner}</span>`;}
+function renderHeroStrip(stats){document.getElementById('heroStrip').innerHTML=stats.map(s=>`<div class="hs-item"><span>${s.label}</span><b>${s.value}</b></div>`).join('');}
+function renderAnnouncements(list){
+  const sec=document.getElementById('announceSection');
+  if(!list||!list.length){sec.style.display='none';return;}
+  sec.style.display='';
+  document.getElementById('announceList').innerHTML=list.map(a=>{
+    const paras=(a.body||'').split(/\n\s*\n/).filter(Boolean).map(p=>`<p>${p}</p>`).join('');
+    return `<div class="announce-card"><h4>${a.title||''}</h4><div class="ac-body">${paras}</div></div>`;
+  }).join('');
+}
+function renderAsset(imgId,filename){
+  const el=document.getElementById(imgId);if(!el||!filename)return;
+  el.onload=()=>{el.style.display='block';};el.onerror=()=>{el.style.display='none';};el.src=filename;
+}
+function renderEditions(list){
+  const rail=document.getElementById('galleryRail');
+  const palette=[['#0e1a33','#050810'],['#12203f','#050810'],['#1a1440','#050810'],['#3a1420','#050810'],['#12203f','#050810']];
+  rail.innerHTML=list.map((ed,i)=>{
+    const [c1,c2]=palette[i%palette.length];
+    const img=ed.image?`<img src="${ed.image}" alt="Cresco Scientiam ${ed.edition}" onerror="this.style.display='none'">`:'';
+    return `<div class="g-card" style="--gc1:${c1};--gc2:${c2};"><div class="g-thumb">${img}<span class="g-fallback">${ed.edition}</span></div><div class="g-body"><div class="g-year">${ed.year}</div><div class="g-title">${ed.title}</div><div class="g-desc">${ed.desc}</div></div></div>`;
+  }).join('');
+}
+function iconHTML(ev,cls){
+  const img=`<img src="${ev.logo||''}" alt="" style="${ev.logo?'':'display:none;'}" onload="this.style.display='block';this.nextElementSibling.style.display='none';" onerror="this.style.display='none';">`;
+  return `<div class="${cls}">${img}${ICONS[ev.icon]||ICONS.quiz}</div>`;
+}
+let EC_EVENTS=[],EC_INDEX=0,EC_TIMER=null;
+function renderCarousel(events){
+  EC_EVENTS=events;
+  document.getElementById('ecSlides').innerHTML=events.map((ev,i)=>`
+    <div class="ec-slide${i===0?' active':''}" data-i="${i}" data-world="${ev.world}">
+      ${iconHTML(ev,'ec-slide-icon')}
+      <div class="ec-slide-body">
+        <div class="ec-slide-tag" style="color:var(--${ev.world})">${WNAMES[ev.world]}</div>
+        <div class="ec-slide-title">${ev.title}</div>
+        <div class="ec-slide-sub">${ev.sub} &middot; ${ev.team}</div>
+        <div class="ec-slide-desc">${ev.desc}</div>
+        <a href="events.html" class="ec-slide-more" style="color:var(--${ev.world})">Know More &rarr;</a>
+      </div>
+    </div>`).join('');
+  const dotsWrap=document.getElementById('ecDots');
+  dotsWrap.innerHTML=events.map((_,i)=>`<span class="ec-dot${i===0?' active':''}" data-i="${i}"></span>`).join('');
+  dotsWrap.querySelectorAll('.ec-dot').forEach(d=>d.addEventListener('click',()=>goToSlide(+d.dataset.i)));
+  document.getElementById('ecPrev').addEventListener('click',()=>goToSlide((EC_INDEX-1+EC_EVENTS.length)%EC_EVENTS.length));
+  document.getElementById('ecNext').addEventListener('click',()=>goToSlide((EC_INDEX+1)%EC_EVENTS.length));
+  const stage=document.querySelector('.ec-stage');
+  stage.addEventListener('mouseenter',stopAutoSlide);
+  stage.addEventListener('mouseleave',startAutoSlide);
+  stage.addEventListener('touchstart',stopAutoSlide,{passive:true});
+  goToSlide(0);startAutoSlide();
+}
+function goToSlide(i){
+  EC_INDEX=i;
+  document.querySelectorAll('.ec-slide').forEach(s=>s.classList.toggle('active',+s.dataset.i===i));
+  document.querySelectorAll('.ec-dot').forEach(d=>d.classList.toggle('active',+d.dataset.i===i));
+  const world=EC_EVENTS[i].world;
+  ['myth','cosmos','eco'].forEach(w=>document.getElementById('ecBg'+w[0].toUpperCase()+w.slice(1)).classList.toggle('active',w===world));
+}
+function startAutoSlide(){stopAutoSlide();EC_TIMER=setInterval(()=>goToSlide((EC_INDEX+1)%EC_EVENTS.length),4500);}
+function stopAutoSlide(){if(EC_TIMER)clearInterval(EC_TIMER);}
+
+function renderSite(){
+  const S=window.SITE||DEFAULT_CONTENT;
+  renderTicker(S.ticker&&S.ticker.length?S.ticker:DEFAULT_CONTENT.ticker);
+  renderMarquee(S.marquee&&S.marquee.length?S.marquee:DEFAULT_CONTENT.marquee);
+  renderHeroStrip(S.heroStats&&S.heroStats.length?S.heroStats:DEFAULT_CONTENT.heroStats);
+  renderAnnouncements(S.announcements||[]);
+  renderEditions(S.editions&&S.editions.length?S.editions:DEFAULT_CONTENT.editions);
+  renderCarousel(S.events&&S.events.length?S.events:DEFAULT_CONTENT.events);
+  renderAsset('heroBackdropImg',S.heroBackdrop||DEFAULT_CONTENT.heroBackdrop);
+}
+window.renderSite=renderSite;
+renderSite();
+</script>
+
+<script>
 (function(){
   const r=document.getElementById('reticle');
-  if(window.matchMedia('(hover:none),(pointer:coarse)').matches) return;
-  let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
-  addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;});
-  document.body.addEventListener('mouseover',e=>{if(e.target.closest('a,button,.g-card,.world-card'))r.classList.add('big');});
-  document.body.addEventListener('mouseout',e=>{if(e.target.closest('a,button,.g-card,.world-card'))r.classList.remove('big');});
-  (function loop(){cx+=(x-cx)*.22;cy+=(y-cy)*.22;r.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+  if(!window.matchMedia('(hover:none),(pointer:coarse)').matches){
+    let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
+    addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;});
+    document.body.addEventListener('mouseover',e=>{if(e.target.closest('a,button,.g-card,.world-card,.ec-arrow,.ec-dot'))r.classList.add('big');});
+    document.body.addEventListener('mouseout',e=>{if(e.target.closest('a,button,.g-card,.world-card,.ec-arrow,.ec-dot'))r.classList.remove('big');});
+    (function loop(){cx+=(x-cx)*.22;cy+=(y-cy)*.22;r.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(loop);})();
+  }
 })();
-
-/* ================= CONSTELLATION NETWORK (hero) ================= */
 (function(){
   const c=document.getElementById('net');if(!c)return;
-  const ctx=c.getContext('2d');
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let W,H,dpr=Math.min(devicePixelRatio||1,2),nodes=[],resizeTimer;
-  function build(){
-    W=c.parentElement.clientWidth;H=c.parentElement.clientHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    const n=Math.floor((W*H)/17000);
-    nodes=Array.from({length:Math.max(20,n)},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.6+.8}));
-  }
-  function resize(){clearTimeout(resizeTimer);resizeTimer=setTimeout(build,120);}
+  const ctx=c.getContext('2d');const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W,H,dpr=Math.min(devicePixelRatio||1,2),nodes=[],rt;
+  function build(){W=c.parentElement.clientWidth;H=c.parentElement.clientHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const n=Math.floor((W*H)/17000);nodes=Array.from({length:Math.max(20,n)},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.6+.8}));}
+  function resize(){clearTimeout(rt);rt=setTimeout(build,120);}
   addEventListener('resize',resize);addEventListener('orientationchange',resize);build();
-  function frame(){
-    ctx.clearRect(0,0,W,H);
-    for(const n of nodes){n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;}
-    for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){
-      const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<130){ctx.strokeStyle=`rgba(94,224,255,${(1-d/130)*.18})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
-    }}
-    for(const n of nodes){ctx.fillStyle='rgba(140,180,255,.55)';ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.283);ctx.fill();}
-    if(!reduced)requestAnimationFrame(frame);else setTimeout(frame,1500);
-  }
+  function frame(){ctx.clearRect(0,0,W,H);for(const n of nodes){n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;}for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<130){ctx.strokeStyle=`rgba(94,224,255,${(1-d/130)*.18})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}}for(const n of nodes){ctx.fillStyle='rgba(140,180,255,.55)';ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,6.283);ctx.fill();}if(!reduced)requestAnimationFrame(frame);else setTimeout(frame,1500);}
   frame();
 })();
-
-/* ================= BACKGROUND STARFIELD ================= */
 (function(){
-  const c=document.getElementById('field'),ctx=c.getContext('2d');
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let stars=[],W,H,mx=0,my=0,dpr=Math.min(devicePixelRatio||1,2),resizeTimer;
-  function build(){
-    W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);
-    const n=Math.floor((W*H)/11000);
-    stars=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.25,a:Math.random()*.5+.15,tw:Math.random()*6.28,sp:.3+Math.random()*.7}));
-  }
-  function resize(){clearTimeout(resizeTimer);resizeTimer=setTimeout(build,120);}
+  const c=document.getElementById('field'),ctx=c.getContext('2d');const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let stars=[],W,H,mx=0,my=0,dpr=Math.min(devicePixelRatio||1,2),rt;
+  function build(){W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;c.style.width=W+'px';c.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const n=Math.floor((W*H)/11000);stars=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.25,a:Math.random()*.5+.15,tw:Math.random()*6.28,sp:.3+Math.random()*.7}));}
+  function resize(){clearTimeout(rt);rt=setTimeout(build,120);}
   addEventListener('resize',resize);addEventListener('orientationchange',resize);build();
   addEventListener('pointermove',e=>{mx=(e.clientX/W-.5)*2;my=(e.clientY/H-.5)*2;});
   let t=0;
-  function frame(){
-    t+=.016;ctx.clearRect(0,0,W,H);
-    for(const s of stars){const tw=.6+.4*Math.sin(t*s.sp+s.tw);ctx.globalAlpha=s.a*tw;ctx.fillStyle='#dbe8ff';ctx.beginPath();ctx.arc(s.x+mx*(1-s.r)*7,s.y+my*(1-s.r)*7,s.r,0,6.283);ctx.fill();}
-    ctx.globalAlpha=1;
-    if(!reduced)requestAnimationFrame(frame);else setTimeout(frame,2000);
-  }
+  function frame(){t+=.016;ctx.clearRect(0,0,W,H);for(const s of stars){const tw=.6+.4*Math.sin(t*s.sp+s.tw);ctx.globalAlpha=s.a*tw;ctx.fillStyle='#dbe8ff';ctx.beginPath();ctx.arc(s.x+mx*(1-s.r)*7,s.y+my*(1-s.r)*7,s.r,0,6.283);ctx.fill();}ctx.globalAlpha=1;if(!reduced)requestAnimationFrame(frame);else setTimeout(frame,2000);}
   frame();
 })();
-
-/* ================= MATERIALIZE HEADLINE (no width shift, no shake) ================= */
 (function(){
   document.querySelectorAll('h1.decode .ln').forEach((el,li)=>{
-    const text=el.dataset.text||'';
-    el.setAttribute('aria-label',text);
-    el.innerHTML='';
-    [...text].forEach((ch,i)=>{
-      const span=document.createElement('span');
-      span.className='mc';
-      span.textContent=ch===' '?'\u00A0':ch;
-      span.style.animationDelay=(0.15+li*0.3+i*0.032)+'s';
-      el.appendChild(span);
-    });
+    const text=el.dataset.text||'';el.setAttribute('aria-label',text);el.innerHTML='';
+    [...text].forEach((ch,i)=>{const span=document.createElement('span');span.className='mc';span.textContent=ch===' '?'\u00A0':ch;span.style.animationDelay=(0.15+li*0.3+i*0.032)+'s';el.appendChild(span);});
   });
 })();
-
-/* ================= OVERLAY NAV ================= */
 (function(){
   const trigger=document.getElementById('menuTrigger'),overlay=document.getElementById('overlayNav');
-  function toggle(force){
-    const open=force!==undefined?force:!overlay.classList.contains('open');
-    overlay.classList.toggle('open',open);trigger.classList.toggle('open',open);trigger.setAttribute('aria-expanded',open);
-    document.body.style.overflow=open?'hidden':'';
-  }
+  function toggle(force){const open=force!==undefined?force:!overlay.classList.contains('open');overlay.classList.toggle('open',open);trigger.classList.toggle('open',open);trigger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';}
   trigger.addEventListener('click',()=>toggle());
   document.querySelectorAll('.overlay-links a').forEach(a=>a.addEventListener('click',()=>toggle(false)));
   addEventListener('keydown',e=>{if(e.key==='Escape')toggle(false);});
-  function clock(){
-    const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());
-    document.getElementById('overlayClock').textContent=`${parts.find(p=>p.type==='hour').value}:${parts.find(p=>p.type==='minute').value}:${parts.find(p=>p.type==='second').value}`;
-  }
+  function clock(){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());document.getElementById('overlayClock').textContent=`${parts.find(p=>p.type==='hour').value}:${parts.find(p=>p.type==='minute').value}:${parts.find(p=>p.type==='second').value}`;}
   clock();setInterval(clock,1000);
-  function mini(){const diff=new Date('2026-09-25T08:00:00+05:30').getTime()-Date.now();document.getElementById('overlayCountdownMini').textContent=diff<=0?'LIVE NOW':`T-${Math.floor(diff/86400000)}D`;}
-  mini();setInterval(mini,60000);
+  const topbar=document.getElementById('topbar');
+  addEventListener('scroll',()=>topbar.classList.toggle('scrolled',scrollY>30),{passive:true});
 })();
-
-/* ================= SCROLL PROGRESS ================= */
 (function(){
   const bar=document.getElementById('scrollProgress');if(!bar)return;
-  function update(){
-    const h=document.documentElement;
-    const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight||1)*100;
-    bar.style.width=Math.min(100,Math.max(0,pct))+'%';
-  }
+  function update(){const h=document.documentElement;const pct=(h.scrollTop)/(h.scrollHeight-h.clientHeight||1)*100;bar.style.width=Math.min(100,Math.max(0,pct))+'%';}
   addEventListener('scroll',update,{passive:true});update();
 })();
-
-/* ================= REVEAL ON SCROLL ================= */
 (function(){
-  const els=document.querySelectorAll('.reveal');
   const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
-  els.forEach(el=>io.observe(el));
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
-
-/* ================= COUNTDOWN ================= */
 (function(){
   const grid=document.getElementById('countdownGrid');if(!grid)return;
   const target=new Date(grid.dataset.target).getTime();
   const d=document.getElementById('cd-days'),h=document.getElementById('cd-hours'),m=document.getElementById('cd-mins'),s=document.getElementById('cd-secs');
   function pad(n){return String(Math.max(0,n)).padStart(2,'0');}
-  function tick(){
-    const diff=target-Date.now();
-    if(diff<=0){d.textContent=h.textContent=m.textContent=s.textContent='00';return;}
-    d.textContent=pad(Math.floor(diff/86400000));h.textContent=pad(Math.floor((diff%86400000)/3600000));
-    m.textContent=pad(Math.floor((diff%3600000)/60000));s.textContent=pad(Math.floor((diff%60000)/1000));
-  }
+  function tick(){const diff=target-Date.now();if(diff<=0){d.textContent=h.textContent=m.textContent=s.textContent='00';return;}d.textContent=pad(Math.floor(diff/86400000));h.textContent=pad(Math.floor((diff%86400000)/3600000));m.textContent=pad(Math.floor((diff%3600000)/60000));s.textContent=pad(Math.floor((diff%60000)/1000));}
   tick();setInterval(tick,1000);
 })();
-
-/* ================= GALLERY RAIL ================= */
 (function(){
   const rail=document.getElementById('galleryRail');if(!rail)return;
   document.getElementById('railPrev').addEventListener('click',()=>rail.scrollBy({left:-340,behavior:'smooth'}));
   document.getElementById('railNext').addEventListener('click',()=>rail.scrollBy({left:340,behavior:'smooth'}));
 })();
-
-/* ================= ORBIT SVG BUILDER (shared) ================= */
 function buildOrbitSVG(target,opts){
-  const cx=150,cy=150;
-  const rings=opts.rings||[46,78,112];
-  const colors=opts.colors||['#1c39bb','#5ee0ff','#ffb648'];
+  const cx=150,cy=150;const rings=opts.rings||[46,78,112];const colors=opts.colors||['#1c39bb','#5ee0ff','#ffb648'];
   let html=`<circle cx="${cx}" cy="${cy}" r="${opts.core||6}" fill="${colors[0]}" style="filter:drop-shadow(0 0 8px ${colors[0]})"/>`;
   rings.forEach((r,i)=>{
     html+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(140,170,255,.25)" stroke-width="1" ${i===1?'stroke-dasharray="3 5"':''}/>`;
-    const count=opts.counts?opts.counts[i]:(3+i*2);
-    const dur=(10+i*7).toFixed(1),dir=i%2===0?'':'Rev';
+    const count=opts.counts?opts.counts[i]:(3+i*2);const dur=(10+i*7).toFixed(1),dir=i%2===0?'':'Rev';
     html+=`<g style="transform-origin:${cx}px ${cy}px;animation:orbSpin${dir} ${dur}s linear infinite;">`;
-    for(let k=0;k<count;k++){
-      const ang=(k/count)*Math.PI*2,ex=cx+r*Math.cos(ang),ey=cy+r*Math.sin(ang);
-      html+=`<circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="${i===0?3.2:2.2}" fill="${colors[i%colors.length]}"/>`;
-    }
+    for(let k=0;k<count;k++){const ang=(k/count)*Math.PI*2,ex=cx+r*Math.cos(ang),ey=cy+r*Math.sin(ang);html+=`<circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="${i===0?3.2:2.2}" fill="${colors[i%colors.length]}"/>`;}
     html+='</g>';
   });
   target.innerHTML=html;
@@ -685,52 +788,31 @@ function buildOrbitSVG(target,opts){
   style.textContent='@keyframes orbSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}@keyframes orbSpinRev{from{transform:rotate(360deg)}to{transform:rotate(0)}}';
   document.head.appendChild(style);
   const signal=document.getElementById('signalOrbit');if(signal)buildOrbitSVG(signal,{});
-  const hero=document.getElementById('heroOrbit');if(hero)buildOrbitSVG(hero,{rings:[54,90,128],core:8,counts:[4,7,10],colors:['#5ee0ff','#1c39bb','#ff8390']});
 })();
-
-/* ================= ASSET CHECKLIST (auto-detect uploads) ================= */
 (function(){
-  const ASSETS=[
-    {path:'assets/hero-backdrop.jpg',dims:'2400×1350px',note:'Hero background — dark, moody lab/space/night-sky photo'},
-    {path:'assets/logo-mark.png',dims:'512×512px transparent',note:'Overrides the built-in Cr/Es/Co mark in the corner'},
-    {path:'assets/og-image.jpg',dims:'1200×630px',note:'Social share preview (WhatsApp / Instagram link card)'},
-    {path:'assets/campus-map.jpg',dims:'1600×1200px',note:'Campus/venue map — used on the Schedule page'},
-    {path:'assets/gallery/edition-1.jpg',dims:'1400×1050px',note:'Cresco 1.0 (2022) highlight photo'},
-    {path:'assets/gallery/edition-2.jpg',dims:'1400×1050px',note:'Cresco 2.0 (2023) highlight photo'},
-    {path:'assets/gallery/edition-3.jpg',dims:'1400×1050px',note:'Cresco 3.0 (2024) highlight photo'},
-    {path:'assets/gallery/edition-4.jpg',dims:'1400×1050px',note:'Cresco 4.0 (2025) highlight photo'},
-    {path:'assets/gallery/edition-5.jpg',dims:'1400×1050px',note:'Cresco 5.0 (2026) teaser photo'},
-    {path:'assets/team/convenor.jpg',dims:'500×500px',note:'Team — Convenor headshot'},
-    {path:'assets/team/co-convenor.jpg',dims:'500×500px',note:'Team — Co-Convenor headshot'},
-    {path:'assets/team/events-lead.jpg',dims:'500×500px',note:'Team — Events Lead headshot'},
-    {path:'assets/team/operations-lead.jpg',dims:'500×500px',note:'Team — Operations Lead headshot'},
-    {path:'assets/team/design-lead.jpg',dims:'500×500px',note:'Team — Design Lead headshot'},
-    {path:'assets/team/pr-head.jpg',dims:'500×500px',note:'Team — PR Head headshot'},
-    {path:'assets/sponsors/title-1.png',dims:'~600×240px transparent',note:'Title sponsor logo'},
-    {path:'assets/sponsors/gold-1.png',dims:'~400×200px transparent',note:'Gold sponsor logo'},
-    {path:'assets/sponsors/silver-1.png',dims:'~360×180px transparent',note:'Silver sponsor logo'},
-    {path:'assets/sponsors/bronze-1.png',dims:'~320×160px transparent',note:'Bronze sponsor logo'}
-  ];
-  const grid=document.getElementById('checklistGrid');if(!grid)return;
-  document.getElementById('checkTotal').textContent=ASSETS.length;
-  let done=0;
-  ASSETS.forEach((a,i)=>{
-    const row=document.createElement('div');
-    row.className='check-row';
-    row.id='chk-'+i;
-    row.innerHTML=`<span class="cbox"></span><span class="ct"><code>/${a.path}</code><span class="cd">${a.dims} &middot; ${a.note}</span></span>`;
-    grid.appendChild(row);
-    const img=new Image();
-    img.onload=()=>{row.classList.add('done');done++;document.getElementById('checkDone').textContent=done;};
-    img.onerror=()=>{};
-    img.src=a.path+'?v='+Date.now();
+  document.querySelectorAll('.hlogo-orbit-svg').forEach(svg=>{
+    const shells=(svg.dataset.shells||'').split(',').map(Number);const color=svg.dataset.color||'#5ee0ff';const cx=60,cy=60;
+    let html=`<circle cx="${cx}" cy="${cy}" r="5" fill="${color}" style="filter:drop-shadow(0 0 6px ${color})"/>`;
+    shells.forEach((count,i)=>{
+      const r=13+i*9;html+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(140,170,255,.3)" stroke-width=".8"/>`;
+      const dur=(5+i*2.4).toFixed(1),dir=i%2===0?'':'Rev';
+      html+=`<g style="transform-origin:${cx}px ${cy}px;animation:orbSpin${dir} ${dur}s linear infinite;">`;
+      for(let e=0;e<count;e++){const ang=(e/count)*Math.PI*2,ex=cx+r*Math.cos(ang),ey=cy+r*Math.sin(ang);html+=`<circle cx="${ex.toFixed(2)}" cy="${ey.toFixed(2)}" r="1.7" fill="${color}"/>`;}
+      html+='</g>';
+    });
+    svg.innerHTML=html;
+  });
+  document.querySelectorAll('.hlogo-cell').forEach(cell=>{
+    function flip(){cell.classList.toggle('flipped');}
+    cell.addEventListener('click',flip);
+    cell.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip();}});
   });
 })();
 </script>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, doc, onSnapshot, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   const firebaseConfig = {
     apiKey: "AIzaSyCr7RU1pUOyxV88VEAgJZwEHNupTHCnv98",
     authDomain: "cresco-scientiam.firebaseapp.com",
@@ -744,6 +826,11 @@ function buildOrbitSVG(target,opts){
     const app=initializeApp(firebaseConfig);
     const db=getFirestore(app);
     setDoc(doc(db,"stats","pageViews"),{ home: increment(1) },{ merge:true }).catch(()=>{});
+    onSnapshot(doc(db,"siteContent","main"), snap=>{
+      const data = snap.exists() ? snap.data() : {};
+      window.SITE = Object.assign({}, window.DEFAULT_CONTENT, data);
+      if (window.renderSite) window.renderSite();
+    }, err=>{ console.warn("Live content sync unavailable, using built-in defaults:", err); });
   }catch(err){ console.warn("Firebase not initialised:",err); }
 </script>
 </body>
